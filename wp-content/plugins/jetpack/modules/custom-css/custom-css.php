@@ -98,6 +98,7 @@ class Jetpack_Custom_CSS {
 	 * @param array $args Array of arguments:
 	 *        string $css The CSS (or LESS or Sass)
 	 *        bool $is_preview Whether this CSS is preview or published
+	 *        string preprocessor Which CSS preprocessor to use
 	 *        bool $add_to_existing Whether this CSS replaces the theme's CSS or supplements it.
 	 *        int $content_width A custom $content_width to go along with this CSS.
 	 * @return int The post ID of the saved Custom CSS post.
@@ -604,7 +605,6 @@ class Jetpack_Custom_CSS {
 		$title = __( 'Edit CSS', 'jetpack' );
 		$hook = add_theme_page( $title, $title, 'edit_theme_options', 'editcss', array( 'Jetpack_Custom_CSS', 'admin' ) );
 
-		add_action( "admin_head-$hook", array( 'Jetpack_Custom_CSS', 'admin_head' ) );
 		add_action( "load-revision.php", array( 'Jetpack_Custom_CSS', 'prettify_post_revisions' ) );
 		add_action( "load-$hook", array( 'Jetpack_Custom_CSS', 'update_title' ) );
 	}
@@ -647,29 +647,11 @@ class Jetpack_Custom_CSS {
 		wp_enqueue_style( 'custom-css-editor', plugins_url( 'custom-css/css/css-editor.css', __FILE__ ) );
 
 		if ( defined( 'SAFECSS_USE_ACE' ) && SAFECSS_USE_ACE ) {
-			$url = plugins_url( 'custom-css/js/', __FILE__ );
+			wp_register_style( 'jetpack-css-codemirror', plugins_url( 'custom-css/css/codemirror.css', __FILE__ ), array(), '20120905' );
+			wp_enqueue_style( 'jetpack-css-use-codemirror', plugins_url( 'custom-css/css/use-codemirror.css', __FILE__ ), array( 'jetpack-css-codemirror' ), '20120905' );
 
-			wp_enqueue_script( 'jquery.spin' );
-			wp_enqueue_script( 'safecss-ace', $url . 'ace/ace.js', array(), '20130213', true );
-			wp_enqueue_script( 'safecss-ace-css', $url . 'ace/mode-css.js', array( 'safecss-ace' ), '20130213', true );
-			wp_enqueue_script( 'safecss-ace-less', $url . 'ace/mode-less.js', array( 'safecss-ace' ), '20130213', true );
-			wp_enqueue_script( 'safecss-ace-scss', $url . 'ace/mode-scss.js', array( 'safecss-ace' ), '20130213', true );
-			wp_enqueue_script( 'safecss-ace-use', $url . 'safecss-ace.js', array( 'jquery', 'safecss-ace-css' ), '20130213', true );
-
-			wp_enqueue_style( 'custom-css-ace', plugins_url( 'custom-css/css/ace.css', __FILE__ ) );
-		}
-	}
-
-	static function admin_head() {
-		if ( defined( 'SAFECSS_USE_ACE' ) && SAFECSS_USE_ACE ) {
-			?>
-			<script type="text/javascript">
-				/*<![CDATA[*/
-				var SAFECSS_USE_ACE = true;
-				var safecssAceSrcPath = <?php echo json_encode( parse_url( plugins_url( 'custom-css/js/ace/', __FILE__ ), PHP_URL_PATH ) ); ?>;
-				/*]]>*/
-			</script>
-			<?php
+			wp_register_script( 'jetpack-css-codemirror', plugins_url( 'custom-css/js/codemirror.min.js', __FILE__ ), array(), '3.16', true );
+			wp_enqueue_script( 'jetpack-css-use-codemirror', plugins_url( 'custom-css/js/use-codemirror.js', __FILE__ ), array( 'jquery', 'underscore', 'jetpack-css-codemirror' ), '20131009', true );
 		}
 	}
 
@@ -703,18 +685,8 @@ class Jetpack_Custom_CSS {
 					<div id="post-body">
 						<div id="post-body-content">
 							<div class="postarea">
-								<?php if ( defined( 'SAFECSS_USE_ACE' ) && SAFECSS_USE_ACE ) { ?>
-									<div id="safecss-container">
-										<div id="safecss-ace"></div>
-									</div>
-									<script type="text/javascript">
-										jQuery.fn.spin && jQuery("#safecss-container").spin( 'large' );
-									</script>
-									<textarea id="safecss" name="safecss" class="hide-if-js"><?php echo esc_textarea( Jetpack_Custom_CSS::get_css() ); ?></textarea>
-									<div class="clear"></div>
-								<?php } else { ?>
-									<p><textarea id="safecss" name="safecss"><?php echo str_replace('</textarea>', '&lt;/textarea&gt', Jetpack_Custom_CSS::get_css()); ?></textarea></p>
-								<?php } ?>
+								<textarea id="safecss" name="safecss"<?php if ( SAFECSS_USE_ACE ) echo ' class="hide-if-js"'; ?>><?php echo esc_textarea( Jetpack_Custom_CSS::get_css() ); ?></textarea>
+								<div class="clear"></div>
 							</div>
 						</div>
 					</div>
@@ -901,15 +873,26 @@ class Jetpack_Custom_CSS {
 
 	/**
 	 * Render metabox listing CSS revisions and the themes that correspond to the revisions.
-	 * Called by afecss_admin	 *
-	 * @param array $safecss_post
+	 * Called by safecss_admin
+	 *
 	 * @global $post
-	 * @uses WP_Query, wp_post_revision_title, esc_html, add_query_arg, menu_page_url, wp_reset_query
+	 * @param array $safecss_post
+	 * @uses wp_revisions_to_keep
+	 * @uses WP_Query
+	 * @uses wp_post_revision_title
+	 * @uses esc_html
+	 * @uses add_query_arg
+	 * @uses menu_page_url
+	 * @uses wp_reset_query
 	 * @return string
 	 */
 	static function revisions_meta_box( $safecss_post ) {
+
+		$show_all_revisions = isset( $_GET['show_all_rev'] );
+		
 		$max_revisions = defined( 'WP_POST_REVISIONS' ) && is_numeric( WP_POST_REVISIONS ) ? (int) WP_POST_REVISIONS : 25;
-		$posts_per_page = isset( $_GET['show_all_rev'] ) ? $max_revisions : 6;
+
+		$posts_per_page = $show_all_revisions ? $max_revisions : 6;
 
 		$revisions = new WP_Query( array(
 			'posts_per_page' => $posts_per_page,
@@ -941,7 +924,7 @@ class Jetpack_Custom_CSS {
 
 			?></ul><?php
 
-			if ( $revisions->found_posts > 6 ) {
+			if ( $revisions->found_posts > 6 && !$show_all_revisions ) {
 				?>
 				<br>
 				<a href="<?php echo add_query_arg( 'show_all_rev', 'true', menu_page_url( 'editcss', false ) ); ?>"><?php esc_html_e( 'Show more', 'jetpack' ); ?></a>
@@ -1435,7 +1418,7 @@ function custom_css_minify( $css, $preprocessor = '' ) {
 function custom_css_restore_revision( $_post_id, $_revision_id ) {
 	_deprecated_function( __FUNCTION__, '2.1', 'Jetpack_Custom_CSS::restore_revision()' );
 
-	return Jetpack_Custom_CSS::restore_revision( $_post_id, $_revision_id );;
+	return Jetpack_Custom_CSS::restore_revision( $_post_id, $_revision_id );
 }
 
 function safecss_class() {
