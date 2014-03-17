@@ -1,16 +1,14 @@
 <?php
-/* Disable the Admin Bar */
-show_admin_bar(false);
-?>
-<?php
 function bootstrap_scripts()
 {
 	// Register the scripts for this theme:
+	wp_register_script( 'imagesloaded-script', get_template_directory_uri() . '/js/imagesloaded.pkgd.min.js', array( 'jquery' ) );
     wp_register_script( 'isotope-script', get_template_directory_uri() . '/js/jquery.isotope.min.js', array( 'jquery' ) );
 	wp_register_script( 'bootstrap-script', get_template_directory_uri() . '/js/bootstrap.js', array( 'jquery' ) );
 	wp_register_script( 'strap-extras-script', get_template_directory_uri() . '/js/strap-extras.js', array( 'jquery' ) );
 
 	//  enqueue the script:
+	wp_enqueue_script( 'imagesloaded-script' );
     wp_enqueue_script( 'isotope-script' );
 	wp_enqueue_script( 'bootstrap-script' );
 	wp_enqueue_script( 'strap-extras-script' );
@@ -21,11 +19,10 @@ add_action( 'wp_enqueue_scripts', 'bootstrap_scripts' );
 function bootstrap_styles()
 {
 	// Register the style like this for a theme:
-	wp_register_style( 'bootstrap-styles', get_template_directory_uri() .'/admin/layouts/' . bi_get_data('bootswatch'), array(), '3.0.0', 'all' );
-
-    wp_register_style( 'font-awesome', get_template_directory_uri() . '/css/font-awesome.min.css', array(), '3.0', 'all' );
+	wp_register_style( 'bootstrap-styles', get_template_directory_uri() .'/admin/layouts/' . bi_get_data('bootswatch'), array(), '3.1.1', 'all' );
+    wp_register_style( 'font-awesome', get_template_directory_uri() . '/css/font-awesome.min.css', array(), '4.0.3', 'all' );
     wp_register_style( 'magnific', get_template_directory_uri() . '/css/magnific.css', array(), '0.9.4', 'all' );
-    wp_register_style( 'responsive-style', get_stylesheet_uri(), false, '3.0.0' );
+    wp_register_style( 'responsive-style', get_stylesheet_uri(), false, '3.1.1' );
 
 
 	//  enqueue the style:

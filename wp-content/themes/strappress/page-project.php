@@ -31,14 +31,14 @@
                  $fbtn_color = 'btn-'.bi_get_data('f_btn_color', '' );
                  $fbtn_size = 'btn-'.bi_get_data('f_btn_size', '' );
                  echo '<div id="portfolio-filter" class="btn-group" data-toggle="buttons">';
-                 echo '<a class="btn '.$fbtn_color.' '.$fbtn_size.' active" href="#all" data-filter="*" title="">All</a>';
+                 echo '<a class="btn btn-default '.$fbtn_size.' active" href="#all" data-filter="*" title="">All</a>';
                  if ( $count > 0 ){
 
                         foreach ( $terms as $term ) {
 
                             $termname = strtolower($term->name);
                             $termname = str_replace(' ', '-', $termname);
-                            echo '<a data-filter=".'.$termname.'" class="btn '.$fbtn_color.' '.$fbtn_size.'" href="#'.$termname.'" title="" rel="'.$termname.'">'.$term->name.'</a>';
+                            echo '<a data-filter=".'.$termname.'" class="btn btn-default '.$fbtn_size.'" href="#'.$termname.'" title="" rel="'.$termname.'">'.$term->name.'</a>';
                         }
                  }
                  echo "</div>";

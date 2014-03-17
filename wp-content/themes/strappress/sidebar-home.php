@@ -6,7 +6,7 @@
  * @file           sidebar-home.php
  * @package        StrapPress 
  * @author         Brad Williams 
- * @copyright      2011 - 2013 Brag Interactive
+ * @copyright      2011 - 2014 Brag Interactive
  * @license        license.txt
  * @version        Release: 3.0.0
  * @link           http://codex.wordpress.org/Theme_Development#Widgets_.28sidebar.php.29
@@ -15,7 +15,7 @@
 ?>
     <div id="widgets" class="home-widgets">
         <div class="row">
-        <div class="col-lg-4">
+        <div class="col-md-4">
         
         <?php responsive_widgets(); // above widgets hook ?>
             
@@ -29,7 +29,7 @@
         <?php responsive_widgets_end(); // responsive after widgets hook ?>
         </div><!-- end of .col-lg-4 -->
 
-        <div class="col-lg-4">
+        <div class="col-md-4">
         <?php responsive_widgets(); // responsive above widgets hook ?>
             
 			<?php if (!dynamic_sidebar('home-widget-2')) : ?>
@@ -42,7 +42,7 @@
             <?php responsive_widgets_end(); // after widgets hook ?>
         </div><!-- end of .col-lg-4 -->
 
-        <div class="col-lg-4">
+        <div class="col-md-4">
         <?php responsive_widgets(); // above widgets hook ?>
             
             <?php if (!dynamic_sidebar('home-widget-3')) : ?>

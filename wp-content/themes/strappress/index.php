@@ -6,7 +6,7 @@
  * @file           index.php
  * @package        StrapPress 
  * @author         Brad Williams 
- * @copyright      2011 - 2013 Brag Interactive
+ * @copyright      2011 - 2014 Brag Interactive
  * @license        license.txt
  * @version        Release: 3.0.0
  * @link           http://codex.wordpress.org/Theme_Development#Index_.28index.php.29
@@ -58,7 +58,7 @@
                     <?php the_post_thumbnail(); ?>
                         </a>
                     <?php endif; ?>
-                    <?php the_content(__($more_link, 'responsive')); ?>
+                    <?php the_content(); ?>
                        <?php custom_link_pages(array(
                             'before' => '<nav class="pagination"><ul>' . __(''),
                             'after' => '</ul></nav>',

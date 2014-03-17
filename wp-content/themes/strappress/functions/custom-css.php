@@ -47,7 +47,8 @@ if ( !function_exists( 'bi_custom_css' ) ) {
 			}
 
 			if(bi_get_data('disable_fixed_navbar') == '1') {
-				$custom_css .= 'body { padding-top: 70px; }';
+				$custom_css .= 'body { padding-top: 70px; }
+				body.admin-bar .navbar {position:fixed; top: 28px; z-index: 1000; height: 40px;}';
 			}
 
 			//body text color

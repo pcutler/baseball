@@ -6,7 +6,7 @@
  * @file           single.php
  * @package        StrapPress 
  * @author         Brad Williams 
- * @copyright      2011 - 2013 Brag Interactive
+ * @copyright      2011 - 2014 Brag Interactive
  * @license        license.txt
  * @version        Release: 3.0.0
  * @link           http://codex.wordpress.org/Theme_Development#Single_Post_.28single.php.29
@@ -62,7 +62,7 @@
                  <?php } ?>
                                 
                 <section class="post-entry">
-                    <?php the_content(__($more_link, 'responsive')); ?>
+                    <?php the_content(); ?>
                     
                     <?php if ( get_the_author_meta('description') != '' ) : ?>
                     

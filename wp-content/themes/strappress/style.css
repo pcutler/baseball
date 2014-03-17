@@ -5,10 +5,10 @@ Description: Responsive WordPress theme with all the Twitter Bootstrap elements 
 
 Author: Brag Interactive 
 Author URI: http://braginteractive.com
-Version: 3.0.0
+Version: 3.1.1
 Tags: white, black, gray, light, custom-menu, custom-header, custom-background, one-column, two-columns, left-sidebar, right-sidebar, flexible-width, theme-options, threaded-comments, full-width-template, sticky-post, translation-ready, bootstrap, twitter
 
-Copyright (C) 2011-2013 Brag Interactive 
+Copyright (C) 2011-2014 Brag Interactive 
 License: GNU General Public License, version 3 (GPLv3)
 License URI: license.txt 
 	
@@ -17,6 +17,7 @@ See: http://codex.wordpress.org/Child_Themes
 	
 CSS Rules: Sorted alphabetically for better organization.
 */
+
 	
 
 /* =Horizontal Rule
@@ -1357,55 +1358,6 @@ strong.search-excerpt { background: yellow; }
 	margin:0 0 5px 0;
 }
 
-/**** Isotope Filtering ****/
-
-.isotope-item {
-  z-index: 2;
-}
-
-.isotope-hidden.isotope-item {
-  pointer-events: none;
-  z-index: 1;
-}
-
-/**** Isotope CSS3 transitions ****/
-
-.isotope,
-.isotope .isotope-item {
-  -webkit-transition-duration: 0.8s;
-     -moz-transition-duration: 0.8s;
-      -ms-transition-duration: 0.8s;
-       -o-transition-duration: 0.8s;
-          transition-duration: 0.8s;
-}
-
-.isotope {
-  -webkit-transition-property: height, width;
-     -moz-transition-property: height, width;
-      -ms-transition-property: height, width;
-       -o-transition-property: height, width;
-          transition-property: height, width;
-}
-
-.isotope .isotope-item {
-  -webkit-transition-property: -webkit-transform, opacity;
-     -moz-transition-property:    -moz-transform, opacity;
-      -ms-transition-property:     -ms-transform, opacity;
-       -o-transition-property:         top, left, opacity;
-          transition-property:         transform, opacity;
-}
-
-/**** disabling Isotope CSS3 transitions ****/
-
-.isotope.no-transition,
-.isotope.no-transition .isotope-item,
-.isotope .isotope-item.no-transition {
-  -webkit-transition-duration: 0s;
-     -moz-transition-duration: 0s;
-      -ms-transition-duration: 0s;
-       -o-transition-duration: 0s;
-          transition-duration: 0s;
-}
 
 
 /* =Media Queries

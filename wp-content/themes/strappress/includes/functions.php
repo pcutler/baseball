@@ -6,7 +6,7 @@
  * @file           functions.php
  * @package        StrapPress 
  * @author         Brad Williams 
- * @copyright      2011 - 2013 Brag Interactive
+ * @copyright      2011 - 2014 Brag Interactive
  * @license        license.txt
  * @version        Release: 3.0.0
  * @filesource     wp-content/themes/responsive/includes/functions.php
@@ -78,28 +78,6 @@ if (!function_exists('responsive_setup')):
     }
 
 endif;
-
-/**
- * Get our wp_nav_menu() fallback, wp_page_menu(), to show a home link.
- */
-function responsive_page_menu_args( $args ) {
-	$args['show_home'] = true;
-	return $args;
-}
-add_filter( 'wp_page_menu_args', 'responsive_page_menu_args' );
-
-/**
- * Remove div from wp_page_menu() and replace with ul.
- */
-function responsive_wp_page_menu ($page_markup) {
-    preg_match('/^<div class=\"([a-z0-9-_]+)\">/i', $page_markup, $matches);
-        $divclass = $matches[1];
-        $replace = array('<div class="'.$divclass.'">', '</div>');
-        $new_markup = str_replace($replace, '', $page_markup);
-        $new_markup = preg_replace('/^<ul>/i', '<ul class="'.$divclass.'">', $new_markup);
-        return $new_markup; }
-
-add_filter('wp_page_menu', 'responsive_wp_page_menu');
 
 /**
  * Filter 'get_comments_number'
@@ -179,12 +157,13 @@ function my_more_link( $more_link, $more_link_text ) {
     
     $read_more_size = 'btn-'.bi_get_data('read_more_size', '' );
     $read_more_text = bi_get_data('read_more_text', '' );
+    $read_more_block ='';
     
     if(bi_get_data('read_more_block', '1')) {
             $read_more_block = "btn-block";
                 }
             
-    return str_replace( $more_link_text, '<p><a href="' . get_permalink() . '" class="readmore btn btn-default '.$read_more_block.''.$read_more_size.' ">'.$read_more_text.' </a> </p>', $more_link );
+    return str_replace( $more_link_text, '<p><a href="' . get_permalink() . '" class="readmore btn btn-default '.$read_more_block.' '.$read_more_size.' ">'.$read_more_text.' </a> </p>', $more_link );
 }
 
 add_filter( 'the_content_more_link', 'my_more_link', 10, 2 );
@@ -238,7 +217,7 @@ function responsive_breadcrumb_lists() {
         $thisCat = get_category($thisCat);
         $parentCat = get_category($thisCat->parent);
         if ($thisCat->parent != 0)
-            echo(get_category_parents($parentCat, TRUE, ''));
+            echo '<li><a href="' . (get_category_parents($parentCat, TRUE, '</li>')) . '</a></li>  ';
         echo $currentBefore . 'Archive by category &#39;';
         single_cat_title();
         echo '&#39;' . $currentAfter;

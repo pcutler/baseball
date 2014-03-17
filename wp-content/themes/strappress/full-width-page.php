@@ -60,7 +60,7 @@
                 <?php endif; ?> 
                 
                 <section class="post-entry">
-                    <?php the_content(__($more_link, 'responsive')); ?>
+                    <?php the_content(); ?>
                        <?php custom_link_pages(array(
                             'before' => '<nav class="pagination"><ul>' . __(''),
                             'after' => '</ul></nav>',

@@ -6,7 +6,7 @@
  * @file           search.php
  * @package        StrapPress 
  * @author         Brad Williams 
- * @copyright      2011 - 2013 Brag Interactive
+ * @copyright      2011 - 2014 Brag Interactive
  * @license        license.txt
  * @version        Release: 3.0.0
  * @link           http://codex.wordpress.org/Theme_Development#Search_Results_.28search.php.29

@@ -16,14 +16,12 @@ jQuery(function(){
 
 
 jQuery.noConflict()(function($){
-// cache container
-var $container = $('#portfolio-list');
-// initialize isotope
-$container.imagesLoaded( function(){
-$container.isotope({
-	itemSelector : '.block',
-	layoutMode : 'fitRows'
-});
+// initialize Isotope after all images have loaded  
+var $container = $('#portfolio-list').imagesLoaded( function() {
+  $container.isotope({
+    itemSelector : '.block',
+  layoutMode : 'fitRows'
+  });
 });
 
 // filter items when filter link is clicked
@@ -35,3 +33,4 @@ $('#portfolio-filter a').click(function(){
 	return false;
 });
 });
+

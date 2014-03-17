@@ -35,7 +35,7 @@
                       </div>          
                 <div class="project-entry col-lg-6">
                     
-                    <?php the_content(__($more_link, 'responsive')); ?>
+                    <?php the_content(); ?>
                     
                     <?php if ( get_the_author_meta('description') != '' ) : ?>
                     

@@ -7,7 +7,7 @@
  * @package        WordPress 
  * @subpackage     responsive 
  * @author         Brad Williams 
- * @copyright      2013 Brag Interactive
+ * @copyright      2014 Brag Interactive
  * @license        license.txt
  * @version        Release: 3.0.0
  * @filesource     wp-content/themes/responsive/includes/hooks.php

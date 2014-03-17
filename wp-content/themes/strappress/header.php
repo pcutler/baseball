@@ -6,7 +6,7 @@
  * @file           header.php
  * @package        StrapPress 
  * @author         Brad Williams 
- * @copyright      2011 - 2013 Brag Interactive
+ * @copyright      2011 - 2014 Brag Interactive
  * @license        license.txt
  * @version        Release: 3.0.0
  * @link           http://codex.wordpress.org/Theme_Development#Document_Head_.28header.php.29
@@ -32,11 +32,12 @@
 <link rel="profile" href="http://gmpg.org/xfn/11" />
 <link rel="pingback" href="<?php bloginfo('pingback_url'); ?>" />
 
-<!--[if IE 7]>
-  <link rel="stylesheet" href="<?php get_template_directory_uri();?>/css/font-awesome-ie7.min.css">
-<![endif]-->
-
 <?php wp_head(); ?> 
+
+<!-- Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="<?php bloginfo('template_url'); ?>/js/respond.min.js"></script>
+<![endif]-->
 
 </head>
 
@@ -87,7 +88,11 @@
                     'walker'     => new Bootstrap_Walker_Nav_Menu()
                 );
 
-                wp_nav_menu($args);
+               
+
+                if (has_nav_menu('top-bar')) {
+                       wp_nav_menu($args);
+                    }
 
             ?>
 

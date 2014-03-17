@@ -17,7 +17,7 @@ if ( !function_exists('bi_display_social') ) {
 	function bi_display_social() {
 		
 		$bi_social_links = bi_social_links();
-		$social_style = ( bi_get_data('social_style') !== 'one' ) ? NULL : '-sign';
+		$social_style = ( bi_get_data('social_style') !== 'one' ) ? NULL : '-square';
 		
 		if ( !$bi_social_links ) return;
 		
@@ -28,7 +28,7 @@ if ( !function_exists('bi_display_social') ) {
 					if ( bi_get_data($social_link) ) {
 					
 						$output .= '<a href="'. bi_get_data($social_link) .'" title="'. $social_link .'" target="_blank">
-						<i class="icon-'.$social_link.''.$social_style.'"></i></a>';
+						<i class="fa fa-'.$social_link.''.$social_style.'"></i></a>';
 					
 					}
 					
