@@ -2,8 +2,8 @@
 Contributors: danlester
 Tags: drive, google, document, google apps, google drive, sso, single-sign-on, auth, intranet, embed
 Requires at least: 3.3
-Tested up to: 3.8
-Stable tag: 1.3
+Tested up to: 3.9
+Stable tag: 1.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -17,7 +17,7 @@ Documents can be embedded in-line, using Google's read-only interactive viewer f
 
 You will need to set document sharing settings to ensure your website viewers have access to view your documents (e.g. at least 'anyone with the link can view' to be visible to all visitors).
 
-**This plugin requires that you also install the free (or premium) version of the popular [Google Apps Login](http://wordpress.org/plugins/google-apps-login/) plugin**
+**This plugin requires that you also install the free (or premium) version of the popular [Google Apps Login](http://wp-glogin.com/wpgoogleappslogin) plugin**
 
 Now with search functionality to find the Drive files you want!
 
@@ -44,7 +44,7 @@ obtain two simple codes from Google.
 
 = Google Apps Login =
 
-The [Google Apps Login](http://wordpress.org/plugins/google-apps-login/) plugin (which you must also install) 
+The [Google Apps Login](http://wp-glogin.com/wpgoogleappslogin) plugin (which you must also install) 
 allows existing Wordpress user accounts to login to the website 
 using Google to securely authenticate their account. This means that if they are already logged into Gmail for example,
 they can simply click their way through the Wordpress login screen - no username or password is explicitly required!
@@ -54,7 +54,7 @@ Full support and premium features are also available for purchase:
 Eliminate the need for Google Apps domain admins to  separately manage WordPress user accounts, and get piece 
 of mind that only authorized employees have access to the organizations's websites and intranet.
 
-**See [http://wp-glogin.com/](http://wp-glogin.com/)**
+**See [http://wp-glogin.com/](http://wp-glogin.com/?utm_source=Drive%20Readme&utm_medium=freemium&utm_campaign=Freemium)**
 
 
 == Screenshots ==
@@ -86,6 +86,20 @@ style. You should also see a checkbox for 'Plain style' which will give you the 
 The 'Embed document' option is still the same, but now supports extra formats for which embed was disabled in older versions of the 
 plugin.
 
+= I embed a (non-Google) document, but I just see some HTML in the published post =
+
+Specifically, you see something starting:
+
+&lt;!DOCTYPE html&gt;  
+&lt;html...  
+&lt;head...  
+
+Most likely, you need to increase sharing settings for the file. In your Google Drive, find the file and click 
+'Share'. Click 'Change', and then on 'Anyone with the link can view'. Click 'Done'.
+
+If you reload your published page or post in WordPress, it should now display properly, or at least give a message
+saying that the document type is unsupported. Please get in touch if not!
+
 = How is this different to the plugin Google Doc Embedder? =
 
 Google Doc Embedder only allows you to embed other files such as PDF, Word etc in your site. It has nothing much to do 
@@ -105,7 +119,7 @@ plugin page, but we recommend sending us an email instead if possible.
 
 This Google Drive plugin extends the Google Apps Login plugin, making use of that plugin's settings rather than 
 insisting that you register a new whole new application with Google for each plugin separately. For those of your users 
-who choosing to Login via Google to connect to your WordPress site, they only need to authenticate once to be able to browse 
+who choose to Login via Google to connect to your WordPress site, they only need to authenticate once to be able to browse 
 their Google Drive through the Google Drive plugin, rather than having to click a second time to allow Drive access.
 
 Because of this, the Google Drive plugin itself requires no configuration at all - it is delegated to Google Apps Login.
@@ -163,6 +177,10 @@ or upload the ZIP file directly in the Plugins section of your Wordpress admin
 1. Follow the instructions to configure the Google Apps Login plugin post-installation
 
 == Changelog ==
+
+= 1.4 =
+
+Layout changes ready for WordPress 3.9 release
 
 = 1.3 =
 
