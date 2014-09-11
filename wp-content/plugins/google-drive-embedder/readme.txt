@@ -2,8 +2,8 @@
 Contributors: danlester
 Tags: drive, google, document, google apps, google drive, sso, single-sign-on, auth, intranet, embed
 Requires at least: 3.3
-Tested up to: 3.9
-Stable tag: 2.0
+Tested up to: 4.0
+Stable tag: 2.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -34,6 +34,8 @@ Works on all WordPress installations including multisite networks.
 
 You can also purchase the premium version of the plugin for some important extra features:
 
+* Google Calendars: pick from your Google Calendars and provide download links to ICAL or XML, or embed them directly in your site.
+* Google Docs export: provide links to downloadable versions of Google Docs, e.g. Spreadsheets exported as PDF or Excel.
 * Embed Folders: simply keep your Google Drive folder up-to-date with your files, and your staff or website visitors will always be able to view a list of the latest documents.
 * Embed Images: serve them directly from Google Drive, respecting your Google sharing settings.
 * Support and updates for one year.
@@ -62,7 +64,7 @@ they can simply click their way through the Wordpress login screen - no username
 
 Full support and premium features are also available for purchase:
 
-Eliminate the need for Google Apps domain admins to  separately manage WordPress user accounts, and get piece 
+Eliminate the need for Google Apps domain admins to  separately manage WordPress user accounts, and get peace 
 of mind that only authorized employees have access to the organizations's websites and intranet.
 
 **See [http://wp-glogin.com/](http://wp-glogin.com/?utm_source=Drive%20Readme&utm_medium=freemium&utm_campaign=Freemium)**
@@ -76,6 +78,21 @@ of mind that only authorized employees have access to the organizations's websit
 4. ...or links to open editable documents in a new tab
 
 == Frequently Asked Questions ==
+
+= How can I obtain support for this product? =
+
+Full support is available if you purchase the premium license from the author via:
+[https://wp-glogin.com/drive/](https://wp-glogin.com/drive/?utm_source=Drive%20Readme%20Premium&utm_medium=freemium&utm_campaign=Freemium)
+
+The premium plugin also supports more file types (such as embedded Videos and Drive Folders) and allows you to 
+browse your Google Calendars to embed in your posts/pages.
+
+Please feel free to email [support@wp-glogin.com](mailto:support@wp-glogin.com) with any questions (specifying Drive in the subject),
+as we may be able to help, but you may be required to purchase a support license if the problem
+is specific to your installation or requirements.
+
+We may occasionally be able to respond to support queries posted on the 'Support' forum here on the wordpress.org
+plugin page, but we recommend sending us an email instead if possible.
 
 = Why is the option for Viewer / Download / Embed disabled for some files? =
 
@@ -117,8 +134,23 @@ Specifically, you see something starting:
 Most likely, you need to increase sharing settings for the file. In your Google Drive, find the file and click 
 'Share'. Click 'Change', and then on 'Anyone with the link can view'. Click 'Done'.
 
+You also need to make sure you have not chosen to 'Prevent viewers from downloading'. To check this, find the file in 
+your Google Drive list, and see if 'Allow viewers to download' is available from the right-click menu. If so, click it 
+to turn it off!
+
 If you reload your published page or post in WordPress, it should now display properly, or at least give a message
 saying that the document type is unsupported. Please get in touch if not!
+
+= In the Add Google File dialog box, I just get the Google Error "Forbidden". Even though I promise I followed the instructions, including enabling Drive API! =
+
+Google Apps' user and permissions systems are complex, and there are many ways you could forbid your users from using the Drive API.
+
+You could have disabled API access completely, so take a look in your GA admin panel and look for anything obvious.
+
+One reason a lot have people have seen 'forbidden' in the past is because they have the following setting unchecked: 
+go to Google Apps -> Drive, and then General Settings -> Allow users to install Google Drive apps.
+
+After changing settings, you should logout of WordPress and Google, then refresh and try all over again.
 
 = How is this different to the plugin Google Doc Embedder? =
 
@@ -126,16 +158,6 @@ Google Doc Embedder only allows you to embed other files such as PDF, Word etc i
 with Google, other than the fact it uses an online Google service to render documents.
 By contrast, our plugin (Google Drive Embedder) allows you to browse your Google Drive files and easily 
 embed those directly into your site - both native Google formats and other file types PDF, Word, ZIP etc.
-
-= How can I obtain support for this product? =
-
-Please email [contact@wp-glogin.com](mailto:contact@wp-glogin.com) with any questions,
-and we will try to help. Specify 'Google Drive Embed' in the subject. 
-
-You may be required to purchase a premium support license to obtain assistance.
-
-We may occasionally be able to respond to support queries posted on the 'Support' forum here on the wordpress.org
-plugin page, but we recommend sending us an email instead if possible.
 
 = Why do I also need to install the Google Apps Login plugin? =
 
@@ -200,7 +222,91 @@ or upload the ZIP file directly in the Plugins section of your Wordpress admin
 or upload the ZIP file directly in the Plugins section of your Wordpress admin
 1. Follow the instructions to configure the Google Apps Login plugin post-installation
 
+== Shortcodes ==
+
+Attribute options for [google-drive-embed ...] shortcode
+
+**Important: please note that you cannot normally switch the style attributes around while keeping the url the same.
+Most often, Google will require a different URL for the new link type, which can be obtained by opening the Drive Embedder dialog
+box again.**
+
+= url (required) =
+
+The url pointing to the Drive file or resource. Note that most Google Drive files will required a different URL 
+depending on the style and other factors below.
+
+= style (defaults to 'normal') =
+
+Values: normal | download | embed
+
+= newwindow (defaults to 'no') =
+
+Values: yes | no
+
+Only relevant when style='normal'
+
+= width/height =
+
+Dimensions of the iframe to be ebedded.
+Only relevant when style='embed'.
+Specified in pixels or as a percentage, e.g. '400' or '100%'.
+
+= plain (defaults to 'no') =
+
+Values: yes | no
+
+When set to 'yes', will NOT display the icon specified in "icon" below.
+Only relevant when style='normal' or 'download'.
+
+= icon =
+
+URL to an icon file to display next to the link.
+Only relevant when style='normal' or 'download'; and when plain not set to "yes".
+
+= extra =
+
+Values: folder | image | calendar
+
+Used by the premium plugin only for these special file types.
+
+= title =
+
+Text to display within the link to a 'normal' or 'download' file.
+
+
+= CSS =
+
+You can use custom CSS styles to affect some of the final results.
+
+Example html code for style='download' or 'normal':
+
+&lt;p&gt;&lt;span class="gdm-drivefile-embed"&gt;&lt;img src="$icon" width="16" height="16" /&gt; &lt;a href="$url"&gt;$title&lt;/a&gt;&lt;/span&gt;&lt;/p&gt;
+
+Example html code for style='download' or 'normal', when plain='yes':
+
+&lt;a href="$url"&gt;$title&lt;/a&gt;
+
+Example html code for style='embed':
+
+&lt;iframe width='$width' height='$height' frameborder='0' scrolling='no' src='$url'&gt;&lt;/iframe&gt;
+
+
+Please get in touch if you would like to make suggestions for further CSS configurability - email contact@wp-glogin.com.
+
+
 == Changelog ==
+
+= 2.3 =
+
+Provides information about Google forms availability
+
+= 2.2 =
+
+Instructions for video embed
+
+= 2.1 =
+
+Clearer error messages
 
 = 2.0 =
 

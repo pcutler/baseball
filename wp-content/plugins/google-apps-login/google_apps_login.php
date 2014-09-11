@@ -4,7 +4,7 @@
  * Plugin Name: Google Apps Login
  * Plugin URI: http://wp-glogin.com/
  * Description: Simple secure login for Wordpress through users' Google Apps accounts (uses secure OAuth2, and MFA if enabled)
- * Version: 2.3
+ * Version: 2.5.2
  * Author: Dan Lester
  * Author URI: http://wp-glogin.com/
  * License: GPL3
@@ -17,7 +17,7 @@ require_once( plugin_dir_path(__FILE__).'/core/core_google_apps_login.php' );
 
 class basic_google_apps_login extends core_google_apps_login {
 	
-	protected $PLUGIN_VERSION = '2.3';
+	protected $PLUGIN_VERSION = '2.5.2';
 	
 	// Singleton
 	private static $instance = null;
@@ -38,7 +38,7 @@ class basic_google_apps_login extends core_google_apps_login {
 		if (!$old_options) {
 			$new_options = $this->get_option_galogin();
 			$new_option['ga_poweredby'] = true;
-			update_site_option($this->get_options_name(), $new_option);
+			$this->save_option_galogin($new_option);
 		}
 	}
 		
@@ -53,25 +53,49 @@ class basic_google_apps_login extends core_google_apps_login {
 	protected function ga_options_do_sidebar() {
 		$drivelink = "http://wp-glogin.com/drive/?utm_source=Admin%20Sidebar&utm_medium=freemium&utm_campaign=Drive";
 		$upgradelink = "http://wp-glogin.com/google-apps-login-premium/?utm_source=Admin%20Sidebar&utm_medium=freemium&utm_campaign=Freemium";
-	?>
-		<div id="gal-tableright" class="gal-tablecell">
+		$avatarslink = "http://wp-glogin.com/avatars/?utm_source=Admin%20Sidebar&utm_medium=freemium&utm_campaign=Avatars";
+		$aioilink = "http://wp-glogin.com/all-in-one-intranet/?utm_source=Admin%20Sidebar&utm_medium=freemium&utm_campaign=AIOI";
+		
+		$adverts = Array();
+		
+		$adverts[] = '<div>'
+		.'<a href="'.$upgradelink.'" target="_blank">'
+		.'<img src="'.$this->my_plugin_url().'img/basic_loginupgrade.png" />'
+		.'</a>'
+		.'<span>Buy our <a href="'.$upgradelink.'" target="_blank">premium Login plugin</a> to revolutionize user management</span>'
+		.'</div>';
+		
+		$adverts[] = '<div>'
+		.'<a href="'.$drivelink.'" target="_blank">'
+		.'<img src="'.$this->my_plugin_url().'img/basic_driveplugin.png" />'
+		.'</a>'
+		.'<span>Try our <a href="'.$drivelink.'" target="_blank">Google Drive Embedder</a> plugin</span>'
+		.'</div>';
 
-			<div>
-				<a href="<?php echo $upgradelink; ?>" target="_blank">
-				<img src="<?php echo $this->my_plugin_url(); ?>img/basic_loginupgrade.png" />
-				</a>
-				<span>Buy our <a href="<?php echo $upgradelink; ?>" target="_blank">premium Login plugin</a> to revolutionize user management</span>
-			</div>
-			
-			<div>
-				<a href="<?php echo $drivelink; ?>" target="_blank">
-				<img src="<?php echo $this->my_plugin_url(); ?>img/basic_driveplugin.png" />
-				</a>
-				<span>Try our <a href="<?php echo $drivelink; ?>" target="_blank">Google Drive Embedder</a> plugin</span>
-			</div>
-			
-		</div>
-	<?php
+		$adverts[] = '<div>'
+		.'<a href="'.$avatarslink.'" target="_blank">'
+		.'<img src="'.$this->my_plugin_url().'img/basic_avatars.png" />'
+		.'</a>'
+		.'<span>Bring your site to life with <a href="'.$avatarslink.'" target="_blank">Google Profile Avatars</a></span>'
+		.'</div>';
+
+		$adverts[] = '<div>'
+		.'<a href="'.$aioilink.'" target="_blank">'
+		.'<img src="'.$this->my_plugin_url().'img/basic_aioi.png" />'
+		.'</a>'
+		.'<span>Instantly turn WordPress into a corporate intranet with <a href="'.$aioilink.'" target="_blank">All-In-One Intranet</a></span>'
+		.'</div>';
+		
+		$startnum = (int)date('j');
+		
+		echo '<div id="gal-tableright" class="gal-tablecell">';
+		
+		for ($i=0 ; $i<2 ; $i++) {
+			echo $adverts[($startnum+$i) % 4];
+		}
+		
+		echo '</div>';
+		
 	}
 	
 	protected function ga_domainsection_text() {
@@ -131,7 +155,7 @@ class basic_google_apps_login extends core_google_apps_login {
 		echo '<div class="updated"><p>';
 		echo sprintf( __('Completely forget about WordPress user management - upgrade to <a href="%s">Google Apps Login premium</a> to automatically sync users from your Google Apps domain', 'google-apps-login'),
 				$purchase_url );
-		echo ' &nbsp; <a href="'.$purchase_url.'" class="button-secondary">' . __( 'Purchase', 'google-apps-login' ) . '</a>';
+		echo ' &nbsp; <a href="'.$purchase_url.'" class="button-secondary">' . __( 'Find out more', 'google-apps-login' ) . '</a>';
 		echo '&nbsp;<a href="' . esc_url( $nothanks_url ) . '" class="button-secondary">' . __( 'No Thanks', 'google-apps-login' ) . '</a>';
 		echo '</p></div>';
 	}

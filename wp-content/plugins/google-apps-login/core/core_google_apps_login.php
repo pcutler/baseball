@@ -32,37 +32,47 @@ class core_google_apps_login {
 		return $this->newcookievalue;
 	}
 	
+	private $doneIncludePath = false;
+	private function setIncludePath() {
+		if (!$this->doneIncludePath) {
+			set_include_path(get_include_path() . PATH_SEPARATOR . plugin_dir_path(__FILE__));
+			$this->doneIncludePath = true;
+		}
+	}
+	
 	protected function createGoogleClient($options, $includeoauth=false) {
 		// Another plugin might have already included these files
 		// Unfortunately we just have to hope they have a similar enough version
 		
-		set_include_path(get_include_path() . PATH_SEPARATOR . plugin_dir_path(__FILE__));
+		$this->setIncludePath();
 		
-		if (!class_exists('Google_Client')) {
-			require_once( 'Google/Client.php' );
-		}
+		// Google PHP Client obtained from https://github.com/google/google-api-php-client
+		// Using modified Google Client to avoid name clashes - rename process:
+		// find . -type f -exec sed -i '' -e 's/Google_/GoogleGAL_/g' {} +
 		
-		$client = new Google_Client();
-		$client->setApplicationName("Wordpress Blog");
-		
+		$client = $this->get_Google_Client();
+				
 		$client->setClientId($options['ga_clientid']);
 		$client->setClientSecret($options['ga_clientsecret']);
 		$client->setRedirectUri($this->get_login_url());
-				
-		$scopes = array_unique(apply_filters('gal_gather_scopes',
-				Array('openid', 'email', 'https://www.googleapis.com/auth/userinfo.profile')));
+		
+		$scopes = array_unique(apply_filters('gal_gather_scopes', $this->get_default_scopes()));
 		$client->setScopes($scopes);
 		$client->setApprovalPrompt($options['ga_force_permissions'] ? 'force' : 'auto');
 		
 		$oauthservice = null;
 		if ($includeoauth) {
-			if (!class_exists('Google_Service_Oauth2')) {
+			if (!class_exists('GoogleGAL_Service_Oauth2')) {
 				require_once( 'Google/Service/Oauth2.php' );
 			}
-			$oauthservice = new Google_Service_Oauth2($client);
+			$oauthservice = new GoogleGAL_Service_Oauth2($client);
 		}
-		
+				
 		return Array($client, $oauthservice);
+	}
+	
+	protected function get_default_scopes() {
+		return Array('openid', 'email', 'https://www.googleapis.com/auth/userinfo.profile');
 	}
 	
 	public function ga_login_styles() {
@@ -107,6 +117,26 @@ class core_google_apps_login {
 			    text-align: right;
 	        }
 	        
+	        p.galogin-logout {
+	          	background-color: #FFFFFF;
+    			border: 4px solid #CCCCCC;
+    			box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+    			padding: 12px;
+    			margin: 12px 0px;
+	        }
+	        
+	        <?php if ($this->should_hidewplogin($options)) { ?>
+	        
+	        div#login form#loginform p label[for=user_login], 
+	        div#login form#loginform p label[for=user_pass],
+	        div#login form#loginform p label[for=rememberme],
+	        div#login form#loginform p.submit,
+	        div#login p#nav {
+	        	display: none;
+	        } 
+	         
+	        <?php } ?>
+	        
 	     </style>
 	<?php }
 	
@@ -147,7 +177,7 @@ class core_google_apps_login {
 				$do_autologin = true;
 			}
 		}
-
+		
 		if ($do_autologin && $options['ga_clientid'] != '' && $options['ga_clientsecret'] != '') {
 			if (!headers_sent()) {
 				wp_redirect($authUrl);
@@ -164,7 +194,7 @@ class core_google_apps_login {
 		
 ?>
 		<p class="galogin"> 
-			<a href="<?php echo $authUrl; ?>"><?php _e( 'Login with Google' , 'google-apps-login'); ?></a>
+			<a href="<?php echo $authUrl; ?>"><?php echo esc_html($this->get_login_button_text()); ?></a>
 		</p>
 		
 		<?php if ($options['ga_poweredby']) { ?>
@@ -173,6 +203,8 @@ class core_google_apps_login {
 		
 		<script>
 		jQuery(document).ready(function(){
+			<?php ob_start(); /* Buffer javascript contents so we can run it through a filter */ ?>
+			
 	        var loginform = jQuery('#loginform,#front-login-form');
 	        var googlelink = jQuery('p.galogin');
 	        var poweredby = jQuery('p.galogin-powered');
@@ -189,9 +221,18 @@ class core_google_apps_login {
 	        	loginform.prepend(poweredby);
 	        }
 	        loginform.prepend(googlelink);
+
+	        <?php 
+	        	$fntxt = ob_get_clean(); 
+	        	echo apply_filters('gal_login_form_readyjs', $fntxt);
+			?>
 		});
 		</script>
 <?php 	
+	}
+	
+	protected function get_login_button_text() {
+		return __( 'Login with Google' , 'google-apps-login');
 	}
 	
 	protected function should_hidewplogin($options) {
@@ -230,9 +271,6 @@ class core_google_apps_login {
 		}
 		
 		$options = $this->get_option_galogin();
-		$clients = $this->createGoogleClient($options, true);
-		$client = $clients[0]; 
-		$oauthservice = $clients[1];
 		
 		if (isset($_GET['code'])) {
 			if (!isset($_REQUEST['state'])) {
@@ -254,6 +292,10 @@ class core_google_apps_login {
 			}
 
 			try {
+				$clients = $this->createGoogleClient($options, true);
+				$client = $clients[0];
+				$oauthservice = $clients[1];
+				
 				$client->authenticate($_GET['code']);
 							
 				/*  userinfo example:
@@ -283,21 +325,28 @@ class core_google_apps_login {
 					else {
 						$user = get_user_by('email', $google_email);
 						
+						$userdidnotexist = false;
 						if (!$user) {
+							$userdidnotexist = true;
 							$user = $this->createUserOrError($userinfo, $options);
 						}
 						
 						if ($user && !is_wp_error($user)) {
+							// In some versions, check group membership
+							$this->check_groups($client, $userinfo, $user, $userdidnotexist);
+
 							// Set redirect for wp-login to receive via our own login_redirect callback
 							$this->setFinalRedirect($retredirectto);
-							// Would reset client-side login cookie but won't work on redirect
+							
+							// Call hook in case another plugin wants to use the user's data
+							do_action('gal_user_loggedin', $user, $userinfo, $userdidnotexist, $client, $oauthservice);
 						}
 					}
 				}
 				else {
 					$user = new WP_Error('ga_login_error', __( "User authenticated OK, but error fetching user details from Google" , 'google-apps-login') );
 				}
-			} catch (Google_Exception $e) {
+			} catch (GoogleGAL_Exception $e) {
 				$user = new WP_Error('ga_login_error', $e->getMessage());
 			}
 		}
@@ -324,6 +373,10 @@ class core_google_apps_login {
 	
 	// Has content in Premium
 	protected function checkRegularWPError($user, $username, $password) {
+	}
+	
+	// Has content in Enterprise
+	protected function check_groups($client, $userinfo, $user, $userdidnotexist) {
 	}
 		
 	protected function displayAndReturnError($user) {
@@ -419,6 +472,26 @@ class core_google_apps_login {
 		else {
 			$this->set_other_admin_notices();
 		}
+		
+		add_action('show_user_profile', Array($this, 'ga_personal_options'));
+	}
+	
+	public function ga_personal_options($wp_user) {
+		if (is_object($wp_user)) {
+		// Display avatar in profile
+		$purchase_url = 'http://wp-glogin.com/avatars/?utm_source=Profile%20Page&utm_medium=freemium&utm_campaign=Avatars';
+		$source_text = 'Install <a href="'.$purchase_url.'">Google Profile Avatars</a> to use your Google account\'s profile photo here automatically.';
+		?>
+		<table class="form-table">
+			<tbody><tr>
+				<th>Profile Photo</th>
+				<td><?php echo get_avatar($wp_user->ID, '48'); ?></td>
+				<td><?php echo apply_filters('gal_avatar_source_desc', $source_text, $wp_user); ?></td>
+			</tr>
+			</tbody>
+		</table>
+		<?php
+		}
 	}
 	
 	// Has content in Basic
@@ -439,7 +512,10 @@ class core_google_apps_login {
 	}
 	
 	public function ga_options_do_page() {
-
+		if (!current_user_can(is_multisite() ? 'manage_network_options' : 'manage_options')) {
+			wp_die();
+		}
+		
 		wp_enqueue_script( 'gal_admin_js', $this->my_plugin_url().'js/gal-admin.js', array('jquery') );
 		wp_enqueue_style( 'gal_admin_css', $this->my_plugin_url().'css/gal-admin.css' );
 
@@ -472,16 +548,18 @@ class core_google_apps_login {
 			<a href="#main" id="main-tab" class="nav-tab nav-tab-active">Main Setup</a>
 			<a href="#domain" id="domain-tab" class="nav-tab">Domain Control</a>
 			<a href="#advanced" id="advanced-tab" class="nav-tab">Advanced Options</a>
+			<?php $this->draw_more_tabs(); ?>
 		</h2>
 				
 		
-		<form action="<?php echo $submit_page; ?>" method="post">
+		<form action="<?php echo $submit_page; ?>" method="post" id="gal_form" enctype="multipart/form-data" >
 		
 		<?php 
 		settings_fields($this->get_options_pagename());
 		$this->ga_mainsection_text();
 		$this->ga_domainsection_text();
 		$this->ga_advancedsection_text();
+		$this->ga_moresection_text();
 		?>
 		
 		<p class="submit">
@@ -495,6 +573,14 @@ class core_google_apps_login {
 		</div>
 		
 		</div>  <?php
+	}
+	
+	// Extended in premium
+	protected function draw_more_tabs() {
+	}
+	
+	// Extended in premium
+	protected function ga_moresection_text() {
 	}
 	
 	// Has content in Basic
@@ -537,20 +623,128 @@ class core_google_apps_login {
 			 'google-apps-login'), $this->calculate_instructions_url()."#config" );
 		echo '</p>';
 		
-		$options = $this->get_option_galogin();
+		$options = $this->get_option_galogin(); // Must be in this order to invoke upgrade code
+		$saoptions = $this->get_sa_option();
+		
 		echo '<label for="input_ga_clientid" class="textinput big">'.__('Client ID', 'google-apps-login').'</label>';
-		echo "<input id='input_ga_clientid' class='textinput' name='".$this->get_options_name()."[ga_clientid]' size='68' type='text' value='{$options['ga_clientid']}' />";
+		echo "<input id='input_ga_clientid' class='textinput' name='".$this->get_options_name()."[ga_clientid]' size='68' type='text' value='".esc_attr($options['ga_clientid'])."' />";
 		echo '<br class="clear"/><p class="desc big">';
 		printf( __('Normally something like %s', 'google-apps-login'), '1234567890123-w1dwn5pfgjeo96c73821dfbof6n4kdhw.apps.googleusercontent.com' );
 		echo '</p>';
 		
 		echo '<label for="input_ga_clientsecret" class="textinput big">'.__('Client Secret', 'google-apps-login').'</label>';
-		echo "<input id='input_ga_clientsecret' class='textinput' name='".$this->get_options_name()."[ga_clientsecret]' size='40' type='text' value='{$options['ga_clientsecret']}' />";
+		echo "<input id='input_ga_clientsecret' class='textinput' name='".$this->get_options_name()."[ga_clientsecret]' size='40' type='text' value='".esc_attr($options['ga_clientsecret'])."' />";
 		echo '<br class="clear" /><p class="desc big">';
 		printf( __('Normally something like %s', 'google-apps-login'), 'sHSfR4_jf_2jsy-kjPjgf2dT' );
 		echo '</p>';
 		
+		$serviceacct_plugins = apply_filters('gal_gather_serviceacct_reqs', array());
+		
+		echo '<h3>Service Account settings</h3>';
+		
+		if (count($serviceacct_plugins) == 0) {
+			?>			
+			<p>Some Google Apps extensions may require you to set up a Service Account. If you Activate those extension plugins then
+			come back to this page, you will see further instructions, including the 'permission scopes' those extensions require. 
+			However, if you know you need to set up a Service Account in advance, you can click below to reveal the settings.</p>
+			
+			<p><a href="#" id="gal-show-admin-serviceacct">Show Service Account settings</a></p>
+			
+			<span id="gal-hide-admin-serviceacct" style="display: none;">
+			
+		<?php } ?>
+		
+		<p>In order for all users to have permissions to access domain-level information from Google, you will need to create
+		a Service Account. Please see our 
+		<a href="https://wp-glogin.com/installing-google-apps-login/service-account-setup/?utm_source=ServiceAccount&utm_medium=freemium&utm_campaign=Login" target="_blank">extended instructions here</a>.</p>
+		
+		<?php 
+		if (count($serviceacct_plugins) > 0) {
+			$this->ga_show_service_account_reqs($serviceacct_plugins);
+		}
+		
+		echo '<br class="clear">';
+		if ($saoptions['ga_serviceemail'] != '') {
+			// Display service email
+			echo '<label for="input_ga_serviceemail" class="textinput">'.__('Service Account email address', 'google-apps-login').'</label>';
+			echo "<div class='gal-lowerinput'>";
+			echo "<span id='input_ga_serviceemail'>".htmlentities($saoptions['ga_serviceemail'])."</span>";
+			echo '</div>';
+			echo '<br class="clear">';
+			if ($saoptions['ga_pkey_print'] != '') {
+				// Display finger print of key
+				echo '<label for="input_ga_pkey_print" class="textinput">'.__('Private key fingerprint', 'google-apps-login').'</label>';
+				echo "<div class='gal-lowerinput'>";
+				echo "<span id='input_ga_pkey_print'>".htmlentities($saoptions['ga_pkey_print'])."</span>";
+				echo '</div>';
+				echo '<br class="clear">';
+			}
+		}
+		
+		echo '<label for="input_ga_keyfileupload" class="textinput gal_jsonkeyfile">'.__('Upload Service Account JSON file', 'google-apps-login').'</label>';
+		echo '<label for="input_ga_keyjson" class="textinput gal_jsonkeytext" style="display: none;">'.__('Paste contents of JSON file', 'google-apps-login').'</label>';
+		
+		echo "<div class='gal-lowerinput'>";
+		echo "<input type='hidden' name='MAX_FILE_SIZE' value='10240' />";
+		echo "<input type='file' name='ga_keyfileupload' id='input_ga_keyfileupload' class='gal_jsonkeyfile'/>";
+		echo "<a href='#' class='gal_jsonkeyfile'>Problem uploading file?</a>";
+		echo "<textarea name='".$this->get_options_name()."[ga_keyjson]' id='input_ga_keyjson' class='gal_jsonkeytext' style='display: none;'></textarea>";
+		echo "<a href='#' class='gal_jsonkeytext' style='display: none;'>Prefer the file upload?</a>";
 		echo '</div>';
+		echo '<br class="clear">';
+		
+		echo '<label for="input_ga_domainadmin" class="textinput">'.__('A Google Apps Domain admin\'s email', 'google-apps-login').'</label>';
+		echo "<input id='input_ga_domainadmin' name='".$this->get_options_name()."[ga_domainadmin]' size='40' type='text' value='".esc_attr($options['ga_domainadmin'])."' class='textinput' />";
+		echo '<br class="clear">';
+		
+		if (count($serviceacct_plugins) == 0) {
+			echo '</span>';
+		}
+		
+		echo '</div>';
+	}
+	
+	protected function ga_show_service_account_reqs($serviceacct_plugins) {
+		$all_scopes = array();
+		?>
+		<p>A Service Account will be required for the following extensions, and they need the permission scopes listed:
+			<table class="gal-admin-service-scopes">
+				<thead>
+					<tr>
+						<td>Extension Name</td>
+						<td>Scopes Requested</td>
+						<td>Reason</td>
+					</tr>
+				</thead>
+				<tbody>
+		<?php
+		foreach ($serviceacct_plugins as $plg) {
+			if (is_array($plg) && count($plg) == 2) {
+				$i = 0;
+				foreach ($plg[1] as $k => $v) {
+					echo '<tr>';
+					if ($i==0) {
+						echo '<td rowspan="'.count($plg[1]).'">'.htmlentities($plg[0]).'</td>';
+					}
+					echo '<td>'.htmlentities($k).'</td>';
+					echo '<td>'.htmlentities($v).'</td>';
+					echo '</tr>';
+					$all_scopes[] = $k;
+					++$i;
+				}
+			}
+		}
+		?>
+				</tbody>
+			</table>
+		</p>
+		
+		<p>Here is a comma-separated list of scopes to copy and paste into your Google Apps admin security page (see instructions).
+		<br />
+		<div class="gal-admin-scopes-list"><?php echo htmlentities(implode(', ',array_unique($all_scopes))); ?></div>
+		</p>
+		<?php
+		
 	}
 	
 	// Has content in Basic
@@ -592,6 +786,8 @@ class core_google_apps_login {
 		_e( 'Display \'Powered By wp-glogin.com\' on Login form' , 'google-apps-login' );
 		echo '</label>';
 		
+		$this->ga_advancedsection_extra();
+		
 		echo '<br class="clear" />';
 		
 		if (is_multisite()) {
@@ -611,11 +807,15 @@ class core_google_apps_login {
 		
 		echo '</div>';
 	}
+	
+	// Overridden in Commercial
+	protected function ga_advancedsection_extra() {
+	}
 
 	public function ga_options_validate($input) {
 		$newinput = Array();
-		$newinput['ga_clientid'] = trim($input['ga_clientid']);
-		$newinput['ga_clientsecret'] = trim($input['ga_clientsecret']);
+		$newinput['ga_clientid'] = isset($input['ga_clientid']) ? trim($input['ga_clientid']) : '';
+		$newinput['ga_clientsecret'] = isset($input['ga_clientsecret']) ? trim($input['ga_clientsecret']) : '';
 		if(!preg_match('/^.{10}.*$/i', $newinput['ga_clientid'])) {
 			add_settings_error(
 			'ga_clientid',
@@ -636,6 +836,47 @@ class core_google_apps_login {
 		$newinput['ga_force_permissions'] = isset($input['ga_force_permissions']) ? (boolean)$input['ga_force_permissions'] : false;
 		$newinput['ga_auto_login'] = isset($input['ga_auto_login']) ? (boolean)$input['ga_auto_login'] : false;
 		$newinput['ga_poweredby'] = isset($input['ga_poweredby']) ? (boolean)$input['ga_poweredby'] : false;
+		
+		// Service account settings
+		$newinput['ga_domainadmin'] = isset($input['ga_domainadmin']) ? trim($input['ga_domainadmin']) : '';
+		if (!preg_match('/^([A-Za-z0-9._%+-]+@([0-9a-z-]+\.)?[0-9a-z-]+\.[a-z]{2,7})?$/', $newinput['ga_domainadmin'])) {
+			add_settings_error(
+			'ga_domainadmin',
+			'invalid_email',
+			self::get_error_string('ga_domainadmin|invalid_email'),
+			'error'
+					);
+		}
+
+		// Submitting a JSON key for Service Account
+		if (isset($_FILES['ga_keyfileupload']) || (isset($input['ga_keyjson']) && strlen(trim($input['ga_keyjson'])) > 0)) {
+			if (!class_exists('gal_keyfile_uploader')) {
+				$this->setIncludePath();
+				require_once( 'keyfile_uploader.php' );
+			}
+			
+			$saoptions = $this->get_sa_option();
+			
+			$kfu = new gal_keyfile_uploader('ga_keyfileupload', isset($input['ga_keyjson']) ? $input['ga_keyjson'] : '');
+			$newemail = $kfu->getEmail();
+			$newkey = $kfu->getKey();
+			$newprint = $kfu->getPrint();
+			if ($newemail != '' && $newkey != '') {
+				$saoptions['ga_serviceemail'] = $newemail;
+				$saoptions['ga_sakey'] = $newkey;
+				$saoptions['ga_pkey_print'] = $newprint;
+				$this->save_sa_option($saoptions);
+			}
+			else if (($kfuerror = $kfu->getError()) != '') {
+				add_settings_error(
+				'ga_jsonkeyfile',
+				$kfuerror,
+				self::get_error_string('ga_jsonkeyfile|'.$kfuerror),
+				'error'
+				);
+			}
+		}
+		
 		$newinput['ga_version'] = $this->PLUGIN_VERSION;
 		return $newinput;
 	}
@@ -643,7 +884,18 @@ class core_google_apps_login {
 	protected function get_error_string($fielderror) {
 		$local_error_strings = Array(
 				'ga_clientid|tooshort_texterror' => __('The Client ID should be longer than that', 'google-apps-login') ,
-				'ga_clientsecret|tooshort_texterror' => __('The Client Secret should be longer than that', 'google-apps-login') 
+				'ga_clientsecret|tooshort_texterror' => __('The Client Secret should be longer than that', 'google-apps-login'),
+				'ga_serviceemail|invalid_email' => __('Service Account email must be a valid email addresses', 'google-apps-login'),
+				'ga_domainadmin|invalid_email' => __('Google Apps domain admin must be a valid email address of one of your Google Apps admins', 'google-apps-login'),
+				'ga_jsonkeyfile|file_upload_error' => __('Error with file upload on the server', 'google-apps-login'),
+				'ga_jsonkeyfile|file_upload_error2' => __('Error with file upload on the server - file was too large', 'google-apps-login'),
+				'ga_jsonkeyfile|file_upload_error6' => __('Error with file upload on the server - no temp directory exists', 'google-apps-login'),
+				'ga_jsonkeyfile|file_upload_error7' => __('Error with file upload on the server - failed to write to disk', 'google-apps-login'),
+				'ga_jsonkeyfile|no_content' => __('JSON key file was empty'),
+				'ga_jsonkeyfile|decode_error' => __('JSON key file could not be decoded correctly'),
+				'ga_jsonkeyfile|missing_values' => __('JSON key file does not contain all of client_email, private_key, and type'),
+				'ga_jsonkeyfile|not_serviceacct' => __('JSON key file does not represent a Service Account'),
+				'ga_jsonkeyfile|bad_pem' => __('Key cannot be coerced into a PEM key - invalid format in private_key of JSON key file')
 		);
 		if (isset($local_error_strings[$fielderror])) {
 			return $local_error_strings[$fielderror];
@@ -662,7 +914,11 @@ class core_google_apps_login {
 						'ga_ms_usesubsitecallback' => false,
 						'ga_force_permissions' => false,
 						'ga_auto_login' => false,
-						'ga_poweredby' => false);
+						'ga_poweredby' => false,
+						//'ga_serviceemail' => '',
+						//'ga_keyfilepath' => '',
+						'ga_sakey' => '',
+						'ga_domainadmin' => '');
 	}
 	
 	protected $ga_options = null;
@@ -670,9 +926,9 @@ class core_google_apps_login {
 		if ($this->ga_options != null) {
 			return $this->ga_options;
 		}
-	
+			
 		$option = get_site_option($this->get_options_name(), Array());
-	
+		
 		$default_options = $this->get_default_options();
 		foreach ($default_options as $k => $v) {
 			if (!isset($option[$k])) {
@@ -682,6 +938,55 @@ class core_google_apps_login {
 		
 		$this->ga_options = $option;
 		return $this->ga_options;
+	}
+	
+	protected function save_option_galogin($option) {
+		update_site_option($this->get_options_name(), $option);
+		$this->ga_options = $option;
+	}
+	
+	// Options for service account only
+	protected function get_sa_options_name() {
+		return 'ga_serviceacct';
+	}
+	
+	protected $ga_sa_options = null;
+	protected function get_sa_option() {
+		if ($this->ga_sa_options != null) {
+			return $this->ga_sa_options;
+		}
+		
+		$ga_sa_options = get_site_option($this->get_sa_options_name(), Array());
+		
+		// Do we need to convert to separate service account settings, from older version?
+		if (count($ga_sa_options) == 0) {
+			$option = $this->get_option_galogin();
+			if (isset($option['ga_keyfilepath']) || isset($option['ga_serviceemail'])) {
+				$this->setIncludePath();
+				if (!function_exists('gal_service_account_upgrade')) {
+					require_once( 'service_account_upgrade.php' );
+					gal_service_account_upgrade($option, $this->get_options_name(), $ga_sa_options, $this->get_sa_options_name());
+					// options were updated by reference
+					$this->save_option_galogin($option);
+					$this->save_sa_option($ga_sa_options);
+				}
+			}
+		}
+
+		// Set defaults
+		foreach (array('ga_sakey', 'ga_serviceemail', 'ga_pkey_print') as $k) {
+			if (!isset($ga_sa_options[$k])) {
+				$ga_sa_options[$k] = '';
+			}
+		}
+		
+		$this->ga_sa_options = $ga_sa_options;
+		return $this->ga_sa_options;
+	}
+	
+	protected function save_sa_option($saoptions) {
+		update_site_option($this->get_sa_options_name(), $saoptions);
+		$this->ga_sa_options = $saoptions;
 	}
 	
 	public function ga_save_network_options() {
@@ -700,7 +1005,7 @@ class core_google_apps_login {
 				}
 			}
 
-			update_site_option($this->get_options_name(), $outoptions);
+			$this->save_option_galogin($outoptions);
 			
 			// redirect to settings page in network
 			wp_redirect(
@@ -741,6 +1046,43 @@ class core_google_apps_login {
 		return $options['ga_clientid'];
 	}
 	
+	public function get_Auth_AssertionCredentials($scopes) {
+		$options = $this->get_option_galogin();
+		$saoptions = $this->get_sa_option();
+		$this->setIncludePath();
+		if (!class_exists('GoogleGAL_Auth_AssertionCredentials')) {
+			require_once( 'Google/Auth/AssertionCredentials.php' );
+		}
+		
+		if ($saoptions['ga_serviceemail'] == '' || $options['ga_domainadmin'] == '' || $saoptions['ga_sakey'] == '') {
+			throw new GAL_Service_Exception('Please configure Service Account in Google Apps Login setup');
+		}
+		
+		$cred = new GoogleGAL_Auth_AssertionCredentials(
+				// Replace this with the email address from the client.
+				$saoptions['ga_serviceemail'],
+				// Replace this with the scopes you are requesting.
+				$scopes,
+				$saoptions['ga_sakey'],
+				''
+		);
+		$cred->setSignerClass('GoogleGAL_Signer_PEM');
+			
+		$cred->sub = $options['ga_domainadmin'];
+		return $cred;
+	}
+	
+	public function get_Google_Client() {
+		$this->setIncludePath();
+		if (!class_exists('GoogleGAL_Client')) {
+			require_once( 'Google/Client.php' );
+		}
+		
+		$client = new GoogleGAL_Client();
+		$client->setApplicationName("Wordpress Site");
+		return $client;
+	}
+	
 	// PLUGINS PAGE
 	
 	public function ga_plugin_action_links( $links, $file ) {
@@ -760,12 +1102,12 @@ class core_google_apps_login {
 		
 		add_action('login_enqueue_scripts', array($this, 'ga_login_styles'));
 		add_action('login_form', array($this, 'ga_login_form'));
-		add_action('authenticate', array($this, 'ga_authenticate'), 5, 3);
+		add_filter('authenticate', array($this, 'ga_authenticate'), 5, 3);
 		
 		add_filter('login_redirect', array($this, 'ga_login_redirect'), 5, 3 );
 		add_action('init', array($this, 'ga_init'), 1);
 		
-		add_action('admin_init', array($this, 'ga_admin_init'));
+		add_action('admin_init', array($this, 'ga_admin_init'), 5, 0);
 				
 		add_action(is_multisite() ? 'network_admin_menu' : 'admin_menu', array($this, 'ga_admin_menu'));
 		
@@ -780,6 +1122,9 @@ class core_google_apps_login {
 		}
 	}
 	
+}
+
+class GAL_Service_Exception extends Exception {
 }
 
 ?>

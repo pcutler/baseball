@@ -1,9 +1,9 @@
 === Plugin Name ===
 Contributors: danlester
 Tags: login, google, authentication, oauth2, oauth, admin, google apps, sso, single-sign-on, auth, intranet
-Requires at least: 3.3
-Tested up to: 3.9
-Stable tag: 2.3
+Requires at least: 3.5
+Tested up to: 4.0
+Stable tag: 2.5.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -12,8 +12,7 @@ Simple secure login and user management for Wordpress through your Google Apps d
 
 == Description ==
 
-Google Apps Login allows existing Wordpress user accounts to login to your website using Google to securely authenticate their account. This means that if they are already logged into Gmail for example, they can simply click their way
-through the Wordpress login screen - no username or password is explicitly required!
+Google Apps Login allows existing Wordpress user accounts to login to your website using Google to securely authenticate their account. This means that if they are already logged into Gmail for example, they can simply click their way through the Wordpress login screen - no username or password is explicitly required!
 
 Google Apps Login uses the latest **secure OAuth2 authentication recommended by Google**, including 2-factor Auth if enabled for your Google Apps accounts.
 
@@ -23,10 +22,12 @@ Plugin setup requires you to have admin access to any Google Apps domain, or a r
 
 Full support and premium features are also available for purchase:
 
-Eliminate the need for Google Apps domain admins to  separately manage WordPress user accounts, and get piece 
+Eliminate the need for Google Apps domain admins to  separately manage WordPress user accounts, and get peace 
 of mind that only authorized employees have access to the organizations's websites and intranet.
 
-See [http://wp-glogin.com/](http://wp-glogin.com/?utm_source=Login%20Readme%20Top&utm_medium=freemium&utm_campaign=Freemium)
+See [http://wp-glogin.com/google-apps-login-premium/](http://wp-glogin.com/google-apps-login-premium/?utm_source=Login%20Readme%20Top&utm_medium=freemium&utm_campaign=Freemium)
+
+[youtube http://www.youtube.com/watch?v=wz9aN_4WaM8]
 
 = Extensible Platform =
 
@@ -37,8 +38,14 @@ permissions that users already allowed for Google Apps Login itself.
 Using our platform, your website appears to Google accounts as one unified 'web application', making it more secure 
 and easier to manage.
 
-[Google Drive Embedder](http://wp-glogin.com/wpgoogledriveembedder) is our free extension plugin allowing 
+[Google Drive Embedder](http://wp-glogin.com/wpgoogledriveembedder) is a free extension plugin allowing 
 users to browse for Google Drive documents to embed directly in their posts or pages.
+
+[Google Apps Directory](http://wp-glogin.com/wpgoogleappsdirectory) is a free extension plugin allowing 
+logged-in users to search your Google Apps employee directory from a widget on your intranet or client site.
+
+[Google Profile Avatars](http://wp-glogin.com/avatars/?utm_source=Login%20Readme%20Avatars&utm_medium=freemium&utm_campaign=Freemium) 
+is available on our website. It displays users' Google profile photos in place of their avatars throughout your site.
 
 Google Apps Login works on single or multisite WordPress websites or private intranets.
 
@@ -60,6 +67,7 @@ they also use OAuth2. This is discussed further in the [FAQ](http://wordpress.or
 This plugin currently operates in the following languages:
 
 * English - default
+* French (fr_FR) - translated by Lucien Ntumba of [GPC.solutions](http://gpcsolutions.fr/)
 * Serbo-Croatian (sr_RS) - translated by Borisa Djuraskovic of [Web Hosting Hub](http://www.webhostinghub.com/)
 * Arabic (ar_SA) - translated by [Jeremy Varnham](http://profiles.wordpress.org/jvarn13)
 
@@ -70,8 +78,11 @@ Please ask if you need instructions on how to produce those files.
 = Website =
 
 Please see our website [http://wp-glogin.com/](http://wp-glogin.com/?utm_source=Login%20Readme%20Website&utm_medium=freemium&utm_campaign=Freemium) for more information about this free plugin 
-and extra features available in our Premium upgrade, plus support details and useful guides for admins of WordPress 
-sites and Google Apps.
+and extra features available in our Premium upgrade, plus support details, other plugins, and useful guides for admins of  
+WordPress sites and Google Apps.
+
+If you are building your organization's intranet on WordPress, try out our 
+[All-In-One Intranet plugin](http://wp-glogin.com/all-in-one-intranet/?utm_source=Login%20Readme%20AIOI&utm_medium=freemium&utm_campaign=Freemium).
 
 == Screenshots ==
 
@@ -141,6 +152,18 @@ and it is your responsibility to ensure that your site is secure in the way you 
 In particular, other plugins may conflict with each other, and different WordPress versions and configurations
 may render your site insecure.
 
+= Does it conflict with any other plugins? =
+
+Yes, sometimes conflicts can arise. We have built workarounds for some problems, and would always appreciate your feedback 
+to resolve any issues you might encounter yourself.
+
+One known issue is with iThemes Security: the settings 'filter suspicious query strings' and 'filter long URL strings' can 
+both cause intermittent conflicts and should be turned off if you are happy with the implications.
+
+Jonradio Private Site - does not interact well with any Single-Sign-On plugins including Google Apps Login
+
+WP Email Login - incompatible with Google Apps Login
+
 = How does it compare to other 3rd party auth plugins? =
 
 Google Apps Login uses the latest secure OAuth2 authentication recommended by Google. Other 3rd party authentication plugins 
@@ -158,8 +181,9 @@ your emails and other data.
 
 = What are the system requirements? =
 
-*  PHP 5.2.x or higher with Curl and JSON extensions
+*  PHP 5.2.x or higher with JSON extensions
 *  Wordpress 3.3 or above
+*  Should no longer require CURL extension
 
 And you will need a Google account to set up the plugin.
 
@@ -197,6 +221,26 @@ the WordPress admin panel once you have activated the plugin. For a (non-persona
 please [click here](http://wp-glogin.com/installing-google-apps-login/basic-setup/).
 
 == Changelog ==
+
+= 2.5.2 =
+
+Service Account settings can be uploaded by copy-and-paste of JSON file contents as well as just uploading the file directly.
+
+= 2.5 =
+
+Platform extended to provide Service Account settings.
+
+= 2.4.4 =
+
+Readme updates and tidied settings page.
+
+= 2.4.3 =
+
+New hooks for profile photos. Updated Google client library.
+
+= 2.3.1 =
+
+Fixed conflicts with some other plugins such as Google Analyticator which use similar Google client libraries.
 
 = 2.3 =
 

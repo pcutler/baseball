@@ -17,6 +17,7 @@
 
 require_once "Google/Auth/OAuth2.php";
 require_once "Google/Signer/P12.php";
+require_once "Google/Signer/PEM.php";
 require_once "Google/Utils.php";
 
 /**
@@ -24,7 +25,7 @@ require_once "Google/Utils.php";
  *
  * @author Chirag Shah <chirags@google.com>
  */
-class Google_Auth_AssertionCredentials
+class GoogleGAL_Auth_AssertionCredentials
 {
   const MAX_TOKEN_LIFETIME_SECS = 3600;
 
@@ -34,6 +35,7 @@ class Google_Auth_AssertionCredentials
   public $privateKeyPassword;
   public $assertionType;
   public $sub;
+  public $signerClass = 'GoogleGAL_Signer_P12';
   /**
    * @deprecated
    * @link http://tools.ietf.org/html/draft-ietf-oauth-json-web-token-06
@@ -71,6 +73,10 @@ class Google_Auth_AssertionCredentials
     $this->useCache = $useCache;
   }
   
+  public function setSignerClass($signerClass) {
+  	$this->signerClass = $signerClass;
+  }
+  
   /**
    * Generate a unique key to represent this credential.
    * @return string
@@ -93,7 +99,7 @@ class Google_Auth_AssertionCredentials
     $now = time();
 
     $jwtParams = array(
-          'aud' => Google_Auth_OAuth2::OAUTH2_TOKEN_URI,
+          'aud' => GoogleGAL_Auth_OAuth2::OAUTH2_TOKEN_URI,
           'scope' => $this->scopes,
           'iat' => $now,
           'exp' => $now + self::MAX_TOKEN_LIFETIME_SECS,
@@ -118,15 +124,20 @@ class Google_Auth_AssertionCredentials
   {
     $header = array('typ' => 'JWT', 'alg' => 'RS256');
 
+    $payload = json_encode($payload);
+    // Handle some overzealous escaping in PHP json that seemed to cause some errors
+    // with claimsets.
+    $payload = str_replace('\/', '/', $payload);
+
     $segments = array(
-      Google_Utils::urlSafeB64Encode(json_encode($header)),
-      Google_Utils::urlSafeB64Encode(json_encode($payload))
+      GoogleGAL_Utils::urlSafeB64Encode(json_encode($header)),
+      GoogleGAL_Utils::urlSafeB64Encode($payload)
     );
 
     $signingInput = implode('.', $segments);
-    $signer = new Google_Signer_P12($this->privateKey, $this->privateKeyPassword);
+    $signer = new $this->signerClass($this->privateKey, $this->privateKeyPassword);
     $signature = $signer->sign($signingInput);
-    $segments[] = Google_Utils::urlSafeB64Encode($signature);
+    $segments[] = GoogleGAL_Utils::urlSafeB64Encode($signature);
 
     return implode(".", $segments);
   }
