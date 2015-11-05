@@ -10,6 +10,8 @@ class core_google_apps_login {
 		$this->add_actions();
 		register_activation_hook($this->my_plugin_basename(), array( $this, 'ga_activation_hook' ) );
 	}
+
+	protected static $gal_cookie_name = 'wordpress_google_apps_login';
 	
 	// May be overridden in basic or premium
 	public function ga_activation_hook($network_wide) {
@@ -22,8 +24,8 @@ class core_google_apps_login {
 	protected $newcookievalue = null;
 	protected function get_cookie_value() {
 		if (!$this->newcookievalue) {
-			if (isset($_COOKIE['google_apps_login'])) {
-				$this->newcookievalue = $_COOKIE['google_apps_login'];
+			if (isset($_COOKIE[self::$gal_cookie_name])) {
+				$this->newcookievalue = $_COOKIE[self::$gal_cookie_name];
 			}
 			else {
 				$this->newcookievalue = md5(rand());
@@ -83,71 +85,72 @@ class core_google_apps_login {
 		$options = $this->get_option_galogin();
 		wp_enqueue_script('jquery');
 		 ?>
-	    <style type="text/css">
-	    	form#loginform p.galogin {
+		<style type="text/css">
+			form#loginform p.galogin {
 				background: none repeat scroll 0 0 #2EA2CC;
-			    border-color: #0074A2;
-			    box-shadow: 0 1px 0 rgba(120, 200, 230, 0.5) inset, 0 1px 0 rgba(0, 0, 0, 0.15);
-			    color: #FFFFFF;
-			    text-decoration: none;
-	            text-align: center;
-	            vertical-align: middle;
-	            border-radius: 3px;
-			    padding: 4px;
-			    height: 27px;
-			    font-size: 14px;
-			    margin-bottom: <?php echo $options['ga_poweredby'] ? '6' : '16' ?>px;
-	        }
-	        
-	        form#loginform p.galogin a {
-	        	color: #FFFFFF;
-	        	line-height: 27px;
-	        	font-weight: bold;
-	        }
+				border-color: #0074A2;
+				box-shadow: 0 1px 0 rgba(120, 200, 230, 0.5) inset, 0 1px 0 rgba(0, 0, 0, 0.15);
+				color: #FFFFFF;
+				text-decoration: none;
+				text-align: center;
+				vertical-align: middle;
+				border-radius: 3px;
+				padding: 4px;
+				height: 27px;
+				font-size: 14px;
+				margin-bottom: <?php echo $options['ga_poweredby'] ? '6' : '16' ?>px;
+			}
+			
+			form#loginform p.galogin a {
+				color: #FFFFFF;
+				line-height: 27px;
+				font-weight: bold;
+			}
 
-        	form#loginform p.galogin a:hover {
-	        	color: #CCCCCC;
-	        }
-	        
-	        h3.galogin-or {
-	        	text-align: center;
-	        	margin-top: 16px;
-	        	margin-bottom: 16px;
-	        }
-	        
-	        p.galogin-powered {
-			    font-size: 0.7em;
-			    font-style: italic;
-			    text-align: right;
-	        }
-	        
-	        p.galogin-logout {
-	          	background-color: #FFFFFF;
-    			border: 4px solid #CCCCCC;
-    			box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
-    			padding: 12px;
-    			margin: 12px 0px;
-	        }
-	        
-	        <?php if ($this->should_hidewplogin($options)) { ?>
-	        
-	        div#login form#loginform p label[for=user_login], 
-	        div#login form#loginform p label[for=user_pass],
-	        div#login form#loginform p label[for=rememberme],
-	        div#login form#loginform p.submit,
-	        div#login p#nav {
-	        	display: none;
-	        } 
-	         
-	        <?php } ?>
-	        
-	     </style>
+			form#loginform p.galogin a:hover {
+				color: #CCCCCC;
+			}
+			
+			h3.galogin-or {
+				text-align: center;
+				margin-top: 16px;
+				margin-bottom: 16px;
+			}
+			
+			p.galogin-powered {
+				font-size: 0.7em;
+				font-style: italic;
+				text-align: right;
+			}
+			
+			p.galogin-logout {
+			  	background-color: #FFFFFF;
+				border: 4px solid #CCCCCC;
+				box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+				padding: 12px;
+				margin: 12px 0;
+			}
+			
+			<?php if ($this->should_hidewplogin($options)) { ?>
+			
+			div#login form#loginform p label[for=user_login], 
+			div#login form#loginform p label[for=user_pass],
+			div#login form#loginform p label[for=rememberme],
+			div#login form#loginform p.submit,
+			div#login p#nav {
+				display: none;
+			} 
+			 
+			<?php } ?>
+			
+		 </style>
 	<?php }
 	
 	// public in case widgets want to use it
 	public function ga_start_auth_get_url() {
 		$options = $this->get_option_galogin();
 		$clients = $this->createGoogleClient($options);
+		/** @var GoogleGAL_Client $client */
 		$client = $clients[0];
 		
 		// Generate a CSRF token
@@ -180,6 +183,9 @@ class core_google_apps_login {
 									+ (isset($_GET['action']) && $_GET['action']=='login' ? 1 : 0)) {
 				$do_autologin = true;
 			}
+			if (isset($_POST['log']) && isset($_POST['pwd'])) { // This was a WP username/password login attempt
+				$do_autologin = false;
+			}
 		}
 		
 		if ($do_autologin && $options['ga_clientid'] != '' && $options['ga_clientsecret'] != '') {
@@ -209,26 +215,26 @@ class core_google_apps_login {
 		jQuery(document).ready(function(){
 			<?php ob_start(); /* Buffer javascript contents so we can run it through a filter */ ?>
 			
-	        var loginform = jQuery('#loginform,#front-login-form');
-	        var googlelink = jQuery('p.galogin');
-	        var poweredby = jQuery('p.galogin-powered');
+			var loginform = jQuery('#loginform,#front-login-form');
+			var googlelink = jQuery('p.galogin');
+			var poweredby = jQuery('p.galogin-powered');
 
-	        <?php if ($this->should_hidewplogin($options)) { ?>
+			<?php if ($this->should_hidewplogin($options)) { ?>
 				loginform.empty();
 			<?php 
 			} else {
 			?>
-	        	loginform.prepend("<h3 class='galogin-or'><?php esc_html_e( 'or' , 'google-apps-login'); ?></h3>");
-	        <?php } ?>
-	        
-	        if (poweredby) {
-	        	loginform.prepend(poweredby);
-	        }
-	        loginform.prepend(googlelink);
+				loginform.prepend("<h3 class='galogin-or'><?php esc_html_e( 'or' , 'google-apps-login'); ?></h3>");
+			<?php } ?>
+			
+			if (poweredby) {
+				loginform.prepend(poweredby);
+			}
+			loginform.prepend(googlelink);
 
-	        <?php 
-	        	$fntxt = ob_get_clean(); 
-	        	echo apply_filters('gal_login_form_readyjs', $fntxt);
+			<?php 
+				$fntxt = ob_get_clean(); 
+				echo apply_filters('gal_login_form_readyjs', $fntxt);
 			?>
 		});
 		</script>
@@ -297,6 +303,7 @@ class core_google_apps_login {
 
 			try {
 				$clients = $this->createGoogleClient($options, true);
+				/** @var GoogleGAL_Client $client */
 				$client = $clients[0];
 				$oauthservice = $clients[1];
 				
@@ -387,6 +394,7 @@ class core_google_apps_login {
 		if (is_wp_error($user) && get_bloginfo('version') < 3.7) {
 			// Only newer wordpress versions display errors from $user for us
 			global $error;
+			/** @var WP_Error $user */
 			$error = htmlentities2($user->get_error_message());
 		}
 		return $user;
@@ -414,7 +422,7 @@ class core_google_apps_login {
 	
 	public function ga_init() {
 		if ($GLOBALS['pagenow'] == 'wp-login.php') {
-			setcookie('google_apps_login', $this->get_cookie_value(), time()+36000, '/', defined(COOKIE_DOMAIN) ? COOKIE_DOMAIN : '' );
+			setcookie(self::$gal_cookie_name, $this->get_cookie_value(), time()+36000, '/', defined(COOKIE_DOMAIN) ? COOKIE_DOMAIN : '' );
 		}
 	}
 	
@@ -429,8 +437,8 @@ class core_google_apps_login {
 		if ((force_ssl_login() || force_ssl_admin()) && strtolower(substr($login_url,0,7)) == 'http://') {
 			$login_url = 'https://'.substr($login_url,7);
 		}
-		
-		return $login_url;
+
+		return apply_filters( 'gal_login_url', $login_url );
 	}
 	
 	// Build our own nonce functions as wp_create_nonce is user dependent,
@@ -492,9 +500,9 @@ class core_google_apps_login {
 	
 	public function ga_admin_auth_message() {
 		echo '<div class="error"><p>';
-        echo sprintf( __('You will need to complete Google Apps Login <a href="%s">Settings</a> in order for the plugin to work', 'google-apps-login'), 
-        			esc_url($this->get_settings_url()) ); 
-        echo '</p></div>';
+		echo sprintf( __('You will need to complete Google Apps Login <a href="%s">Settings</a> in order for the plugin to work', 'google-apps-login'), 
+					esc_url($this->get_settings_url()) ); 
+		echo '</p></div>';
 	}
 	
 	public function ga_admin_init() {
@@ -709,6 +717,15 @@ class core_google_apps_login {
 		
 		echo '<br class="clear">';
 		if ($saoptions['ga_serviceemail'] != '') {
+			if ($saoptions['ga_serviceid'] != '') {
+				// Display client id
+				echo '<label for="input_ga_serviceid" class="textinput">'.__('Service Account Client ID / Name', 'google-apps-login').'</label>';
+				echo "<div class='gal-lowerinput'>";
+				//echo "<span id='input_ga_serviceid'>".htmlentities($saoptions['ga_serviceid'])."</span>";
+				echo "<div id='input_ga_serviceid' class='gal-admin-scopes-list'>".htmlentities($saoptions['ga_serviceid'])."</div>";
+				echo '</div>';
+				echo '<br class="clear">';
+			}
 			// Display service email
 			echo '<label for="input_ga_serviceemail" class="textinput">'.__('Service Account email address', 'google-apps-login').'</label>';
 			echo "<div class='gal-lowerinput'>";
@@ -725,7 +742,7 @@ class core_google_apps_login {
 			}
 		}
 		
-		echo '<label for="input_ga_keyfileupload" class="textinput gal_jsonkeyfile">'.__('Upload Service Account JSON file', 'google-apps-login').'</label>';
+		echo '<label for="input_ga_keyfileupload" class="textinput gal_jsonkeyfile">'.__('Upload a new Service Account JSON file', 'google-apps-login').'</label>';
 		echo '<label for="input_ga_keyjson" class="textinput gal_jsonkeytext" style="display: none;">'.__('Paste contents of JSON file', 'google-apps-login').'</label>';
 		
 		echo "<div class='gal-lowerinput'>";
@@ -742,7 +759,9 @@ class core_google_apps_login {
 		echo '<br class="clear">';
 		
 		if (count($serviceacct_plugins) == 0) {
-			echo '</span>';
+			?>
+			</span>
+			<?php
 		}
 		
 		echo '</div>';
@@ -783,7 +802,7 @@ class core_google_apps_login {
 			</table>
 		</p>
 		
-		<p>Here is a comma-separated list of scopes to copy and paste into your Google Apps admin security page (see instructions).
+		<p>Here is a comma-separated list of API Scopes to copy and paste into your Google Apps admin security page (see instructions).
 		<br />
 		<div class="gal-admin-scopes-list"><?php echo htmlentities(implode(', ',array_unique($all_scopes))); ?></div>
 		</p>
@@ -903,10 +922,12 @@ class core_google_apps_login {
 			
 			$kfu = new gal_keyfile_uploader('ga_keyfileupload', isset($input['ga_keyjson']) ? $input['ga_keyjson'] : '');
 			$newemail = $kfu->getEmail();
+			$newid = $kfu->getId();
 			$newkey = $kfu->getKey();
 			$newprint = $kfu->getPrint();
-			if ($newemail != '' && $newkey != '') {
+			if ($newemail != '' && $newkey != '' && $newid != '') {
 				$saoptions['ga_serviceemail'] = $newemail;
+				$saoptions['ga_serviceid'] = $newid;
 				$saoptions['ga_sakey'] = $newkey;
 				$saoptions['ga_pkey_print'] = $newprint;
 				$this->save_sa_option($saoptions);
@@ -937,7 +958,7 @@ class core_google_apps_login {
 				'ga_jsonkeyfile|file_upload_error7' => __('Error with file upload on the server - failed to write to disk', 'google-apps-login'),
 				'ga_jsonkeyfile|no_content' => __('JSON key file was empty'),
 				'ga_jsonkeyfile|decode_error' => __('JSON key file could not be decoded correctly'),
-				'ga_jsonkeyfile|missing_values' => __('JSON key file does not contain all of client_email, private_key, and type'),
+				'ga_jsonkeyfile|missing_values' => __('JSON key file does not contain all of client_email, client_id, private_key, and type'),
 				'ga_jsonkeyfile|not_serviceacct' => __('JSON key file does not represent a Service Account'),
 				'ga_jsonkeyfile|bad_pem' => __('Key cannot be coerced into a PEM key - invalid format in private_key of JSON key file')
 		);
@@ -1016,7 +1037,7 @@ class core_google_apps_login {
 		}
 
 		// Set defaults
-		foreach (array('ga_sakey', 'ga_serviceemail', 'ga_pkey_print') as $k) {
+		foreach (array('ga_sakey', 'ga_serviceemail', 'ga_serviceid', 'ga_pkey_print') as $k) {
 			if (!isset($ga_sa_options[$k])) {
 				$ga_sa_options[$k] = '';
 			}
@@ -1067,7 +1088,7 @@ class core_google_apps_login {
 		return add_query_arg(
 					array( 'garedirect' => urlencode( $this->get_login_url() ),
 							'gaorigin' => urlencode( (is_ssl() || force_ssl_login() || force_ssl_admin() 
-											? 'https://' : 'http://').$_SERVER['HTTP_HOST'].'/' ),
+											? 'https://' : 'http://').$_SERVER['HTTP_HOST'] ),
 							'ganotms' => is_multisite() ? 'false' : 'true',
 							'gar' => urlencode( $refresh ),
 							'utm_source' => 'Admin%20Instructions',
@@ -1163,6 +1184,16 @@ class core_google_apps_login {
 		else {
 			add_filter( 'plugin_action_links', array($this, 'ga_plugin_action_links'), 10, 2 );
 		}
+	}
+
+	// Abstract
+
+	protected function my_plugin_basename() {
+		throw new Exception("core_google_apps_login is an abstract class");
+	}
+
+	protected function my_plugin_url() {
+		throw new Exception("core_google_apps_login is an abstract class");
 	}
 
 }

@@ -147,3 +147,33 @@ a.gal_jsonkeytext {
 #license-section table td {
 	padding-right: 8px;	
 }
+
+/* Drip signup form in basic version */
+
+#gal-drip-signup-form {
+    padding: 5px;
+}
+
+#gal-drip-signup-form div {
+    width: inherit;
+}
+
+#gal-drip-signup-form div label {
+    float: none;
+    font-weight: bold;
+}
+
+#gal-drip-signup-form div input[type=submit] {
+    float: none;
+    font-size: 120%;
+    width: 80px;
+}
+
+#gal-drip-signup-form div input[type=email] {
+    float: none;
+    width: 90%;
+}
+
+#gal-drip-signup-form p.gal-drip-unsubscribe {
+    font-size: 80%;
+}

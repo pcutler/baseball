@@ -100,4 +100,15 @@ jQuery(document).ready(function() {
 	jQuery('.gal-admin-scopes-list').on('click', function(e) {
 		selectText(e.target);
 	});
+
+	// Drip signup form in basic version
+	jQuery('.gal-drip-signup-button').on('click', function(e) {
+        jQuery('#gal-drip-signup-form').submit(function() {
+            jQuery('#gal-drip-signup-form div').hide().after(jQuery('<div><p>Thank you!</p></div>'));
+            // Mark WP user as signed up
+            jQuery.post(ajaxurl, {action: 'gal_drip_submitted'}, function(response) {
+
+            });
+        });
+	});
 }); 

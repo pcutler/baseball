@@ -2,8 +2,8 @@
 Contributors: danlester
 Tags: login, google, authentication, oauth2, oauth, google login, google apps, sso, single-sign-on, auth, intranet
 Requires at least: 3.7
-Tested up to: 4.2
-Stable tag: 2.8.3
+Tested up to: 4.3
+Stable tag: 2.8.12
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -70,9 +70,13 @@ This plugin currently operates in the following languages:
 * English - default
 * French (fr_FR) - translated by Lucien Ntumba of [GPC.solutions](http://gpcsolutions.fr/)
 * Spanish (es_ES) - translated by David Perez of [Closemarketing](https://www.closemarketing.es/)
+* Danish (da_DK) - translated by Alexander Leo-Hansen of [alexanderleohansen.dk](http://alexanderleohansen.dk/)
 * Serbo-Croatian (sr_RS) - translated by Borisa Djuraskovic of [Web Hosting Hub](http://www.webhostinghub.com/)
 * Arabic (ar_SA) - translated by [Jeremy Varnham](http://profiles.wordpress.org/jvarn13)
 * Ukrainian (uk_UA) - translated by Serj Kondrashov
+* Dutch (nl_NL) - translated by Noell Taravati of [Peppix](http://www.peppix.nl/)
+* Swedish (sv_SE) - translated by Johan Linde of [S/Y ELLEN](http://syellen.se/)
+* Italian (it_IT) translated by Giorgio Draghetti of [tipinoncomuni](http://tipinoncomuni.it/)
 
 We are looking for volunteers to translate into their own language. If you would like to contribute a translation, please 
 use the template POT file in the 'lang' folder, then email PO and MO files to contact@wp-glogin.com. 
@@ -224,6 +228,18 @@ the WordPress admin panel once you have activated the plugin. For a (non-persona
 please [click here](http://wp-glogin.com/installing-google-apps-login/basic-setup/).
 
 == Changelog ==
+
+= 2.8.12 =
+
+Opportunity to sign up for emails on Google Apps and WordPress, from settings page.
+
+= 2.8.11 =
+
+Service Account Client ID is imported from JSON key file so user can copy and paste it into admin.google.com
+
+= 2.8.10 =
+
+Changed name of login cookie from 'google_apps_login' to 'wp_google_apps_login'.
 
 = 2.8.3 =
 

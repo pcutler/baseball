@@ -47,8 +47,8 @@ class gal_keyfile_uploader {
 			$this->error = 'decode_error';
 			return;
 		}
-		if (!isset($fullkey['client_email']) || !isset($fullkey['private_key']) || !isset($fullkey['type'])
-				|| $fullkey['client_email'] == '' || $fullkey['private_key'] == '') {
+		if (!isset($fullkey['client_id']) || !isset($fullkey['client_email']) || !isset($fullkey['private_key']) || !isset($fullkey['type'])
+			|| $fullkey['client_id'] == '' || $fullkey['client_email'] == '' || $fullkey['private_key'] == '') {
 			$this->error = 'missing_values';
 			return;
 		}
@@ -63,6 +63,7 @@ class gal_keyfile_uploader {
 		}
 		
 		$this->key = $fullkey['private_key'];
+		$this->id = $fullkey['client_id'];
 		$this->email = $fullkey['client_email'];
 		$this->pkeyprint = isset($fullkey['private_key_id']) ? $fullkey['private_key_id'] : '<unspecified>';
 	}
@@ -80,6 +81,11 @@ class gal_keyfile_uploader {
 	protected $email = '';
 	public function getEmail() {
 		return $this->email;
+	}
+
+	protected $id = '';
+	public function getId() {
+		return $this->id;
 	}
 
 	protected $key = '';

@@ -4,7 +4,7 @@
  * Plugin Name: Google Apps Login
  * Plugin URI: http://wp-glogin.com/
  * Description: Simple secure login for Wordpress through users' Google Apps accounts (uses secure OAuth2, and MFA if enabled)
- * Version: 2.8.3
+ * Version: 2.8.12
  * Author: Dan Lester
  * Author URI: http://wp-glogin.com/
  * License: GPL3
@@ -17,7 +17,7 @@ require_once( plugin_dir_path(__FILE__).'/core/core_google_apps_login.php' );
 
 class basic_google_apps_login extends core_google_apps_login {
 	
-	protected $PLUGIN_VERSION = '2.8.3';
+	protected $PLUGIN_VERSION = '2.8.12';
 	
 	// Singleton
 	private static $instance = null;
@@ -41,6 +41,11 @@ class basic_google_apps_login extends core_google_apps_login {
 			$this->save_option_galogin($new_option);
 		}
 	}
+
+    protected function add_actions() {
+        parent::add_actions();
+        add_action('wp_ajax_gal_drip_submitted', array($this, 'gal_drip_submitted'));
+    }
 		
 	protected function ga_section_text_end() {
 	?>
@@ -89,6 +94,8 @@ class basic_google_apps_login extends core_google_apps_login {
 		$startnum = (int)date('j');
 		
 		echo '<div id="gal-tableright" class="gal-tablecell">';
+
+		$this->output_drip_form();
 		
 		for ($i=0 ; $i<2 ; $i++) {
 			echo $adverts[($startnum+$i) % 4];
@@ -97,6 +104,49 @@ class basic_google_apps_login extends core_google_apps_login {
 		echo '</div>';
 		
 	}
+
+	protected function output_drip_form() {
+        $userdata = wp_get_current_user();
+        if (!$userdata) {
+            return;
+        }
+		$signedup = get_user_meta($userdata->ID, 'gal_user_signedup_to_drip', true);
+
+		if (!$signedup) {
+
+            $useremail = $userdata->user_email;
+
+			?>
+			<div>
+				<form action="https://www.getdrip.com/forms/9468024/submissions" method="post" target="_blank" data-drip-embedded-form="9468024" id="gal-drip-signup-form">
+					<h3 data-drip-attribute="headline">Get the most out of Google Apps and WordPress</h3>
+					<p data-drip-attribute="description">
+                        Register your email address to receive information on building a WordPress site
+                        that truly integrates Google Apps and WordPress.
+                    </p>
+					<div>
+						<label for="fields[email]">Email Address</label>
+                        <br />
+						<input type="email" name="fields[email]" value="<?php echo esc_js($useremail); ?>" />
+                        <br />
+						<input type="submit" name="submit" value="Sign Up" data-drip-attribute="sign-up-button" class="gal-drip-signup-button" />
+					</div>
+                    <p class="gal-drip-unsubscribe">
+                        You can unsubscribe at any time, and we will never share your email address.
+                    </p>
+				</form>
+			</div>
+			<?php
+		}
+	}
+
+    public function gal_drip_submitted() {
+        $userdata = wp_get_current_user();
+        if (!$userdata) {
+            return;
+        }
+        update_user_meta($userdata->ID, 'gal_user_signedup_to_drip', true);
+    }
 	
 	protected function ga_domainsection_text() {
 		echo '<div id="domain-section" class="galtab">';
