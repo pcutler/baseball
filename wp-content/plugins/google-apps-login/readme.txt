@@ -2,8 +2,8 @@
 Contributors: danlester
 Tags: login, google, authentication, oauth2, oauth, google login, google apps, sso, single-sign-on, auth, intranet
 Requires at least: 3.7
-Tested up to: 4.3
-Stable tag: 2.8.12
+Tested up to: 4.4
+Stable tag: 2.8.14
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -22,10 +22,16 @@ Plugin setup requires you to have admin access to any Google Apps domain, or a r
 
 Full support and premium features are also available for purchase:
 
-Eliminate the need for Google Apps domain admins to  separately manage WordPress user accounts, and get peace 
-of mind that only authorized employees have access to the organizations's websites and intranet.
+Eliminate the need for Google Apps domain admins to separately manage WordPress user accounts, and get peace
+of mind that only authorized employees have access to your organizations's websites and intranet.
 
-See [http://wp-glogin.com/google-apps-login-premium/](http://wp-glogin.com/google-apps-login-premium/?utm_source=Login%20Readme%20Top&utm_medium=freemium&utm_campaign=Freemium)
+**See [our website at wp-glogin.com](http://wp-glogin.com/glogin/?utm_source=Login%20Readme%20Top&utm_medium=freemium&utm_campaign=Freemium) for more details.**
+
+The Premium version allows everyone in your Google Apps domain to login to WordPress - an account will be automatically created in WordPress if one doesn't already exist.
+
+Our Enterprise version goes further, allowing you to specify granular access and role controls based on Google Group membership.
+You can also see logs of accounts created and roles changed by the plugin.
+
 
 [youtube http://www.youtube.com/watch?v=wz9aN_4WaM8]
 
@@ -79,17 +85,18 @@ This plugin currently operates in the following languages:
 * Italian (it_IT) translated by Giorgio Draghetti of [tipinoncomuni](http://tipinoncomuni.it/)
 
 We are looking for volunteers to translate into their own language. If you would like to contribute a translation, please 
-use the template POT file in the 'lang' folder, then email PO and MO files to contact@wp-glogin.com. 
-Please ask if you need instructions on how to produce those files.
+get in touch: contact@wp-glogin.com.
 
-= Website =
+= Website and Upgrades =
 
 Please see our website [http://wp-glogin.com/](http://wp-glogin.com/?utm_source=Login%20Readme%20Website&utm_medium=freemium&utm_campaign=Freemium) for more information about this free plugin 
-and extra features available in our Premium upgrade, plus support details, other plugins, and useful guides for admins of  
+and extra features available in our Premium and Enterprise upgrades, plus support details, other plugins, and useful guides for admins of
 WordPress sites and Google Apps.
 
+The [Premium and Enterprise versions](http://wp-glogin.com/glogin/?utm_source=Login%20Readme%20PremEnt&utm_medium=freemium&utm_campaign=Freemium) eliminate the need to manage user accounts in your WordPress site - everything is synced from Google Apps instead.
+
 If you are building your organization's intranet on WordPress, try out our 
-[All-In-One Intranet plugin](http://wp-glogin.com/all-in-one-intranet/?utm_source=Login%20Readme%20AIOI&utm_medium=freemium&utm_campaign=Freemium).
+[All-In-One Intranet plugin](http://wp-glogin.com/intranet/?utm_source=Login%20Readme%20AIOI&utm_medium=freemium&utm_campaign=Freemium).
 
 == Screenshots ==
 
@@ -101,9 +108,9 @@ If you are building your organization's intranet on WordPress, try out our
 = How can I obtain support for this product? =
 
 Full support is available if you purchase the appropriate license from the author via:
-[http://wp-glogin.com/google-apps-login-premium/](http://wp-glogin.com/google-apps-login-premium/?utm_source=Login%20Readme%20Premium&utm_medium=freemium&utm_campaign=Freemium)
+[http://wp-glogin.com/glogin/](http://wp-glogin.com/glogin/?utm_source=Login%20Readme%20Premium&utm_medium=freemium&utm_campaign=Freemium)
 
-Please feel free to email [support@wp-glogin.com](mailto:support@wp-glogin.com) with any questions,
+Please feel free to email [contact@wp-glogin.com](mailto:contact@wp-glogin.com) with any questions,
 as we may be able to help, but you may be required to purchase a support license if the problem
 is specific to your installation or requirements.
 
@@ -116,7 +123,7 @@ No, once you set up the plugin, any WordPress accounts whose email address corre
 whether on a different Google Apps domain or even a personal gmail.com account, will be able to use 'Login with 
 Google' to easily connect to your WordPress site.
 
-However, our [premium plugin](http://wp-glogin.com/google-apps-login-premium/?utm_source=Login%20Readme%20FAQ&utm_medium=freemium&utm_campaign=Freemium) has features that greatly simplify 
+However, our [premium plugin](http://wp-glogin.com/glogin/?utm_source=Login%20Readme%20FAQ&utm_medium=freemium&utm_campaign=Freemium) has features that greatly simplify
 your WordPress user management if your WordPress users are mostly on the same Google Apps domain(s).
 
 = Does the plugin work with HTTP or HTTPS login pages? =
@@ -161,7 +168,7 @@ may render your site insecure.
 
 = Does it conflict with any other plugins? =
 
-Yes, sometimes conflicts can arise. We have built workarounds for some problems, and would always appreciate your feedback 
+Sometimes conflicts can arise. We have built workarounds for some problems, and would always appreciate your feedback
 to resolve any issues you might encounter yourself.
 
 One known issue is with iThemes Security: the settings 'filter suspicious query strings' and 'filter long URL strings' can 
@@ -190,19 +197,9 @@ your emails and other data.
 
 *  PHP 5.2.x or higher with JSON extensions
 *  Wordpress 3.3 or above
-*  Should no longer require CURL extension
 
 And you will need a Google account to set up the plugin.
 
-= I install the plugin, and my wp-login.php page is just blank =
-
-The only time we've seen users experience a blank screen has been because they don't have CURL enabled on their server. 
-
-Read [this article](https://codex.wordpress.org/Debugging_in_WordPress) describing how you can debug and (hopefully) get 
-an error message to see if that is the problem.
-
-Or, since most often the problem is that CURL needs installing, it may be easier for you to jump straight to finding out 
-whether CURL is installed, and enabling it if not. If that doesn't solve the problem, you may need to debug as above.
 
 == Installation ==
 
@@ -228,6 +225,16 @@ the WordPress admin panel once you have activated the plugin. For a (non-persona
 please [click here](http://wp-glogin.com/installing-google-apps-login/basic-setup/).
 
 == Changelog ==
+
+= 2.8.14 =
+
+Updated some URLs pointing to information about Premium/Enterprise upgrades.
+Readme updated.
+
+= 2.8.13 =
+
+Ready for WordPress 4.4.
+New translation strings for languages.
 
 = 2.8.12 =
 

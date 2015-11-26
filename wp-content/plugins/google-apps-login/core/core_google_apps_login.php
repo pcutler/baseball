@@ -902,7 +902,7 @@ class core_google_apps_login {
 		
 		// Service account settings
 		$newinput['ga_domainadmin'] = isset($input['ga_domainadmin']) ? trim($input['ga_domainadmin']) : '';
-		if (!preg_match('/^([A-Za-z0-9._%+-]+@([0-9a-z-]+\.)?[0-9a-z-]+\.[a-z]{2,7})?$/', $newinput['ga_domainadmin'])) {
+		if (!preg_match('/^([A-Za-z0-9._%+-]+@([0-9a-z-]+\.)*[0-9a-z-]+\.[a-z]{2,7})?$/', $newinput['ga_domainadmin'])) {
 			add_settings_error(
 			'ga_domainadmin',
 			'invalid_email',
@@ -956,11 +956,11 @@ class core_google_apps_login {
 				'ga_jsonkeyfile|file_upload_error2' => __('Error with file upload on the server - file was too large', 'google-apps-login'),
 				'ga_jsonkeyfile|file_upload_error6' => __('Error with file upload on the server - no temp directory exists', 'google-apps-login'),
 				'ga_jsonkeyfile|file_upload_error7' => __('Error with file upload on the server - failed to write to disk', 'google-apps-login'),
-				'ga_jsonkeyfile|no_content' => __('JSON key file was empty'),
-				'ga_jsonkeyfile|decode_error' => __('JSON key file could not be decoded correctly'),
-				'ga_jsonkeyfile|missing_values' => __('JSON key file does not contain all of client_email, client_id, private_key, and type'),
-				'ga_jsonkeyfile|not_serviceacct' => __('JSON key file does not represent a Service Account'),
-				'ga_jsonkeyfile|bad_pem' => __('Key cannot be coerced into a PEM key - invalid format in private_key of JSON key file')
+				'ga_jsonkeyfile|no_content' => __('JSON key file was empty', 'google-apps-login'),
+				'ga_jsonkeyfile|decode_error' => __('JSON key file could not be decoded correctly', 'google-apps-login'),
+				'ga_jsonkeyfile|missing_values' => __('JSON key file does not contain all of client_email, client_id, private_key, and type', 'google-apps-login'),
+				'ga_jsonkeyfile|not_serviceacct' => __('JSON key file does not represent a Service Account', 'google-apps-login'),
+				'ga_jsonkeyfile|bad_pem' => __('Key cannot be coerced into a PEM key - invalid format in private_key of JSON key file', 'google-apps-login')
 		);
 		if (isset($local_error_strings[$fielderror])) {
 			return $local_error_strings[$fielderror];

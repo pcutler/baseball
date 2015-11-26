@@ -1,3 +1,8 @@
+#gdm-tabs {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 0;
+    padding-left: 10px;
+}
 
 p#gdm-base-folder-existing-error {
 	color: red;

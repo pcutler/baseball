@@ -29,14 +29,25 @@ class core_google_drive_embedder {
 		}
 		echo $output;
 	}
+
+    public function gdm_register_scripts() {
+        $extra_js_name = $this->get_extra_js_name();
+        wp_register_script( 'gdm_simple_browser_js', $this->my_plugin_url().'js/gdm-simple-browser.js');
+        if ($extra_js_name != 'basic') {
+            wp_register_script( 'gdm_premium_drive_browser_js', $this->my_plugin_url().'js/gdm-premium-drive-browser.js', array('gdm_simple_browser_js') );
+        }
+        wp_register_script( 'gdm_base_servicehandler_js', $this->my_plugin_url().'js/gdm-base-servicehandler.js', ($extra_js_name != 'basic' ? array('gdm_premium_drive_browser_js') : array() ));
+        wp_register_script( 'gdm_'.$extra_js_name.'_drivefile_js', $this->my_plugin_url().'js/gdm-'.$extra_js_name.'-drivefile.js', array('jquery') );
+        wp_register_script( 'gdm_choose_drivefile_js', $this->my_plugin_url().'js/gdm-choose-drivefile.js', array('jquery', 'gdm_simple_browser_js', 'gdm_base_servicehandler_js', 'gdm_'.$extra_js_name.'_drivefile_js') );
+    }
 	
 	public function gdm_admin_load_scripts() {
-		$extra_js_name = $this->get_extra_js_name();
-		wp_register_script( 'gdm_choose_drivefile_js', $this->my_plugin_url().'js/gdm-choose-drivefile.js', array('jquery', 'gdm_'.$extra_js_name.'_drivefile_js') );
+        $this->gdm_register_scripts();
 		wp_localize_script( 'gdm_choose_drivefile_js', 'gdm_trans', $this->get_translation_array() );
 		wp_enqueue_script( 'gdm_choose_drivefile_js' );
-		wp_enqueue_script( 'gdm_'.$extra_js_name.'_drivefile_js', $this->my_plugin_url().'js/gdm-'.$extra_js_name.'-drivefile.js', array('jquery') );
+
 		wp_enqueue_script( 'google-js-api', 'https://apis.google.com/js/client.js?onload=gdmHandleGoogleJsClientLoad', array('gdm_choose_drivefile_js') );
+
 		wp_enqueue_style( 'gdm_choose_drivefile_css', $this->my_plugin_url().'css/gdm-choose-drivefile.css' );
 		wp_enqueue_script( 'thickbox' );
 		wp_enqueue_style( 'thickbox' );
@@ -64,30 +75,32 @@ class core_google_drive_embedder {
 		?>
 		<div id="gdm-choose-drivefile" style="display: none;">
 			<h3 id="gdm-tabs" class="nav-tab-wrapper">
-				<a href="#drive" id="drive-tab" class="nav-tab nav-tab-active">Drive</a>
-				<a href="#calendar" id="calendar-tab" class="nav-tab"><?php echo $this->get_extra_js_name() == 'basic' ? '+' : 'Calendar'; ?></a>
+			<?php
+			if ($this->get_extra_js_name() == 'basic') {
+			?>
+				<a href="#allfiles" id="allfiles-tab" class="nav-tab nav-tab-active">All Files</a>
+                <a href="#calendar" id="calendar-tab" class="nav-tab">+</a>
+			<?php
+			}
+			else {
+			?>
+				<a href="#drive" id="drive-tab" class="nav-tab nav-tab-active">My Drive</a>
+				<a href="#recent" id="recent-tab" class="nav-tab">Recent</a>
+				<a href="#allfiles" id="allfiles-tab" class="nav-tab">All Files</a>
+				<a href="#calendar" id="calendar-tab" class="nav-tab">Calendar</a>
+			<?php
+			}
+			?>
 			</h3>
 			
 			<div class="wrap gdm-wrap">
 				
 				<div id="gdm-search-area">
 					<input type="text" id="gdm-search-box" placeholder="Enter text to search (then press Enter)" disabled="disabled"></input>
-				</div>
-			
-				<div id="gdm-thinking" class="gdm-browsebox" style="display: none;">
-					<div id="gdm-thinking-text">Loading...</div>
-				</div>
-				
-				<div id="gdm-authbtn" class="gdm-browsebox">
-					<div>
-						<a href="#" id="gdm-start-browse2">Click to authenticate via Google</a>
-					</div>
+					<a href="#" id="gdm-search-clear" style="display: none;">Clear Search</a>
 				</div>
 
-				<div id="gdm-filelist" class="gdm-browsebox" style="display: none;"></div>
-				<div id="gdm-nextprev-div" class="gdm-group">
-					<a href="#" id="gdm-prev-link" style="display: none;">Previous</a>
-					<a href="#" id="gdm-next-link" style="display: none;">Next</a>
+				<div id="gdm-file-browser-area">
 				</div>
 				
 				<div id="gdm-linktypes-div" class="gdm-group">
@@ -139,8 +152,41 @@ class core_google_drive_embedder {
 							&nbsp; &nbsp;
 							<a href="#" id="gdm-linktype-embed-more" style="display: none;" class="gdm-linktype-more">Options...</a>
 						</span>
-					</div> 
+					</div>
 
+					<!-- START Template for Simple Browser -->
+					<div id="gdm-simple-browser-template-html" style="display: none;">
+						<div class="gdm-thinking gdm-browsebox">
+							<div class="gdm-thinking-text">Loading...</div>
+						</div>
+
+						<div class="gdm-authbtn gdm-browsebox" style="display: none;">
+							<div>
+								<a href="#" class="gdm-start-browse2">Click to authenticate via Google</a>
+							</div>
+						</div>
+
+						<div class="gdm-filelist gdm-browsebox" style="display: none;"></div>
+						<div class="gdm-nextprev-div gdm-group">
+							<a href="#" class="gdm-prev-link" style="display: none;">Previous</a>
+							<a href="#" class="gdm-next-link" style="display: none;">Next</a>
+						</div>
+					</div>
+                    <!-- END Template for Simple Browser -->
+
+                    <!-- START Template for Premium Browser -->
+                    <div id="gdm-premium-browser-template-html" style="display: none;">
+                        <div class="gdm-thinking gdm-browsebox">
+                            <div class="gdm-thinking-text">Loading...</div>
+                        </div>
+
+                        <div class="gdm-authbtn gdm-browsebox" style="display: none;">
+                            <div>
+                                <a href="#" class="gdm-start-browse2">Click to authenticate via Google</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END Template for Premium Browser -->
 				</div>
 
 				<?php $this->admin_footer_extra(); ?>
@@ -441,7 +487,7 @@ class core_google_drive_embedder {
 	        	<p>You will need to install and configure 
 	        		<a href="http://wp-glogin.com/google-apps-login-premium/?utm_source=Admin%20Configmsg&utm_medium=freemium&utm_campaign=Drive" 
 	        		target="_blank">Google Apps Login</a>  
-	        		plugin in order for Google Drive Embedder to work. (Requires v2.5.2+ of Free or Professional)
+	        		plugin in order for Google Drive Embedder to work. (Free, Premium, or Enterprise version)
 	        	</p>
 	    	</div> <?php
 		}
