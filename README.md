@@ -1,4 +1,4 @@
-<h1> Overview </h1>
+<h1>Overview </h1>
 
 This the repository for [mlbpool2.com](http://mlbpool2.com).
 
