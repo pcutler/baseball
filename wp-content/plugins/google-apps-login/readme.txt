@@ -3,7 +3,7 @@ Contributors: danlester
 Tags: login, google, authentication, oauth2, oauth, google login, google apps, sso, single-sign-on, auth, intranet
 Requires at least: 3.7
 Tested up to: 4.4
-Stable tag: 2.8.14
+Stable tag: 2.8.15
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -225,6 +225,11 @@ the WordPress admin panel once you have activated the plugin. For a (non-persona
 please [click here](http://wp-glogin.com/installing-google-apps-login/basic-setup/).
 
 == Changelog ==
+
+= 2.8.15 =
+
+Removed a WordPress function that is deprecated in WP 4.4 - force_ssl_login
+This could have resulted in some visible warning messages.
 
 = 2.8.14 =
 

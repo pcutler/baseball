@@ -434,7 +434,7 @@ class core_google_apps_login {
 			$login_url = network_site_url('wp-login.php');
 		} 
 
-		if ((force_ssl_login() || force_ssl_admin()) && strtolower(substr($login_url,0,7)) == 'http://') {
+		if (force_ssl_admin() && strtolower(substr($login_url,0,7)) == 'http://') {
 			$login_url = 'https://'.substr($login_url,7);
 		}
 
@@ -1087,7 +1087,7 @@ class core_google_apps_login {
 	protected function calculate_instructions_url($refresh='n') {
 		return add_query_arg(
 					array( 'garedirect' => urlencode( $this->get_login_url() ),
-							'gaorigin' => urlencode( (is_ssl() || force_ssl_login() || force_ssl_admin() 
+							'gaorigin' => urlencode( (is_ssl() || force_ssl_admin()
 											? 'https://' : 'http://').$_SERVER['HTTP_HOST'] ),
 							'ganotms' => is_multisite() ? 'false' : 'true',
 							'gar' => urlencode( $refresh ),
