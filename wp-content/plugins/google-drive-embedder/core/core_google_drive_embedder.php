@@ -262,7 +262,8 @@ class core_google_drive_embedder {
 				$width = isset($atts['width']) ? $atts['width'] : '100%';
 				$height = isset($atts['height']) ? $atts['height'] : '400';
 				$scrolling = isset($atts['scrolling']) && strtolower($atts['scrolling']) == 'yes' ? 'yes' : 'no';
-				$returnhtml = "<iframe width='${width}' height='${height}' frameborder='0' scrolling='".$scrolling."' src='${url}'></iframe>";
+				$allowfullscreen = isset($atts['allowfullscreen']) && strtolower($atts['allowfullscreen']) == 'no' ? '' : 'allowfullscreen';
+				$returnhtml = "<iframe width='${width}' height='${height}' frameborder='0' scrolling='${scrolling}' src='${url}' ${allowfullscreen}></iframe>";
 				break;
 		}
 		if (!is_null($content)) {

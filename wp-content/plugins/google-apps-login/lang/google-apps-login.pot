@@ -1,14 +1,14 @@
-# Copyright (C) 2015 
+# Copyright (C) 2016 
 # This file is distributed under the same license as the  package.
 msgid ""
 msgstr ""
 "Project-Id-Version:  \n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/googleappslogin\n"
-"POT-Creation-Date: 2015-11-05 16:29:07+00:00\n"
+"POT-Creation-Date: 2016-01-20 10:28:20+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2015-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2016-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
@@ -52,129 +52,125 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#: core/commercial_google_apps_login.php:43
-msgid "User with email address %s must use Login with Google"
-msgstr ""
-
-#: core/commercial_google_apps_login.php:71
+#: core/commercial_google_apps_login.php:60
 msgid "User %s does not exist"
 msgstr ""
 
-#: core/commercial_google_apps_login.php:80
+#: core/commercial_google_apps_login.php:69
 msgid "Invalid email address"
 msgstr ""
 
-#: core/commercial_google_apps_login.php:88
+#: core/commercial_google_apps_login.php:77
 msgid "Email address needs to be in %s."
 msgstr ""
 
-#: core/commercial_google_apps_login.php:91
+#: core/commercial_google_apps_login.php:80
 msgid "%s not authorized -  <a href=\"%s\">Sign out of Google</a> to switch accounts"
 msgstr ""
 
-#: core/commercial_google_apps_login.php:148
+#: core/commercial_google_apps_login.php:137
 #: core/core_google_apps_login.php:197
 msgid "Redirecting to <a href=\"%s\">Login via Google</a>..."
 msgstr ""
 
-#: core/commercial_google_apps_login.php:167
+#: core/commercial_google_apps_login.php:156
 msgid "By default, any existing account can authenticate either via Google (if a Gmail/Google Apps account), or by WordPress username/password."
 msgstr ""
 
-#: core/commercial_google_apps_login.php:169
+#: core/commercial_google_apps_login.php:158
 msgid "To allow special behaviour on your Google Apps domain (auto-create users who don't yet exist, or disable regular WordPress username/password access for your users), fill in the following section."
 msgstr ""
 
-#: core/commercial_google_apps_login.php:171
+#: core/commercial_google_apps_login.php:160
 msgid "Please read the <a href=\"%s\" target=\"gainstr\">instructions here</a> first."
 msgstr ""
 
-#: core/commercial_google_apps_login.php:176
+#: core/commercial_google_apps_login.php:165
 msgid "My Google Apps domain"
 msgstr ""
 
-#: core/commercial_google_apps_login.php:181
+#: core/commercial_google_apps_login.php:170
 msgid "Auto-create new users on my domain"
 msgstr ""
 
-#: core/commercial_google_apps_login.php:185
+#: core/commercial_google_apps_login.php:174
 msgid "Default role for new users"
 msgstr ""
 
-#: core/commercial_google_apps_login.php:193
+#: core/commercial_google_apps_login.php:182
 msgid "Disable WordPress username/password login for my domain"
 msgstr ""
 
-#: core/commercial_google_apps_login.php:198
+#: core/commercial_google_apps_login.php:187
 msgid "Completely hide WordPress username and password boxes"
 msgstr ""
 
-#: core/commercial_google_apps_login.php:203
+#: core/commercial_google_apps_login.php:192
 msgid "Tick the last two with caution - leave unchecked until you are confident Google Login is working for your own admin account"
 msgstr ""
 
-#: core/commercial_google_apps_login.php:225
+#: core/commercial_google_apps_login.php:214
 msgid "Automatically logout of Google when logging out of WordPress"
 msgstr ""
 
-#: core/commercial_google_apps_login.php:228
+#: core/commercial_google_apps_login.php:217
 msgid "Login button text (optional)"
 msgstr ""
 
-#: core/commercial_google_apps_login.php:231
+#: core/commercial_google_apps_login.php:220
 #: core/core_google_apps_login.php:245
 msgid "Login with Google"
 msgstr ""
 
-#: core/commercial_google_apps_login.php:239
+#: core/commercial_google_apps_login.php:228
 msgid "You should have received a license key when you purchased this professional version of Google Apps Login."
 msgstr ""
 
-#: core/commercial_google_apps_login.php:241
+#: core/commercial_google_apps_login.php:230
 msgid "Please enter it below to enable automatic updates, or <a href=\"mailto:contact@wp-glogin.com\">email us</a> if you do not have one."
 msgstr ""
 
-#: core/commercial_google_apps_login.php:245
+#: core/commercial_google_apps_login.php:234
 msgid "License Key"
 msgstr ""
 
-#: core/commercial_google_apps_login.php:364
+#: core/commercial_google_apps_login.php:353
 msgid "Domain name should be a space-separated list of valid domains, in lowercase letters (or blank)"
 msgstr ""
 
-#: core/commercial_google_apps_login.php:365
+#: core/commercial_google_apps_login.php:354
 msgid "License key is too short"
 msgstr ""
 
-#: core/commercial_google_apps_login.php:367
+#: core/commercial_google_apps_login.php:356
 msgid "License key failed to activate"
 msgstr ""
 
-#: core/commercial_google_apps_login.php:368
+#: core/commercial_google_apps_login.php:357
 msgid "License key does not exist in our system at all"
 msgstr ""
 
-#: core/commercial_google_apps_login.php:369
+#: core/commercial_google_apps_login.php:358
 msgid "License key entered is for the wrong product"
 msgstr ""
 
-#: core/commercial_google_apps_login.php:370
+#: core/commercial_google_apps_login.php:359
 msgid "License key has expired"
 msgstr ""
 
-#: core/commercial_google_apps_login.php:371
+#: core/commercial_google_apps_login.php:360
 msgid "License key is not permitted for this website"
 msgstr ""
 
-#: core/commercial_google_apps_login.php:372
+#: core/commercial_google_apps_login.php:361
 msgid "License key is not active for this website"
 msgstr ""
 
-#: core/commercial_google_apps_login.php:373
+#: core/commercial_google_apps_login.php:362
 msgid "License key has been disabled"
 msgstr ""
 
-#: core/commercial_google_apps_login.php:374
+#: core/commercial_google_apps_login.php:363
 msgid "License key was not provided"
 msgstr ""
 
@@ -186,31 +182,39 @@ msgstr ""
 msgid "or"
 msgstr ""
 
-#: core/core_google_apps_login.php:268
+#: core/core_google_apps_login.php:269
 msgid "You did not grant access"
 msgstr ""
 
-#: core/core_google_apps_login.php:287
+#: core/core_google_apps_login.php:277
+msgid "The user must use <i>%s</i> to access the site"
+msgstr ""
+
+#: core/core_google_apps_login.php:281
+msgid "Unrecognized error message"
+msgstr ""
+
+#: core/core_google_apps_login.php:292
 msgid "Session mismatch - try again, but there could be a problem setting state"
 msgstr ""
 
-#: core/core_google_apps_login.php:293
+#: core/core_google_apps_login.php:298
 msgid "Session mismatch - try again, but there could be a problem passing state"
 msgstr ""
 
-#: core/core_google_apps_login.php:300
+#: core/core_google_apps_login.php:305
 msgid "Session mismatch - try again, but there could be a problem setting cookies"
 msgstr ""
 
-#: core/core_google_apps_login.php:334
+#: core/core_google_apps_login.php:339
 msgid "Email needs to be verified on your Google Account"
 msgstr ""
 
-#: core/core_google_apps_login.php:358
+#: core/core_google_apps_login.php:363
 msgid "User authenticated OK, but error fetching user details from Google"
 msgstr ""
 
-#: core/core_google_apps_login.php:377
+#: core/core_google_apps_login.php:381
 msgid "User %s not registered in Wordpress"
 msgstr ""
 

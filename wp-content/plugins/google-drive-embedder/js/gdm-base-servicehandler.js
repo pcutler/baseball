@@ -88,7 +88,10 @@ gdmBaseServiceHandler.prototype.makeAPICall = function (current_search_query, th
         params.pageToken = thisPageToken;
     }
     if (current_search_query != "") {
-        params.q = "title contains '" + current_search_query + "'";
+        params.q = "title contains '" + current_search_query + "' and trashed = false";
+    }
+    else {
+        params.q = "trashed = false";
     }
     var restRequest = this.getRequest(params);
 

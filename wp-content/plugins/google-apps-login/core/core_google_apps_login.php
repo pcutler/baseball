@@ -242,7 +242,8 @@ class core_google_apps_login {
 	}
 	
 	protected function get_login_button_text() {
-		return __( 'Login with Google' , 'google-apps-login');
+		$login_button_text = __('Login with Google', 'google-apps-login');
+		return apply_filters('gal_login_button_text', $login_button_text);
 	}
 	
 	protected function should_hidewplogin($options) {
@@ -272,8 +273,12 @@ class core_google_apps_login {
 										.'<a href="http://wp-glogin.com/installing-google-apps-login/#main-settings"'
 										.' target="_blank">instructions here</a>' , 'google-apps-login');
 				break;
+				case 'ga_user_must_glogin':
+					$error_message = sprintf(__( 'The user must use <i>%s</i> to access the site' , 'google-apps-login'),
+					                        htmlentities($this->get_login_button_text()));
+				break;
 				default:
-					$error_message = htmlentities2($_REQUEST['error']);
+					$error_message = __( 'Unrecognized error message' , 'google-apps-login');
 				break;
 			}
 			$user = new WP_Error('ga_login_error', $error_message);
@@ -366,7 +371,6 @@ class core_google_apps_login {
 		}
 		
 		if (is_wp_error($user)) {
-			$this->checkRegularWPError($user, $username, $password); // May exit			
 			$this->displayAndReturnError($user);
 		}
 		
@@ -380,10 +384,6 @@ class core_google_apps_login {
 
 	protected function checkRegularWPLogin($user, $username, $password, $options) {
 		return $user;
-	}
-	
-	// Has content in Premium
-	protected function checkRegularWPError($user, $username, $password) {
 	}
 	
 	// Has content in Enterprise
@@ -421,7 +421,7 @@ class core_google_apps_login {
 	}
 	
 	public function ga_init() {
-		if ($GLOBALS['pagenow'] == 'wp-login.php') {
+		if (!isset($_COOKIE[self::$gal_cookie_name])) {
 			setcookie(self::$gal_cookie_name, $this->get_cookie_value(), time()+36000, '/', defined(COOKIE_DOMAIN) ? COOKIE_DOMAIN : '' );
 		}
 	}

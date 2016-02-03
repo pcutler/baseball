@@ -3,7 +3,7 @@ Contributors: danlester
 Tags: drive, google, document, google apps, google drive, sso, single-sign-on, auth, intranet, embed
 Requires at least: 3.5
 Tested up to: 4.4
-Stable tag: 3.7
+Stable tag: 3.8.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -30,6 +30,8 @@ Choose from:
 Useful for public websites or private intranets (all visitors should be able to view files as long as sharing settings are 'anyone with the link can view' or higher in Google Drive). 
 Works on all WordPress installations including multisite networks.
 
+Please note that to embed folders, forms, images, and videos you will require the Premium or Enterprise version of this plugin.
+
 [youtube http://www.youtube.com/watch?v=wcpjcFJIOko]
 
 = Paid versions and Support =
@@ -41,7 +43,7 @@ The **Premium version** contains some important extra features:
 * Google Calendars: pick from your Google Calendars and provide download links to ICAL or XML, or embed them directly in your site.
 * Google Docs export: provide links to downloadable versions of Google Docs, e.g. Spreadsheets exported as PDF or Excel.
 * Embed Folders: simply keep your Google Drive folder up-to-date with your files, and your staff or website visitors will always be able to view a list of the latest documents.
-* Embed Images: serve them directly from Google Drive, respecting your Google sharing settings.
+* Embed Images, Videos, and Forms: serve them directly from Google Drive, respecting your Google sharing settings.
 * Support and updates for one year.
 
 [Premium - See details and purchase](http://wp-glogin.com/drive/?utm_source=Drive%20ReadmePromo&utm_medium=freemium&utm_campaign=Freemium)
@@ -307,6 +309,17 @@ Used by the premium plugin only for these special file types.
 
 Text to display within the link to a 'normal' or 'download' file.
 
+= scrolling =
+
+Add scrolling="yes" to turn on scrolling within an iframe embed - especially useful for forms which otherwise might be cut off at the bottom.
+
+= allowfullscreen =
+
+The default for iframe style embeds is to have allowfullscreen as a default attribute so the
+viewer can click into full screen mode if available for that file type.
+
+Add allowfullscreen="no" as a shortcode parameter to turn this off.
+
 
 = CSS =
 
@@ -329,6 +342,17 @@ Please get in touch if you would like to make suggestions for further CSS config
 
 
 == Changelog ==
+
+= 3.8.2 =
+
+No longer shows trashed files in Add Google File dialog box.
+
+= 3.8.1 =
+
+iframe embeds (e.g. videos) now have allowfullscreen as a default attribute so the viewer can click into full screen mode.
+Add allowfullscreen="no" to your shortcode to turn this off.
+
+The jump in version number is to match Enterprise/Premium versions of the plugin.
 
 = 3.7 =
 

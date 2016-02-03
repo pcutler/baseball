@@ -3,7 +3,7 @@ Contributors: danlester
 Tags: login, google, authentication, oauth2, oauth, google login, google apps, sso, single-sign-on, auth, intranet
 Requires at least: 3.7
 Tested up to: 4.4
-Stable tag: 2.8.15
+Stable tag: 2.8.17
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -133,7 +133,7 @@ The plugin will work whether your site is configured for HTTP or HTTPS.
 However, you may have configured your site to run so that the login pages 
 can be accessed by *either* HTTP *or* HTTPS. In that case, you may run into problems. 
 We recommend that you set [FORCE_SSL_ADMIN](http://codex.wordpress.org/Administration_Over_SSL) 
-or at least FORCE_SSL_LOGIN to true. This will ensure that all users are consistently using HTTPS 
+to true. This will ensure that all users are consistently using HTTPS
 for login.
 
 You may then need to ensure the Redirect URL and Web Origin in the Google Cloud Console are
@@ -196,7 +196,7 @@ your emails and other data.
 = What are the system requirements? =
 
 *  PHP 5.2.x or higher with JSON extensions
-*  Wordpress 3.3 or above
+*  Wordpress 3.5 or above
 
 And you will need a Google account to set up the plugin.
 
@@ -225,6 +225,18 @@ the WordPress admin panel once you have activated the plugin. For a (non-persona
 please [click here](http://wp-glogin.com/installing-google-apps-login/basic-setup/).
 
 == Changelog ==
+
+= 2.8.17 =
+
+Added filter gal_login_button_text so developers can customize the 'Login with Google' button in all versions (in Premium/Enterprise,
+it is possible to set the button text in settings, and that will always take priority if set).
+
+Fixed a text injection vulnerability whereby it was possible for a third party to trick a user into viewing a version of the login page
+containing an error message entirely of their own choosing - all sites should upgrade to this plugin version.
+
+= 2.8.16 =
+
+Updated to work correctly alongside some plugins that change the login URL from /wp-login.php to something else.
 
 = 2.8.15 =
 
