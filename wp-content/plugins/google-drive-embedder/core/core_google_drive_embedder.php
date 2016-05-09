@@ -9,6 +9,12 @@ class core_google_drive_embedder {
 	
 	// May be overridden in basic or premium
 	public function gdm_activation_hook($network_wide) {
+		global $gdm_core_already_exists;
+		if ($gdm_core_already_exists) {
+			deactivate_plugins( $this->my_plugin_basename() );
+			echo( 'Please Deactivate the free version of Google Drive Embedder before you activate the new Premium/Enterprise version.' );
+			exit;
+		}
 	}
 	
 	public function gdm_gather_scopes($scopes) {
@@ -274,7 +280,7 @@ class core_google_drive_embedder {
 	
 	// ADMIN OPTIONS
 	// *************
-	
+
 	protected function get_options_menuname() {
 		return 'gdm_list_options';
 	}

@@ -2,8 +2,8 @@
 Contributors: danlester
 Tags: drive, google, document, google apps, google drive, sso, single-sign-on, auth, intranet, embed
 Requires at least: 3.5
-Tested up to: 4.4
-Stable tag: 3.8.2
+Tested up to: 4.5
+Stable tag: 3.8.5
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -342,6 +342,10 @@ Please get in touch if you would like to make suggestions for further CSS config
 
 
 == Changelog ==
+
+= 3.8.5 =
+
+Improved error handling when admin inadvertently activates multiple versions of the plugin.
 
 = 3.8.2 =
 

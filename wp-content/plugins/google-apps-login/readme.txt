@@ -2,8 +2,8 @@
 Contributors: danlester
 Tags: login, google, authentication, oauth2, oauth, google login, google apps, sso, single-sign-on, auth, intranet
 Requires at least: 3.7
-Tested up to: 4.4
-Stable tag: 2.8.17
+Tested up to: 4.5
+Stable tag: 2.9.6
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -31,9 +31,6 @@ The Premium version allows everyone in your Google Apps domain to login to WordP
 
 Our Enterprise version goes further, allowing you to specify granular access and role controls based on Google Group membership.
 You can also see logs of accounts created and roles changed by the plugin.
-
-
-[youtube http://www.youtube.com/watch?v=wz9aN_4WaM8]
 
 = Extensible Platform =
 
@@ -82,7 +79,8 @@ This plugin currently operates in the following languages:
 * Ukrainian (uk_UA) - translated by Serj Kondrashov
 * Dutch (nl_NL) - translated by Noell Taravati of [Peppix](http://www.peppix.nl/)
 * Swedish (sv_SE) - translated by Johan Linde of [S/Y ELLEN](http://syellen.se/)
-* Italian (it_IT) translated by Giorgio Draghetti of [tipinoncomuni](http://tipinoncomuni.it/)
+* Italian (it_IT) - translated by Giorgio Draghetti of [tipinoncomuni](http://tipinoncomuni.it/)
+* Persian (fa_IR) - translated by [Saeed1000](https://profiles.wordpress.org/saeed1000/)
 
 We are looking for volunteers to translate into their own language. If you would like to contribute a translation, please 
 get in touch: contact@wp-glogin.com.
@@ -174,7 +172,7 @@ to resolve any issues you might encounter yourself.
 One known issue is with iThemes Security: the settings 'filter suspicious query strings' and 'filter long URL strings' can 
 both cause intermittent conflicts and should be turned off if you are happy with the implications.
 
-Jonradio Private Site - does not interact well with any Single-Sign-On plugins including Google Apps Login
+Jonradio Private Site - Try setting the Jonradio  option "Omit ?redirect_to= from URL (this option is recommended for Custom Login pages)".
 
 WP Email Login - incompatible with Google Apps Login
 
@@ -225,6 +223,14 @@ the WordPress admin panel once you have activated the plugin. For a (non-persona
 please [click here](http://wp-glogin.com/installing-google-apps-login/basic-setup/).
 
 == Changelog ==
+
+= 2.9.6 =
+
+New 'Remember Me' in advanced options. Check to ensure users are not automatically logged out at the end of their browser session.
+This applies to all users using 'Login with Google'. It has the same functionality as checking the 'Remember Me' checkbox on
+the login form when using regular WordPress username/password to login.
+
+Improved handling of errors when multiple versions of the plugin are inadvertently activated.
 
 = 2.8.17 =
 

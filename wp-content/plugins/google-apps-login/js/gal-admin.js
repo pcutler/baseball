@@ -68,7 +68,7 @@ jQuery(document).ready(function() {
 	if (jQuery('#input_ga_domainname').length > 0) {
 		domainchangefn = function() {
 			var domainname = jQuery('#input_ga_domainname').val().trim();
-			jQuery('#domain-section select, #domain-section input').not('#input_ga_domainname').prop('disabled', domainname == '');
+			jQuery('#domain-section input.gal_needsdomain').prop('disabled', domainname == '');
 		};
 		jQuery('#input_ga_domainname').on('change', domainchangefn);
 		domainchangefn();

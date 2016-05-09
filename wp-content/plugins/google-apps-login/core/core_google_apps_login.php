@@ -15,6 +15,12 @@ class core_google_apps_login {
 	
 	// May be overridden in basic or premium
 	public function ga_activation_hook($network_wide) {
+		global $gal_core_already_exists;
+		if ($gal_core_already_exists) {
+			deactivate_plugins( $this->my_plugin_basename() );
+			echo( 'Please Deactivate the free version of Google Apps Login before you activate the new Premium/Enterprise version.' );
+			exit;
+		}
 	}
 	
 	public function ga_plugins_loaded() {
@@ -61,6 +67,11 @@ class core_google_apps_login {
 		$client->setClientId($options['ga_clientid']);
 		$client->setClientSecret($options['ga_clientsecret']);
 		$client->setRedirectUri($this->get_login_url());
+
+		$hd = $this->get_hd();
+		if ($hd) {
+			$client->setHostedDomain($hd);
+		}
 		
 		$scopes = array_unique(apply_filters('gal_gather_scopes', $this->get_default_scopes()));
 		$client->setScopes($scopes);
@@ -75,6 +86,10 @@ class core_google_apps_login {
 		}
 				
 		return Array($client, $oauthservice);
+	}
+
+	protected function get_hd() {
+		return '';
 	}
 	
 	protected function get_default_scopes() {
@@ -421,6 +436,12 @@ class core_google_apps_login {
 	}
 	
 	public function ga_init() {
+		if (isset($_GET['code']) && isset($_GET['state']) && $_SERVER['REQUEST_METHOD']=='GET') {
+			$options = $this->get_option_galogin();
+			if ($options['ga_rememberme']) {
+				$_POST['rememberme'] = true;
+			}
+		}
 		if (!isset($_COOKIE[self::$gal_cookie_name])) {
 			setcookie(self::$gal_cookie_name, $this->get_cookie_value(), time()+36000, '/', defined(COOKIE_DOMAIN) ? COOKIE_DOMAIN : '' );
 		}
@@ -840,7 +861,15 @@ class core_google_apps_login {
 		echo '<label for="input_ga_auto_login" class="checkbox plain">';
 		_e( 'Automatically redirect to Google from login page' , 'google-apps-login' );
 		echo '</label>';
-		
+
+		echo '<br class="clear" />';
+
+		echo "<input id='input_ga_rememberme' name='".$this->get_options_name()."[ga_rememberme]' type='checkbox' ".($options['ga_rememberme'] ? 'checked' : '')." class='checkbox' />";
+
+		echo '<label for="input_ga_rememberme" class="checkbox plain">';
+		_e( 'Remember Me - do not log users out at end of browser session' , 'google-apps-login' );
+		echo '</label>';
+
 		echo '<br class="clear" />';
 		
 		echo "<input id='input_ga_poweredby' name='".$this->get_options_name()."[ga_poweredby]' type='checkbox' ".($options['ga_poweredby'] ? 'checked' : '')." class='checkbox' />";
@@ -899,10 +928,11 @@ class core_google_apps_login {
 		$newinput['ga_force_permissions'] = isset($input['ga_force_permissions']) ? (boolean)$input['ga_force_permissions'] : false;
 		$newinput['ga_auto_login'] = isset($input['ga_auto_login']) ? (boolean)$input['ga_auto_login'] : false;
 		$newinput['ga_poweredby'] = isset($input['ga_poweredby']) ? (boolean)$input['ga_poweredby'] : false;
+		$newinput['ga_rememberme'] = isset($input['ga_rememberme']) ? (boolean)$input['ga_rememberme'] : false;
 		
 		// Service account settings
 		$newinput['ga_domainadmin'] = isset($input['ga_domainadmin']) ? trim($input['ga_domainadmin']) : '';
-		if (!preg_match('/^([A-Za-z0-9._%+-]+@([0-9a-z-]+\.)*[0-9a-z-]+\.[a-z]{2,7})?$/', $newinput['ga_domainadmin'])) {
+		if (!preg_match('/^([A-Za-z0-9._%+-]+@([0-9a-z-]+\.)*[0-9a-z-]+\.[a-z]{2,63})?$/', $newinput['ga_domainadmin'])) {
 			add_settings_error(
 			'ga_domainadmin',
 			'invalid_email',
@@ -980,6 +1010,7 @@ class core_google_apps_login {
 						'ga_force_permissions' => false,
 						'ga_auto_login' => false,
 						'ga_poweredby' => false,
+						'ga_rememberme' => false,
 						'ga_sakey' => '',
 						'ga_domainadmin' => '');
 	}
