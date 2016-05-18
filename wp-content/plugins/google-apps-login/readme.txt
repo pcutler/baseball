@@ -3,7 +3,7 @@ Contributors: danlester
 Tags: login, google, authentication, oauth2, oauth, google login, google apps, sso, single-sign-on, auth, intranet
 Requires at least: 3.7
 Tested up to: 4.5
-Stable tag: 2.9.6
+Stable tag: 2.9.7
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -31,6 +31,7 @@ The Premium version allows everyone in your Google Apps domain to login to WordP
 
 Our Enterprise version goes further, allowing you to specify granular access and role controls based on Google Group membership.
 You can also see logs of accounts created and roles changed by the plugin.
+
 
 = Extensible Platform =
 
@@ -81,9 +82,10 @@ This plugin currently operates in the following languages:
 * Swedish (sv_SE) - translated by Johan Linde of [S/Y ELLEN](http://syellen.se/)
 * Italian (it_IT) - translated by Giorgio Draghetti of [tipinoncomuni](http://tipinoncomuni.it/)
 * Persian (fa_IR) - translated by [Saeed1000](https://profiles.wordpress.org/saeed1000/)
+* Belarussian (be_BY) - translated by Natasha Dyatko of [UStarCash](https://www.ustarcash.com/)
 
-We are looking for volunteers to translate into their own language. If you would like to contribute a translation, please 
-get in touch: contact@wp-glogin.com.
+We welcome volunteers to translate into their own language. If you would like to contribute a translation, please
+click Translate Google Apps Login on the right hand side of this page.
 
 = Website and Upgrades =
 
@@ -223,6 +225,12 @@ the WordPress admin panel once you have activated the plugin. For a (non-persona
 please [click here](http://wp-glogin.com/installing-google-apps-login/basic-setup/).
 
 == Changelog ==
+
+= 2.9.7 =
+
+Added gal_set_login_cookie filter so you can prevent Google Apps Login from setting its wordpress_google_apps_login cookie under
+certain circumstances. It only technically needs to be set on the wp-login.php page in most installations, and you may find
+that if it sets the cookie on any page load (which it does when not already set) then this prevents caching on heavy traffic pages.
 
 = 2.9.6 =
 

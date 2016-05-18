@@ -442,7 +442,7 @@ class core_google_apps_login {
 				$_POST['rememberme'] = true;
 			}
 		}
-		if (!isset($_COOKIE[self::$gal_cookie_name])) {
+		if (!isset($_COOKIE[self::$gal_cookie_name]) && apply_filters('gal_set_login_cookie', true)) {
 			setcookie(self::$gal_cookie_name, $this->get_cookie_value(), time()+36000, '/', defined(COOKIE_DOMAIN) ? COOKIE_DOMAIN : '' );
 		}
 	}
