@@ -43,7 +43,7 @@ class core_google_apps_login {
 	private $doneIncludePath = false;
 	private function setIncludePath() {
 		if (!$this->doneIncludePath) {
-			set_include_path(get_include_path() . PATH_SEPARATOR . plugin_dir_path(__FILE__));
+			set_include_path(plugin_dir_path(__FILE__) . PATH_SEPARATOR . get_include_path());
 			$this->doneIncludePath = true;
 		}
 	}
@@ -429,6 +429,12 @@ class core_google_apps_login {
 		if ($user && !is_wp_error($user)) {
 			$final_redirect = $this->getFinalRedirect();
 			if ($final_redirect !== '') {
+				$option = $this->get_option_galogin();
+				// Whitelist the subdomain if all auth is going through the top level domain's wp-login.php
+				if (is_multisite() && !$option['ga_ms_usesubsitecallback']) {
+					$this->add_allowed_redirect_host($final_redirect);
+					add_filter('allowed_redirect_hosts', array($this,'gal_allowed_redirect_hosts'), 10);
+				}
 				return $final_redirect;
 			}
 		}
@@ -443,7 +449,8 @@ class core_google_apps_login {
 			}
 		}
 		if (!isset($_COOKIE[self::$gal_cookie_name]) && apply_filters('gal_set_login_cookie', true)) {
-			setcookie(self::$gal_cookie_name, $this->get_cookie_value(), time()+36000, '/', defined(COOKIE_DOMAIN) ? COOKIE_DOMAIN : '' );
+			$secure = ( 'https' === parse_url( $this->get_login_url(), PHP_URL_SCHEME ) );
+			setcookie(self::$gal_cookie_name, $this->get_cookie_value(), 0, '/', defined('COOKIE_DOMAIN') ? COOKIE_DOMAIN : '', $secure );
 		}
 	}
 	
@@ -460,6 +467,45 @@ class core_google_apps_login {
 		}
 
 		return apply_filters( 'gal_login_url', $login_url );
+	}
+
+	protected $allowed_redirect_hosts = array();
+	// In multisite, add subdomains to allowed_redirect_hosts so redirect_to can work for them
+	public function gal_allowed_redirect_hosts($hosts) {
+		return array_merge($hosts, $this->allowed_redirect_hosts);
+	}
+
+	protected function add_allowed_redirect_host($location) {
+		if (!is_multisite()) {
+			return;
+		}
+
+		if (!defined('SUBDOMAIN_INSTALL') || !SUBDOMAIN_INSTALL) {
+			return;
+		}
+
+		$location = trim( strtolower($location) );
+		// browsers will assume 'http' is your protocol, and will obey a redirect to a URL starting with '//'
+		if ( substr($location, 0, 2) == '//' )
+			$location = 'http:' . $location;
+
+		// In php 5 parse_url may fail if the URL query part contains http://, bug #38143
+		$test = ( $cut = strpos($location, '?') ) ? substr( $location, 0, $cut ) : $location;
+
+		// @-operator is used to prevent possible warnings in PHP < 5.3.3.
+		$lp = @parse_url($test);
+
+		// Give up if malformed URL
+		if ( false === $lp )
+			return;
+
+		$sites = get_sites(
+			array('domain' => $lp['host'])
+		);
+
+		if (count($sites) > 0) {
+			$this->allowed_redirect_hosts[] = $lp['host'];
+		}
 	}
 	
 	// Build our own nonce functions as wp_create_nonce is user dependent,
@@ -546,25 +592,21 @@ class core_google_apps_login {
 			$this->set_other_admin_notices();
 		}
 		
-		add_action('show_user_profile', Array($this, 'ga_personal_options'));
+		add_action('user_profile_picture_description', Array($this, 'gal_user_profile_picture_description'));
 	}
 	
-	public function ga_personal_options($wp_user) {
-		if (is_object($wp_user)) {
-		// Display avatar in profile
-		$purchase_url = 'http://wp-glogin.com/avatars/?utm_source=Profile%20Page&utm_medium=freemium&utm_campaign=Avatars';
-		$source_text = 'Install <a href="'.$purchase_url.'">Google Profile Avatars</a> to use your Google account\'s profile photo here automatically.';
-		?>
-		<table class="form-table">
-			<tbody><tr>
-				<th>Profile Photo</th>
-				<td><?php echo get_avatar($wp_user->ID, '48'); ?></td>
-				<td><?php echo apply_filters('gal_avatar_source_desc', $source_text, $wp_user); ?></td>
-			</tr>
-			</tbody>
-		</table>
-		<?php
+	public function gal_user_profile_picture_description($description) {
+		if ($description != '') {
+
+			// Display avatar in profile
+			$purchase_url = 'http://wp-glogin.com/avatars/?utm_source=Profile%20Page&utm_medium=freemium&utm_campaign=Avatars';
+			$source_text = '<b>Install <a href="'.$purchase_url.'">Google Profile Avatars</a> to use your Google account\'s profile photo here automatically.</b>';
+
+			$wp_user = wp_get_current_user();
+			$description = apply_filters('gal_avatar_source_desc', $description.' <br /> '.$source_text, $wp_user);
 		}
+
+		return $description;
 	}
 	
 	// Has content in Basic
@@ -1030,7 +1072,7 @@ class core_google_apps_login {
 			}
 		}
 		
-		$this->ga_options = $option;
+		$this->ga_options = apply_filters( 'gal_options', $option );
 		return $this->ga_options;
 	}
 	
@@ -1074,7 +1116,7 @@ class core_google_apps_login {
 			}
 		}
 		
-		$this->ga_sa_options = $ga_sa_options;
+		$this->ga_sa_options = apply_filters('gal_sa_options', $ga_sa_options );
 		return $this->ga_sa_options;
 	}
 	

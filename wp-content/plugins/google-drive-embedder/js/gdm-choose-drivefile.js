@@ -19,6 +19,8 @@ var gdmDriveMgr = (function($) {
             'allfiles' : gdmDriveServiceHandler,
             'drive' : gdmDriveServiceHandler,
             'recent' : gdmDriveServiceHandler,
+            'shared' : gdmDriveServiceHandler,
+            'starred' : gdmDriveServiceHandler,
             'calendar' : gdmCalendarServiceHandler
         },
 

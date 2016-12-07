@@ -43,15 +43,17 @@ gdmDriveServiceHandler.prototype.getUrlsAndReasons = function(drivefile) {
         icon: { url : drivefile.iconLink }
     };
 
-    if (drivefile.embedLink) {
-        links.embed.url = drivefile.embedLink;
+    if (drivefile.mimeType == 'application/vnd.google-apps.folder' || drivefile.mimeType == 'application/vnd.google-apps.form' || drivefile.mimeType.match(/^image\//)) {
+        links.embed.reason = 'PREMIUM';
+        links.download.reason = 'FOLDERDOWNLOAD';
     }
     else {
-        if (drivefile.mimeType == 'application/vnd.google-apps.folder' || drivefile.mimeType == 'application/vnd.google-apps.form' || drivefile.mimeType.match(/^image\//)) {
-            links.embed.reason = 'PREMIUM';
-            links.download.reason = 'FOLDERDOWNLOAD';
+
+        if (drivefile.embedLink) {
+            links.embed.url = drivefile.embedLink;
         }
         else {
+
             if (drivefile.alternateLink) {
                 links.embed.url = drivefile.alternateLink.replace(/\/(edit|view)(\?|$)/g, '/preview?');
             }

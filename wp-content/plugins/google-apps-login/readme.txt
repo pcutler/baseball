@@ -1,33 +1,36 @@
 === Plugin Name ===
 Contributors: danlester
-Tags: login, google, authentication, oauth2, oauth, google login, google apps, sso, single-sign-on, auth, intranet
+Tags: login, google, authentication, oauth, google login, google apps, g suite, sso, single-sign-on, auth, intranet
 Requires at least: 3.7
-Tested up to: 4.5
-Stable tag: 2.9.7
+Tested up to: 4.7
+Stable tag: 2.10.5
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-Simple secure login and user management for Wordpress through your Google Apps domain 
+Simple secure login and user management for Wordpress through your G Suite / Google Apps domain
 (uses secure OAuth2, and MFA if enabled)
 
 == Description ==
 
 Google Apps Login allows existing Wordpress user accounts to login to your website using Google to securely authenticate their account. This means that if they are already logged into Gmail for example, they can simply click their way through the Wordpress login screen - no username or password is explicitly required!
 
-Google Apps Login uses the latest **secure OAuth2 authentication recommended by Google**, including 2-factor Auth if enabled for your Google Apps accounts.
+Google Apps Login uses the latest **secure OAuth2 authentication recommended by Google**, including 2-factor Auth if enabled for your G Suite (formerly Google Apps) accounts.
+This is far simpler to configure than the older SAML protocol.
 
-Plugin setup requires you to have admin access to any Google Apps domain, or a regular Gmail account, to register and obtain two simple codes from Google.
+Trusted by thousands of organizations from schools to large public companies, Google Apps Login is the most popular enterprise grade plugin enabling login and user management based on your Google Apps domain.
+
+Plugin setup requires you to have admin access to any G Suite (Google Apps) domain, or a regular Gmail account, to register and obtain two simple codes from Google.
 
 = Support and Premium features =
 
 Full support and premium features are also available for purchase:
 
-Eliminate the need for Google Apps domain admins to separately manage WordPress user accounts, and get peace
+Eliminate the need for G Suite (Google Apps) domain admins to separately manage WordPress user accounts, and get peace
 of mind that only authorized employees have access to your organizations's websites and intranet.
 
 **See [our website at wp-glogin.com](http://wp-glogin.com/glogin/?utm_source=Login%20Readme%20Top&utm_medium=freemium&utm_campaign=Freemium) for more details.**
 
-The Premium version allows everyone in your Google Apps domain to login to WordPress - an account will be automatically created in WordPress if one doesn't already exist.
+The Premium version allows everyone in your G Suite (Google Apps) domain to login to WordPress - an account will be automatically created in WordPress if one doesn't already exist.
 
 Our Enterprise version goes further, allowing you to specify granular access and role controls based on Google Group membership.
 You can also see logs of accounts created and roles changed by the plugin.
@@ -42,10 +45,10 @@ permissions that users already allowed for Google Apps Login itself.
 Using our platform, your website appears to Google accounts as one unified 'web application', making it more secure 
 and easier to manage.
 
-[Google Drive Embedder](http://wp-glogin.com/wpgoogledriveembedder) is a free extension plugin allowing 
+[Google Drive Embedder](http://wp-glogin.com/wpgoogledriveembedder) is an extension plugin allowing
 users to browse for Google Drive documents to embed directly in their posts or pages.
 
-[Google Apps Directory](http://wp-glogin.com/wpgoogleappsdirectory) is a free extension plugin allowing 
+[Google Apps Directory](http://wp-glogin.com/wpgoogleappsdirectory) is an extension plugin allowing
 logged-in users to search your Google Apps employee directory from a widget on your intranet or client site.
 
 [Google Profile Avatars](http://wp-glogin.com/avatars/?utm_source=Login%20Readme%20Avatars&utm_medium=freemium&utm_campaign=Freemium) 
@@ -57,10 +60,11 @@ Google Apps Login works on single or multisite WordPress websites or private int
 
 One-click login will work for the following domains and user accounts:
 
-*  Google Apps for Work
-*  Google Apps for Business
-*  Google Apps for Education
-*  Google Apps for Non-profits
+*  G Suite Basic (Google Apps for Work)
+*  G Suite Business (Google Apps Unlimited for Work)
+*  G Suite for Education (Google Apps for Education)
+*  G Suite for Non-profits (Google Apps for Non-profits)
+*  G Suite for Government (Google Apps for Government)
 *  Personal gmail.com and googlemail.com emails
 
 Google Apps Login uses the latest secure OAuth2 authentication recommended by Google. Other 3rd party authentication 
@@ -117,14 +121,14 @@ is specific to your installation or requirements.
 We may occasionally be able to respond to support queries posted on the 'Support' forum here on the wordpress.org
 plugin page, but we recommend sending us an email instead if possible.
 
-= Is login restricted to the Google Apps domain I use to set up the plugin? =
+= Is login restricted to the G Suite domain I use to set up the plugin? =
 
 No, once you set up the plugin, any WordPress accounts whose email address corresponds to *any* Google account, 
-whether on a different Google Apps domain or even a personal gmail.com account, will be able to use 'Login with 
+whether on a different G Suite domain or even a personal gmail.com account, will be able to use 'Login with
 Google' to easily connect to your WordPress site.
 
 However, our [premium plugin](http://wp-glogin.com/glogin/?utm_source=Login%20Readme%20FAQ&utm_medium=freemium&utm_campaign=Freemium) has features that greatly simplify
-your WordPress user management if your WordPress users are mostly on the same Google Apps domain(s).
+your WordPress user management if your WordPress users are mostly on the same G Suite domain(s).
 
 = Does the plugin work with HTTP or HTTPS login pages? =
 
@@ -174,7 +178,7 @@ to resolve any issues you might encounter yourself.
 One known issue is with iThemes Security: the settings 'filter suspicious query strings' and 'filter long URL strings' can 
 both cause intermittent conflicts and should be turned off if you are happy with the implications.
 
-Jonradio Private Site - Try setting the Jonradio  option "Omit ?redirect_to= from URL (this option is recommended for Custom Login pages)".
+My Private Site - Try setting the My Private Site option "Omit ?redirect_to= from URL (this option is recommended for Custom Login pages)".
 
 WP Email Login - incompatible with Google Apps Login
 
@@ -185,7 +189,7 @@ may allow you to use your Google username and password to login, but they do not
 
 *  Other plugins: Users' passwords may be handled by your blog's server, potentially unencrypted. If these are compromised,
 hackers would be able to gain access to your Google email accounts! This includes all 
-[Google Apps](http://www.google.com/enterprise/apps/business/products.html) (Gmail, Drive, Calendar 
+[G Suite apps](https://gsuite.google.com/products/) (Gmail, Drive, Calendar
 etc), and any other services which use your Google account to login.
 
 *  This plugin: Users' passwords are only ever submitted to Google itself, then Google is asked to authenticate the user to
@@ -203,7 +207,7 @@ And you will need a Google account to set up the plugin.
 
 == Installation ==
 
-To set up the plugin, you will need access to a Google Apps domain as an administrator, or just a regular Gmail account.
+To set up the plugin, you will need access to a G Suite (Google Apps) domain as an administrator, or just a regular Gmail account.
 
 Easiest way:
 
@@ -225,6 +229,19 @@ the WordPress admin panel once you have activated the plugin. For a (non-persona
 please [click here](http://wp-glogin.com/installing-google-apps-login/basic-setup/).
 
 == Changelog ==
+
+= 2.10.5 =
+
+Multisite improvements: better handling of COOKIE_DOMAIN configuration and also allows login redirects straight to subsites even when login is handled by the root site's wp-login.php page.
+Login page cookies now last for the length of the current browser session instead of for a fixed time, so this should reduce unexpected 'Session mismatch' errors.
+
+Ensures plugin options are not loaded until 'plugins_loaded' stage. This makes it easier to use the gal_options hook more reliably.
+
+Added language files for be_BY.
+Added filters 'gal_options' and 'gal_sa_options' so you can configure settings using PHP code.
+
+Changed the way Google client library is included to avoid conflicts with other Google-related plugins that set the include path
+in a way that doesn't allow for other plugins.
 
 = 2.9.7 =
 

@@ -38,13 +38,13 @@ class core_google_drive_embedder {
 
     public function gdm_register_scripts() {
         $extra_js_name = $this->get_extra_js_name();
-        wp_register_script( 'gdm_simple_browser_js', $this->my_plugin_url().'js/gdm-simple-browser.js');
+        wp_register_script( 'gdm_simple_browser_js', $this->my_plugin_url().'js/gdm-simple-browser.js', array(), $this->PLUGIN_VERSION);
         if ($extra_js_name != 'basic') {
-            wp_register_script( 'gdm_premium_drive_browser_js', $this->my_plugin_url().'js/gdm-premium-drive-browser.js', array('gdm_simple_browser_js') );
+            wp_register_script( 'gdm_premium_drive_browser_js', $this->my_plugin_url().'js/gdm-premium-drive-browser.js', array('gdm_simple_browser_js'), $this->PLUGIN_VERSION );
         }
-        wp_register_script( 'gdm_base_servicehandler_js', $this->my_plugin_url().'js/gdm-base-servicehandler.js', ($extra_js_name != 'basic' ? array('gdm_premium_drive_browser_js') : array() ));
-        wp_register_script( 'gdm_'.$extra_js_name.'_drivefile_js', $this->my_plugin_url().'js/gdm-'.$extra_js_name.'-drivefile.js', array('jquery') );
-        wp_register_script( 'gdm_choose_drivefile_js', $this->my_plugin_url().'js/gdm-choose-drivefile.js', array('jquery', 'gdm_simple_browser_js', 'gdm_base_servicehandler_js', 'gdm_'.$extra_js_name.'_drivefile_js') );
+        wp_register_script( 'gdm_base_servicehandler_js', $this->my_plugin_url().'js/gdm-base-servicehandler.js', ($extra_js_name != 'basic' ? array('gdm_premium_drive_browser_js') : array() ), $this->PLUGIN_VERSION);
+        wp_register_script( 'gdm_'.$extra_js_name.'_drivefile_js', $this->my_plugin_url().'js/gdm-'.$extra_js_name.'-drivefile.js', array('jquery'), $this->PLUGIN_VERSION );
+        wp_register_script( 'gdm_choose_drivefile_js', $this->my_plugin_url().'js/gdm-choose-drivefile.js', array('jquery', 'gdm_simple_browser_js', 'gdm_base_servicehandler_js', 'gdm_'.$extra_js_name.'_drivefile_js'), $this->PLUGIN_VERSION );
     }
 	
 	public function gdm_admin_load_scripts() {
@@ -91,7 +91,9 @@ class core_google_drive_embedder {
 			else {
 			?>
 				<a href="#drive" id="drive-tab" class="nav-tab nav-tab-active">My Drive</a>
+				<a href="#shared" id="shared-tab" class="nav-tab">Shared</a>
 				<a href="#recent" id="recent-tab" class="nav-tab">Recent</a>
+				<a href="#starred" id="starred-tab" class="nav-tab">Starred</a>
 				<a href="#allfiles" id="allfiles-tab" class="nav-tab">All Files</a>
 				<a href="#calendar" id="calendar-tab" class="nav-tab">Calendar</a>
 			<?php

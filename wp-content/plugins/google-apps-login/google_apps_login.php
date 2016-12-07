@@ -4,7 +4,7 @@
  * Plugin Name: Google Apps Login
  * Plugin URI: http://wp-glogin.com/
  * Description: Simple secure login for Wordpress through users' Google Apps accounts (uses secure OAuth2, and MFA if enabled)
- * Version: 2.9.7
+ * Version: 2.10.5
  * Author: Dan Lester
  * Author URI: http://wp-glogin.com/
  * License: GPL3
@@ -23,7 +23,7 @@ else {
 
 class basic_google_apps_login extends core_google_apps_login {
 	
-	protected $PLUGIN_VERSION = '2.9.7';
+	protected $PLUGIN_VERSION = '2.10.5';
 	
 	// Singleton
 	private static $instance = null;
@@ -128,7 +128,7 @@ class basic_google_apps_login extends core_google_apps_login {
 					<h3 data-drip-attribute="headline">Get the most out of Google Apps and WordPress</h3>
 					<p data-drip-attribute="description">
                         Register your email address to receive information on building a WordPress site
-                        that truly integrates Google Apps and WordPress.
+                        that truly integrates G Suite and WordPress.
                     </p>
 					<div>
 						<label for="fields[email]">Email Address</label>
@@ -165,11 +165,11 @@ class basic_google_apps_login extends core_google_apps_login {
 		
 		<h3>Premium Upgrade</h3>
 		
-		<p>In our professional plugins, you can specify your Google Apps domain name to obtain more powerful features.</p>
+		<p>In our professional plugins, you can specify your G Suite (Google Apps) domain name to obtain more powerful features.</p>
 
 		<ul class="ul-disc">
 			<li>Save time and increase security</li>
-			<li>Completely forget about WordPress user management &ndash; it syncs users from Google Apps automatically</li>
+			<li>Completely forget about WordPress user management &ndash; it syncs users from G Suite (Google Apps) automatically</li>
 			<li>Ensures that employees who leave or change roles no longer have unauthorized access to sensitive sites</li>
 			<li>Specify Google Groups whose members should be mapped to different roles in WordPress (Enterprise only)</li>
 		</ul>

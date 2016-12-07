@@ -1,9 +1,9 @@
 === Plugin Name ===
 Contributors: danlester
-Tags: drive, google, document, google apps, google drive, sso, single-sign-on, auth, intranet, embed
+Tags: drive, google, document, google apps, g suite, google drive, sso, auth, intranet, embed
 Requires at least: 3.5
-Tested up to: 4.5
-Stable tag: 3.8.5
+Tested up to: 4.7
+Stable tag: 3.9.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -40,10 +40,11 @@ You can also purchase the premium or enterprise versions of Google Drive Embedde
 
 The **Premium version** contains some important extra features:
 
-* Google Calendars: pick from your Google Calendars and provide download links to ICAL or XML, or embed them directly in your site.
-* Google Docs export: provide links to downloadable versions of Google Docs, e.g. Spreadsheets exported as PDF or Excel.
+* Browse My Drive, Recent Files, Starred, and Shared With Me tabs to locate Drive files the way you're used to.
 * Embed Folders: simply keep your Google Drive folder up-to-date with your files, and your staff or website visitors will always be able to view a list of the latest documents.
 * Embed Images, Videos, and Forms: serve them directly from Google Drive, respecting your Google sharing settings.
+* Google Calendars: pick from your Google Calendars and provide download links to ICAL or XML, or embed them directly in your site.
+* Google Docs export: provide links to downloadable versions of Google Docs, e.g. Spreadsheets exported as PDF or Excel.
 * Support and updates for one year.
 
 [Premium - See details and purchase](http://wp-glogin.com/drive/?utm_source=Drive%20ReadmePromo&utm_medium=freemium&utm_campaign=Freemium)
@@ -64,13 +65,14 @@ It also contains all the features of the basic and premium versions.
 
 Google Drive document embedding and one-click login will work for the following domains and user accounts:
 
-*  Google Apps for Work
-*  Google Apps for Business
-*  Google Apps for Education
-*  Google Apps for Non-profits
+*  G Suite Basic (Google Apps for Work)
+*  G Suite Business (Google Apps Unlimited for Work)
+*  G Suite for Education (Google Apps for Education)
+*  G Suite for Non-profits (Google Apps for Non-profits)
+*  G Suite for Government (Google Apps for Government)
 *  Personal gmail.com and googlemail.com emails
 
-Google Apps Login plugin setup requires you to have admin access to any Google Apps domain, or a regular Gmail account, to register and
+Google Apps Login plugin setup requires you to have admin access to any G Suite domain (formerly Google Apps), or a regular Gmail account, to register and
 obtain two simple codes from Google.
 
 = Google Apps Login =
@@ -82,7 +84,7 @@ they can simply click their way through the Wordpress login screen - no username
 
 Full support and premium features are also available for purchase:
 
-Eliminate the need for Google Apps domain admins to  separately manage WordPress user accounts, and get peace 
+Eliminate the need for G Suite / Google Apps domain admins to  separately manage WordPress user accounts, and get peace
 of mind that only authorized employees have access to the organizations's websites and intranet.
 
 **See [http://wp-glogin.com/](http://wp-glogin.com/?utm_source=Drive%20Readme&utm_medium=freemium&utm_campaign=Freemium)**
@@ -342,6 +344,19 @@ Please get in touch if you would like to make suggestions for further CSS config
 
 
 == Changelog ==
+
+= 3.9.2 =
+
+Fix to match a change made by Google in the way their API works.
+
+= 3.9.1 =
+
+Some users were seeing warning messages about a missing variable - now fixed.
+
+= 3.9 =
+
+Updated readme to reflect new G Suite naming.
+Some internal code refactoring bringing up to date with Premium/Enterprise versions.
 
 = 3.8.5 =
 
