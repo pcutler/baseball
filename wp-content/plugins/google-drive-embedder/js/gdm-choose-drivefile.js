@@ -256,7 +256,7 @@ var gdmDriveMgr = (function($) {
 
                 // Send to editor
                 window.send_to_editor('[google-drive-embed url="' + url + '" title="'
-                    + this.stripQuots(links.title) + '"'
+                    + this.escapeHTML(links.title) + '"'
                     + ' icon="' + icon + '"'
                     + extraattrs
                     + ' style="' + linkStyle + '"]');
@@ -358,18 +358,16 @@ var gdmDriveMgr = (function($) {
             ">": "&gt;",
             '"': '&quot;',
             "'": '&#39;',
-            "/": '&#x2F;'
+            "/": '&#x2F;',
+            "[": '&#91;',
+            "]": '&#93;'
         },
 
         escapeHTML: function (str) {
             var self = this;
-            return String(str).replace(/[&<>"'\/]/g, function (s) {
+            return String(str).replace(/[&<>\]\["'\/]/g, function (s) {
                 return self.entityMap[s];
             });
-        },
-
-        stripQuots: function (str) {
-            return String(str).replace(/["]/g, "'");
         },
 
         showMoreOptions: function () {
