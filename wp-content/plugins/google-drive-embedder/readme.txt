@@ -3,7 +3,7 @@ Contributors: danlester
 Tags: drive, google, document, google apps, g suite, google drive, sso, auth, intranet, embed
 Requires at least: 3.5
 Tested up to: 4.7
-Stable tag: 3.9.2
+Stable tag: 3.9.7
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -344,6 +344,10 @@ Please get in touch if you would like to make suggestions for further CSS config
 
 
 == Changelog ==
+
+= 3.9.7 =
+
+Some file titles were not being escaped correctly ([ and ] characters) so could cause WordPress to parse the shortcode incorrectly.
 
 = 3.9.2 =
 
