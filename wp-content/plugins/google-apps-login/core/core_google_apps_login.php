@@ -1219,7 +1219,13 @@ class core_google_apps_login {
 		$client->setApplicationName("Wordpress Site");
 		return $client;
 	}
-	
+
+	public function get_sa_admin_email() {
+		$options = $this->get_option_galogin();
+		return isset($options['ga_domainadmin']) ? $options['ga_domainadmin'] : '';
+	}
+
+
 	// PLUGINS PAGE
 	
 	public function ga_plugin_action_links( $links, $file ) {

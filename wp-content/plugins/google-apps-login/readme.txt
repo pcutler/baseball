@@ -1,9 +1,9 @@
 === Plugin Name ===
 Contributors: danlester
 Tags: login, google, authentication, oauth, google login, google apps, g suite, sso, single-sign-on, auth, intranet
-Requires at least: 3.7
+Requires at least: 4.0
 Tested up to: 4.7
-Stable tag: 2.10.5
+Stable tag: 3.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -38,12 +38,9 @@ You can also see logs of accounts created and roles changed by the plugin.
 
 = Extensible Platform =
 
-Google Apps Login allows you to centralize your site's Google functionality and build your own extensions, or use
-third-party extensions, which require no configuration themselves and share the same user authentication and 
-permissions that users already allowed for Google Apps Login itself.
+Google Apps Login allows you to centralize your site's Google functionality and build your own extensions, or use third-party extensions, which require no configuration themselves and share the same user authentication and permissions that users already allowed for Google Apps Login itself.
 
-Using our platform, your website appears to Google accounts as one unified 'web application', making it more secure 
-and easier to manage.
+Using our platform, your website appears to Google accounts as one unified 'web application', making it more secure and easier to manage.
 
 [Google Drive Embedder](http://wp-glogin.com/wpgoogledriveembedder) is an extension plugin allowing
 users to browse for Google Drive documents to embed directly in their posts or pages.
@@ -67,9 +64,7 @@ One-click login will work for the following domains and user accounts:
 *  G Suite for Government (Google Apps for Government)
 *  Personal gmail.com and googlemail.com emails
 
-Google Apps Login uses the latest secure OAuth2 authentication recommended by Google. Other 3rd party authentication 
-plugins may allow you to use your Google username and password to login, but they do not do this securely unless 
-they also use OAuth2. This is discussed further in the [FAQ](http://wordpress.org/plugins/google-apps-login/faq/).
+Google Apps Login uses the latest secure OAuth2 authentication recommended by Google. Other 3rd party authentication plugins may allow you to use your Google username and password to login, but they do not do this securely unless they also use OAuth2. This is discussed further in the [FAQ](http://wordpress.org/plugins/google-apps-login/faq/).
 
 = Translations =
 
@@ -87,96 +82,75 @@ This plugin currently operates in the following languages:
 * Italian (it_IT) - translated by Giorgio Draghetti of [tipinoncomuni](http://tipinoncomuni.it/)
 * Persian (fa_IR) - translated by [Saeed1000](https://profiles.wordpress.org/saeed1000/)
 * Belarussian (be_BY) - translated by Natasha Dyatko of [UStarCash](https://www.ustarcash.com/)
+* Indonesian (id_ID) - translated by Jordan Silaen of [ChameleonJohn.com](http://ChameleonJohn.com/)
 
-We welcome volunteers to translate into their own language. If you would like to contribute a translation, please
-click Translate Google Apps Login on the right hand side of this page.
+We welcome volunteers to translate into their own language. If you would like to contribute a translation, please click Translate under Contributors & Developers below.
 
 = Website and Upgrades =
 
-Please see our website [http://wp-glogin.com/](http://wp-glogin.com/?utm_source=Login%20Readme%20Website&utm_medium=freemium&utm_campaign=Freemium) for more information about this free plugin 
-and extra features available in our Premium and Enterprise upgrades, plus support details, other plugins, and useful guides for admins of
-WordPress sites and Google Apps.
+Please see our website [http://wp-glogin.com/](http://wp-glogin.com/?utm_source=Login%20Readme%20Website&utm_medium=freemium&utm_campaign=Freemium) for more information about this free plugin and extra features available in our Premium and Enterprise upgrades, plus support details, other plugins, and useful guides for admins of WordPress sites and Google Apps.
 
 The [Premium and Enterprise versions](http://wp-glogin.com/glogin/?utm_source=Login%20Readme%20PremEnt&utm_medium=freemium&utm_campaign=Freemium) eliminate the need to manage user accounts in your WordPress site - everything is synced from Google Apps instead.
 
-If you are building your organization's intranet on WordPress, try out our 
-[All-In-One Intranet plugin](http://wp-glogin.com/intranet/?utm_source=Login%20Readme%20AIOI&utm_medium=freemium&utm_campaign=Freemium).
+If you are building your organization's intranet on WordPress, try out our [All-In-One Intranet plugin](http://wp-glogin.com/intranet/?utm_source=Login%20Readme%20AIOI&utm_medium=freemium&utm_campaign=Freemium).
 
 == Screenshots ==
 
 1. User login screen can work as normal or via Google's authentication system
-2. Admin obtains two simple codes from Google to set up - easy instructions to follow 
+2. Login to Google account - only if not already logged in to Google within the browser
+3. First time only grant permissions for Google to connect to the WordPress site
+4. Admin obtains two simple codes from Google to set up - easy instructions to follow 
 
 == Frequently Asked Questions ==
 
 = How can I obtain support for this product? =
 
-Full support is available if you purchase the appropriate license from the author via:
-[http://wp-glogin.com/glogin/](http://wp-glogin.com/glogin/?utm_source=Login%20Readme%20Premium&utm_medium=freemium&utm_campaign=Freemium)
+Full support is available if you purchase the appropriate license from the author via: [http://wp-glogin.com/glogin/](http://wp-glogin.com/glogin/?utm_source=Login%20Readme%20Premium&utm_medium=freemium&utm_campaign=Freemium)
 
-Please feel free to email [contact@wp-glogin.com](mailto:contact@wp-glogin.com) with any questions,
-as we may be able to help, but you may be required to purchase a support license if the problem
-is specific to your installation or requirements.
+Please feel free to email [contact@wp-glogin.com](mailto:contact@wp-glogin.com) with any questions, as we may be able to help, but you may be required to purchase a support license if the problem is specific to your installation or requirements.
 
-We may occasionally be able to respond to support queries posted on the 'Support' forum here on the wordpress.org
-plugin page, but we recommend sending us an email instead if possible.
+We may occasionally be able to respond to support queries posted on the 'Support' forum here on the wordpress.org plugin page, but we recommend sending us an email instead if possible.
 
 = Is login restricted to the G Suite domain I use to set up the plugin? =
 
-No, once you set up the plugin, any WordPress accounts whose email address corresponds to *any* Google account, 
-whether on a different G Suite domain or even a personal gmail.com account, will be able to use 'Login with
-Google' to easily connect to your WordPress site.
+No, once you set up the plugin, any WordPress accounts whose email address corresponds to *any* Google account, whether on a different G Suite domain or even a personal gmail.com account, will be able to use 'Login with Google' to easily connect to your WordPress site.
 
-However, our [premium plugin](http://wp-glogin.com/glogin/?utm_source=Login%20Readme%20FAQ&utm_medium=freemium&utm_campaign=Freemium) has features that greatly simplify
-your WordPress user management if your WordPress users are mostly on the same G Suite domain(s).
+However, our [premium plugin](http://wp-glogin.com/glogin/?utm_source=Login%20Readme%20FAQ&utm_medium=freemium&utm_campaign=Freemium) has features that greatly simplify your WordPress user management if your WordPress users are mostly on the same G Suite domain(s).
 
 = Does the plugin work with HTTP or HTTPS login pages? =
 
 The plugin will work whether your site is configured for HTTP or HTTPS.
 
-However, you may have configured your site to run so that the login pages 
-can be accessed by *either* HTTP *or* HTTPS. In that case, you may run into problems. 
+However, you may have configured your site to run so that the login pages can be accessed by *either* HTTP *or* HTTPS. In that case, you may run into problems. 
 We recommend that you set [FORCE_SSL_ADMIN](http://codex.wordpress.org/Administration_Over_SSL) 
 to true. This will ensure that all users are consistently using HTTPS
 for login.
 
-You may then need to ensure the Redirect URL and Web Origin in the Google Cloud Console are
-set as HTTPS (this will make sense if you follow the installation instructions again).
+You may then need to ensure the Redirect URL and Web Origin in the Google Cloud Console are set as HTTPS (this will make sense if you follow the installation instructions again).
 
-If for some reason you cannot set FORCE_SSL_ADMIN, then instead you can add two URLs to the Google
-Cloud Console for each entry, e.g. Redirect URL = http://wpexample.com/wp-login.php, and
-then add another one for https://wpexample.com/wp-login.php. Same idea for Web Origin.
+If for some reason you cannot set FORCE_SSL_ADMIN, then instead you can add two URLs to the Google Cloud Console for each entry, e.g. Redirect URL = http://wpexample.com/wp-login.php, and then add another one for https://wpexample.com/wp-login.php. Same idea for Web Origin.
 
 = Does the plugin work on Multisite? =
 
-It is written, tested, and secure for multisite WordPress, both for subdirectories and subdomains, and *must* be activated
-network-wide for security reasons.
+It is written, tested, and secure for multisite WordPress, both for subdirectories and subdomains, and *must* be activated network-wide for security reasons.
 
-There are many different possible configurations of multisite WordPress, however, so you must test carefully if you 
-have any other plugins or special setup.
+There are many different possible configurations of multisite WordPress, however, so you must test carefully if you have any other plugins or special setup.
 
-In a multisite setup, you will see an extra option in Settings -> Google Apps Login, named 'Use sub-site specific callback 
-from Google'. Read details in the configuration instructions (linked from the Settings page). This setting will need to be 
-ON if you are using any domain mapping plugin, and extra Redirect URIs will need to be registered in Google Cloud Console.
+In a multisite setup, you will see an extra option in Settings -> Google Apps Login, named 'Use sub-site specific callback from Google'. Read details in the configuration instructions (linked from the Settings page). This setting will need to be ON if you are using any domain mapping plugin, and extra Redirect URIs will need to be registered in Google Cloud Console.
 
 = Is it secure? =
 
-Yes, and depending on your setup, it can be much more secure than just using
-WordPress usernames and passwords.
+Yes, and depending on your setup, it can be much more secure than just using WordPress usernames and passwords.
 
-However, the author does not accept liability or offer any guarantee,
-and it is your responsibility to ensure that your site is secure in the way you require.
+However, the author does not accept liability or offer any guarantee, and it is your responsibility to ensure that your site is secure in the way you require.
 
-In particular, other plugins may conflict with each other, and different WordPress versions and configurations
-may render your site insecure.
+In particular, other plugins may conflict with each other, and different WordPress versions and configurations may render your site insecure.
 
 = Does it conflict with any other plugins? =
 
-Sometimes conflicts can arise. We have built workarounds for some problems, and would always appreciate your feedback
-to resolve any issues you might encounter yourself.
+Sometimes conflicts can arise. We have built workarounds for some problems, and would always appreciate your feedback to resolve any issues you might encounter yourself.
 
-One known issue is with iThemes Security: the settings 'filter suspicious query strings' and 'filter long URL strings' can 
-both cause intermittent conflicts and should be turned off if you are happy with the implications.
+One known issue is with iThemes Security: the settings 'filter suspicious query strings' and 'filter long URL strings' can both cause intermittent conflicts and should be turned off if you are happy with the implications.
 
 My Private Site - Try setting the My Private Site option "Omit ?redirect_to= from URL (this option is recommended for Custom Login pages)".
 
@@ -184,18 +158,13 @@ WP Email Login - incompatible with Google Apps Login
 
 = How does it compare to other 3rd party auth plugins? =
 
-Google Apps Login uses the latest secure OAuth2 authentication recommended by Google. Other 3rd party authentication plugins 
-may allow you to use your Google username and password to login, but they do not always do this securely:
+Google Apps Login uses the latest secure OAuth2 authentication recommended by Google. Other 3rd party authentication plugins may allow you to use your Google username and password to login, but they do not always do this securely:
 
-*  Other plugins: Users' passwords may be handled by your blog's server, potentially unencrypted. If these are compromised,
-hackers would be able to gain access to your Google email accounts! This includes all 
-[G Suite apps](https://gsuite.google.com/products/) (Gmail, Drive, Calendar
-etc), and any other services which use your Google account to login.
+*  Other plugins: Users' passwords may be handled by your blog's server, potentially unencrypted. If these are compromised, hackers would be able to gain access to your Google email accounts! This includes all 
+[G Suite apps](https://gsuite.google.com/products/) (Gmail, Drive, Calendar etc), and any other services which use your Google account to login.
 
-*  This plugin: Users' passwords are only ever submitted to Google itself, then Google is asked to authenticate the user to
-your WordPress site. This means Multi-factor Authentication can still be used (if set up on your Google account). 
-Your website only requires permission to authenticate the user and obtain basic profile data - it can never have access to 
-your emails and other data.
+*  This plugin: Users' passwords are only ever submitted to Google itself, then Google is asked to authenticate the user to your WordPress site. This means Multi-factor Authentication can still be used (if set up on your Google account). 
+Your website only requires permission to authenticate the user and obtain basic profile data - it can never have access to your emails and other data.
 
 = What are the system requirements? =
 
@@ -220,15 +189,17 @@ Easiest way:
 
 If you cannot install from the WordPress plugins directory for any reason, and need to install from ZIP file:
 
-1. Upload `googleappslogin` directory and contents to the `/wp-content/plugins/` directory, or upload the ZIP file directly in
-the Plugins section of your Wordpress admin
+1. Upload `googleappslogin` directory and contents to the `/wp-content/plugins/` directory, or upload the ZIP file directly in the Plugins section of your Wordpress admin
 1. Follow the instructions from step 4 above
 
 Personalized instructions to configure the plugin by registering your site with Google Apps are linked from 
-the WordPress admin panel once you have activated the plugin. For a (non-personalized) preview of these instructions 
-please [click here](http://wp-glogin.com/installing-google-apps-login/basic-setup/).
+the WordPress admin panel once you have activated the plugin. For a (non-personalized) preview of these instructions please [click here](http://wp-glogin.com/installing-google-apps-login/basic-setup/).
 
 == Changelog ==
+
+= 3.0 =
+
+Internal changes to Google Client library. Essential for the latest versions of some extension plugins such as Google Drive Embedder.
 
 = 2.10.5 =
 
