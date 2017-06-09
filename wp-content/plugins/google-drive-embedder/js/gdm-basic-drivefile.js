@@ -15,9 +15,11 @@ gdmDriveServiceHandler.prototype.getAvailable = function() {
 gdmDriveServiceHandler.prototype.getRequest = function(params) {
     params.trashed = false;
     return gapi.client.request({
-        'path': '/drive/v2/files',
+        'path': '/drive/v3/files',
         'corpus': 'DEFAULT',
-        'params': params
+        'fields': 'kind, nextPageToken, files(id, name, kind, viewedByMeTime, modifiedTime, owners, mimeType, webContentLink, webViewLink, imageMediaMetadata, iconLink, teamDriveId, size)',
+        'params': params,
+        includeTeamDriveItems: true
     });
 };
 
@@ -29,65 +31,21 @@ gdmDriveServiceHandler.prototype.getAllowSearch = function() {
     return true;
 };
 
-gdmDriveServiceHandler.prototype.getUrlsAndReasons = function(drivefile) {
-    if (drivefile.kind != 'drive#file') {
-        return {};
-    }
-
-    var links = {
-        id : drivefile.id,
-        embed : { url : '', reason : '' },
-        viewer : { url : drivefile.alternateLink ? drivefile.alternateLink : '', reason : '' },
-        download : { url : drivefile.webContentLink ? drivefile.webContentLink : '' , reason : '' },
-        title : drivefile.title,
-        icon: { url : drivefile.iconLink }
-    };
-
-    if (drivefile.mimeType == 'application/vnd.google-apps.folder' || drivefile.mimeType == 'application/vnd.google-apps.form' || drivefile.mimeType.match(/^image\//)) {
-        links.embed.reason = 'PREMIUM';
-        links.download.reason = 'FOLDERDOWNLOAD';
-    }
-    else {
-
-        if (drivefile.embedLink) {
-            links.embed.url = drivefile.embedLink;
-        }
-        else {
-
-            if (drivefile.alternateLink) {
-                links.embed.url = drivefile.alternateLink.replace(/\/(edit|view)(\?|$)/g, '/preview?');
-            }
-            else if (drivefile.webContentLink) {
-                // Old-style Google Doc Viewer as fallback
-                links.embed.url = '//docs.google.com/viewer?embedded=true&url=' + encodeURIComponent(drivefile.webContentLink);
-            }
-            else {
-                links.embed.reason = 'WEBCONTENT';
-            }
-        }
-    }
-
-    // Video needs special attention
-    if (drivefile.mimeType.match(/^video\//) && drivefile.alternateLink) {
-        links.embed.url = '';
-        links.embed.reason = "PREMIUM";
-    }
-
-    if (links.download.url == '' && drivefile.exportLinks) {
-        links.download.reason = "PREMIUM";
-    }
-
+gdmDriveServiceHandler.prototype._getFolderUrlsAndReasons = function(links, drivefile) {
+    links.embed.reason = 'PREMIUM';
+    links.embed.url = '';
+    links.download.reason = 'FOLDERDOWNLOAD';
     return links;
 };
 
 gdmDriveServiceHandler.prototype.getReasonText = function(reason) {
     switch (reason) {
-        case 'SHARE':
-            return 'To enable embedding, set Sharing to \'Anyone with the link can view\'';
+        case 'NODOWNLOAD':
+            return 'It is not possible to download native Google documents';
             break;
 
         case 'PREMIUM':
-            return 'Please purchase a paid version to enable this file type '
+            return 'Embedded folders in Premium/Enterprise versions only '
                 +'(<a href="http://wp-glogin.com/drive/?utm_source=Embed%20Reason&utm_medium=freemium&utm_campaign=Drive" '
                 +'target="_blank">Find out more</a>)';
             break;

@@ -1,9 +1,9 @@
 === Plugin Name ===
 Contributors: danlester
 Tags: drive, google, document, google apps, g suite, google drive, sso, auth, intranet, embed
-Requires at least: 3.5
-Tested up to: 4.7
-Stable tag: 3.9.7
+Requires at least: 4.0
+Tested up to: 4.8
+Stable tag: 4.0
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -17,9 +17,9 @@ Documents can be embedded in-line, using Google's read-only interactive viewer f
 
 You will need to set document sharing settings to ensure your website viewers have access to view your documents (e.g. at least 'anyone with the link can view' to be visible to all visitors).
 
-**This plugin requires that you also install the free (or premium) version of the popular [Google Apps Login](http://wp-glogin.com/wpgoogleappslogin) plugin**
+**This plugin requires that you also install the free (or premium/enterprise) version of the popular [Google Apps Login](http://wp-glogin.com/wpgoogleappslogin) plugin**
 
-Displays many file types such as PDF, Word DOC, ZIP etc plus native Google docs (Spreadsheet, Drawing, etc). Step through a list of your Drive files or search to find the one you're looking for.
+Displays many file types such as PDF, Word DOC, ZIP, Videos, Images etc plus native Google docs (Spreadsheet, Drawing, Forms, etc). Step through a list of your Drive files or search to find the one you're looking for.
 
 Choose from:
  
@@ -30,7 +30,7 @@ Choose from:
 Useful for public websites or private intranets (all visitors should be able to view files as long as sharing settings are 'anyone with the link can view' or higher in Google Drive). 
 Works on all WordPress installations including multisite networks.
 
-Please note that to embed folders, forms, images, and videos you will require the Premium or Enterprise version of this plugin.
+Please note that to embed folders you will require the Premium or Enterprise version of this plugin.
 
 [youtube http://www.youtube.com/watch?v=wcpjcFJIOko]
 
@@ -42,9 +42,7 @@ The **Premium version** contains some important extra features:
 
 * Browse My Drive, Recent Files, Starred, and Shared With Me tabs to locate Drive files the way you're used to.
 * Embed Folders: simply keep your Google Drive folder up-to-date with your files, and your staff or website visitors will always be able to view a list of the latest documents.
-* Embed Images, Videos, and Forms: serve them directly from Google Drive, respecting your Google sharing settings.
 * Google Calendars: pick from your Google Calendars and provide download links to ICAL or XML, or embed them directly in your site.
-* Google Docs export: provide links to downloadable versions of Google Docs, e.g. Spreadsheets exported as PDF or Excel.
 * Support and updates for one year.
 
 [Premium - See details and purchase](http://wp-glogin.com/drive/?utm_source=Drive%20ReadmePromo&utm_medium=freemium&utm_campaign=Freemium)
@@ -57,7 +55,7 @@ This means you no longer need to manage Drive and your Intranet as two completel
 It also introduces advanced *interactive embedded folders*, where users can preview files and drill-down into subfolders all without 
 leaving your site.
 
-It also contains all the features of the basic and premium versions.
+It also contains all the features of the basic and premium versions, plus support for *Team Drives*.
 
 [Enterprise - Find out more](http://wp-glogin.com/drive/enterprise/?utm_source=Drive%20ReadmeEntPromo&utm_medium=freemium&utm_campaign=Freemium)
 
@@ -224,7 +222,7 @@ You can purchase a license here:
 = What are the system requirements? =
 
 *  PHP 5.2.x or higher with Curl and JSON extensions
-*  Wordpress 3.3 or above
+*  Wordpress 4.0 or above
 
 And you will need a Google account to set up the Google Apps Login plugin.
 
@@ -344,6 +342,12 @@ Please get in touch if you would like to make suggestions for further CSS config
 
 
 == Changelog ==
+
+= 4.0 =
+
+Free version now supports videos, images, and forms.
+
+Changed to Google Drive API v3.
 
 = 3.9.7 =
 

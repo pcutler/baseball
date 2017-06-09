@@ -17,6 +17,7 @@ var gdmDriveMgr = (function($) {
 
         _serviceHandlerRegistry : {
             'allfiles' : gdmDriveServiceHandler,
+            'teamdrives' : gdmDriveServiceHandler,
             'drive' : gdmDriveServiceHandler,
             'recent' : gdmDriveServiceHandler,
             'shared' : gdmDriveServiceHandler,
@@ -39,8 +40,9 @@ var gdmDriveMgr = (function($) {
         makeApiCall: function () {
 
             if (!this.getServiceHandler().getAvailable()) {
-                this.fileBrowser.displayMessage('<p>Purchase the Premium or Enterprise version of Google Drive Embedder: <br />- Locate your files via <i>My Drive</i><br />'
-                    +'- Embed Calendars and new Drive file types<br /> '
+                this.fileBrowser.displayMessage('<p>Purchase the Premium or Enterprise version of Google Drive Embedder: <br />- Locate your files via <i>My Drive</i>, <i>Starred</i>, <i>Shared with Me</i> etc<br />'
+                    +'- Embed Calendars and iframe folders<br /> '
+                    +'- Browse and search your Team Drives (Enterprise)<br /> '
                     +'- Interactive embedded folders including drag-and-drop to upload (Enterprise)<br /> '
                     + '<a href="http://wp-glogin.com/drive/?utm_source=Calendar%20Reason&utm_medium=freemium&utm_campaign=Drive" target="_blank">Find out more</a></p>'
                 );

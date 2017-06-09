@@ -79,16 +79,83 @@ gdmBaseServiceHandler.prototype.getErrorHTML = function(error) {
     return 'No error provided';
 };
 
+gdmBaseServiceHandler.prototype.getUrlsAndReasons = function(drivefile) {
+    var links = {
+        id : drivefile.id,
+        embed : { url : '', reason : '' },
+        viewer : { url : drivefile.webViewLink ? drivefile.webViewLink : '', reason : '' },
+        download : { url : drivefile.webContentLink ? drivefile.webContentLink : '' , reason : '' },
+        title : drivefile.name,
+        icon: { url : drivefile.iconLink }
+    };
+
+    if (drivefile.embedLink) {
+        links.embed.url = drivefile.embedLink;
+    }
+    else {
+        if (drivefile.webViewLink) {
+            links.embed.url = drivefile.webViewLink.replace(/\/(edit|view)(\?|$)/g, '/preview?');
+        }
+        else if (drivefile.webContentLink) {
+            // Old-style Google Doc Viewer as fallback
+            links.embed.url = '//docs.google.com/viewer?embedded=true&url=' + encodeURIComponent(drivefile.webContentLink);
+        }
+        else {
+            links.embed.reason = 'WEBCONTENT';
+        }
+    }
+
+    if (!links.download.url) {
+        links.download.reason = 'NODOWNLOAD';
+    }
+
+    if (drivefile.mimeType == 'application/vnd.google-apps.folder' || drivefile.kind == 'drive#teamDrive') {
+
+        links = this._getFolderUrlsAndReasons(links, drivefile);
+
+    } else if (drivefile.mimeType == 'application/vnd.google-apps.form') {
+        /*
+         * Map e.g. https://docs.google.com/a/danlester.com/forms/d/<driveid>/edit?usp=drivesdk
+         * to       https://docs.google.com/a/danlester.com/forms/d/<driveid>/viewform?embedded=true
+         */
+        links.embed.url = drivefile.webViewLink.replace(/\/(edit|view)(\?|$)/g, '/viewform?embedded=true&');
+        links.embed.reason = '';
+    } else if (drivefile.mimeType && drivefile.mimeType.match(/^image\//) && drivefile.webContentLink) {
+        links.embed.url = drivefile.webContentLink;
+        links.extra = 'image';
+        if (drivefile.imageMediaMetadata) {
+            if (drivefile.imageMediaMetadata.width) {
+                links.width = drivefile.imageMediaMetadata.width;
+            }
+            if (drivefile.imageMediaMetadata.height) {
+                links.height = drivefile.imageMediaMetadata.height;
+            }
+        }
+    }
+
+    // Video needs special attention
+    if (drivefile.mimeType && drivefile.mimeType.match(/^video\//) && drivefile.webViewLink) {
+        links.embed.url = drivefile.webViewLink.replace(/\/(edit|view)(\?|$)/g, '/preview?');
+        links.embed.reason = '';
+    }
+
+    return links;
+};
+
 // request based on a token for a page, or undefined for default.
 // Returns object containing {error: errors object} or
 // [] containing drive files / calendar data
 gdmBaseServiceHandler.prototype.makeAPICall = function (current_search_query, thisPageToken, callback) {
-    var params = {maxResults: 8};
+    var params = {
+        pageSize: 8,
+        fields: 'kind, nextPageToken, files(id, name, kind, viewedByMeTime, modifiedTime, owners, mimeType, webContentLink, webViewLink, imageMediaMetadata, iconLink, teamDriveId, size)'
+    };
+
     if (thisPageToken) {
         params.pageToken = thisPageToken;
     }
     if (current_search_query != "") {
-        params.q = "title contains '" + current_search_query + "' and trashed = false";
+        params.q = "name contains '" + current_search_query + "' and trashed = false";
     }
     else {
         params.q = "trashed = false";
@@ -97,7 +164,7 @@ gdmBaseServiceHandler.prototype.makeAPICall = function (current_search_query, th
 
     var self = this;
     restRequest.execute(function (resp) {
-        if (resp.error || !resp.items) {
+        if (resp.error || (!resp.files && !resp.items)) {
             callback({error: resp.error});
         }
         else {
@@ -117,10 +184,12 @@ gdmBaseServiceHandler.prototype.makeAPICall = function (current_search_query, th
                 newPrevPageToken = self.gdmPrevTokenStore[thisPageToken];
             }
 
+            var items = resp.files ? resp.files : resp.items;
+
             var linkslist = [];
-            if (resp.items.length > 0) {
-                for (var i = 0; i < resp.items.length; ++i) {
-                    var drivefile = resp.items[i];
+            if (items.length > 0) {
+                for (var i = 0; i < items.length; ++i) {
+                    var drivefile = items[i];
                     var links = self.getUrlsAndReasons(drivefile);
                     self.storeFileLinks(links.id, links);
                     linkslist.push(links);

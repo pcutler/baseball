@@ -4,7 +4,7 @@
  * Plugin Name: Google Drive Embedder
  * Plugin URI: http://wp-glogin.com/drive
  * Description: Easily browse for Google Drive documents and embed directly in your posts and pages. Extends the popular Google Apps Login plugin so no extra user authentication (or admin setup) is required. 
- * Version: 3.9.7
+ * Version: 4.0
  * Author: Dan Lester
  * Author URI: http://wp-glogin.com/
  * License: GPL3
@@ -20,7 +20,7 @@ else {
 
 class gdm_basic_google_drive_embedder extends core_google_drive_embedder {
 
-	protected $PLUGIN_VERSION = '3.9.7';
+	protected $PLUGIN_VERSION = '4.0';
 
 	// Singleton
 	private static $instance = null;
@@ -55,11 +55,8 @@ class gdm_basic_google_drive_embedder extends core_google_drive_embedder {
 		<ul>
 			<li><b>My Drive:</b> locate files to embed by browsing your Drive, searching, or looking through starred/recent files - just like on Drive itself.</li>
 			<li><b>Embed Folders:</b> simply keep your Google Drive folder up-to-date with your files, and your staff or website visitors will always be able to view a list of the latest documents.
-			(See <a href="http://wp-glogin.com/drive/folder-embed-example/?utm_source=Drive%20Settings%20FolderEg&utm_medium=freemium&utm_campaign=Drive">example</a> 
-			of the iframe embed offered by the Premium version.) For more advanced folder integration please take a look at the Enterprise version.</li>
+			For more advanced folder integration please take a look at the Enterprise version.</li>
 			<li><b>Calendars:</b> pick from your Google Calendars and provide download links to ICAL or XML, or embed them directly in your site.</li>
-			<li><b>Google Docs export:</b> provide links to downloadable versions of Google Docs, e.g. Spreadsheets exported as PDF or Excel.</li>
-    		<li><b>Embed Images:</b> serve them directly from Google Drive, respecting your Google sharing settings.</li>
     		<li><b>Support and updates for one year.</b></li>
     		
     		<p><a href="http://wp-glogin.com/drive/?utm_source=Drive%20Settings&utm_medium=freemium&utm_campaign=Drive" target="_blank">Click here for details or purchase</a></p>
@@ -84,10 +81,12 @@ class gdm_basic_google_drive_embedder extends core_google_drive_embedder {
 		into your WordPress site - plus much more advanced folder embedding. This starts with much slicker styling. 
 		Instead of embedding folders as iframes, they are built directly into your WordPress pages, meaning users can
 		click into subfolders and preview files without leaving your website.</p>
+
+        <p>Supports Google's new <b>Team Drives</b>.</p>
 		
 		<b>Includes support and updates for one year.</b>
 		
-		<p><a href="http://wp-glogin.com/drive/enterprise/?utm_source=Drive%20Settings%20Enterprise&utm_medium=freemium&utm_campaign=Drive" target="_blank">Click here for details or purchase</a></p>
+		<p><a href="http://wp-glogin.com/drive/?utm_source=Drive%20Settings%20Enterprise&utm_medium=freemium&utm_campaign=Drive" target="_blank">Click here for details or purchase</a></p>
 		<?php
 	}
 	

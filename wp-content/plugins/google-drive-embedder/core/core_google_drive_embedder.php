@@ -76,28 +76,20 @@ class core_google_drive_embedder {
 	protected function get_extra_js_name() {
 		return '';
 	}
+
+	protected function extra_drive_tabs() {
+		?>
+        <a href="#allfiles" id="allfiles-tab" class="nav-tab nav-tab-active">All Files</a>
+        <a href="#calendar" id="calendar-tab" class="nav-tab">+</a>
+		<?php
+	}
 	
 	public function gdm_admin_footer() {
 		?>
 		<div id="gdm-choose-drivefile" style="display: none;">
 			<h3 id="gdm-tabs" class="nav-tab-wrapper">
 			<?php
-			if ($this->get_extra_js_name() == 'basic') {
-			?>
-				<a href="#allfiles" id="allfiles-tab" class="nav-tab nav-tab-active">All Files</a>
-                <a href="#calendar" id="calendar-tab" class="nav-tab">+</a>
-			<?php
-			}
-			else {
-			?>
-				<a href="#drive" id="drive-tab" class="nav-tab nav-tab-active">My Drive</a>
-				<a href="#shared" id="shared-tab" class="nav-tab">Shared</a>
-				<a href="#recent" id="recent-tab" class="nav-tab">Recent</a>
-				<a href="#starred" id="starred-tab" class="nav-tab">Starred</a>
-				<a href="#allfiles" id="allfiles-tab" class="nav-tab">All Files</a>
-				<a href="#calendar" id="calendar-tab" class="nav-tab">Calendar</a>
-			<?php
-			}
+                $this->extra_drive_tabs();
 			?>
 			</h3>
 			
@@ -248,6 +240,8 @@ class core_google_drive_embedder {
 		
 		$linkstyle = isset($atts['style']) && in_array($atts['style'], Array('normal', 'plain', 'download', 'embed')) 
 						? $atts['style'] : 'normal';
+		$extra = isset($atts['extra']) ? $atts['extra'] : '';
+
 		$returnhtml = '';
 		switch ($linkstyle) {
 			case 'normal':
@@ -269,9 +263,23 @@ class core_google_drive_embedder {
 			case 'embed':
 				$width = isset($atts['width']) ? $atts['width'] : '100%';
 				$height = isset($atts['height']) ? $atts['height'] : '400';
-				$scrolling = isset($atts['scrolling']) && strtolower($atts['scrolling']) == 'yes' ? 'yes' : 'no';
+				$scrolling = isset($atts['scrolling']) && strtolower($atts['scrolling']) == 'no' ? 'no' : 'yes';
 				$allowfullscreen = isset($atts['allowfullscreen']) && strtolower($atts['allowfullscreen']) == 'no' ? '' : 'allowfullscreen';
 				$returnhtml = "<iframe width='${width}' height='${height}' frameborder='0' scrolling='${scrolling}' src='${url}' ${allowfullscreen}></iframe>";
+
+				if ($extra == 'image') {
+					$width = isset($atts['width']) ? $atts['width'] : '';
+					$height = isset($atts['height']) ? $atts['height'] : '';
+					$sizeattrs = '';
+					if ($width) {
+						$sizeattrs .= " width=\"${width}\"";
+					}
+					if ($height) {
+						$sizeattrs .= " height=\"${height}\"";
+					}
+					$returnhtml = "<img src=\"${url}\"${sizeattrs} />";
+                }
+
 				break;
 		}
 		if (!is_null($content)) {
