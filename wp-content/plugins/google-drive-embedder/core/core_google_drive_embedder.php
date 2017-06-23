@@ -511,7 +511,12 @@ class core_google_drive_embedder {
 
 
 	protected function add_actions() {
-		add_filter('gal_gather_scopes', Array($this, 'gdm_gather_scopes') );
+	    /* No longer want to request access to scopes through 'Login with Google'.
+        * Now wait until the user clicks 'Add Google File' or accesses a folder.
+        * This is best practice, and also defers any 'Invalid Scope' error further down the chain
+        * so it is clearly a 'Drive' issue.
+		* add_filter('gal_gather_scopes', Array($this, 'gdm_gather_scopes') );
+	    */
 		
 		add_shortcode( 'google-drive-embed', Array($this, 'gdm_shortcode_display_drivefile') );
 		

@@ -3,7 +3,7 @@ Contributors: danlester
 Tags: drive, google, document, google apps, g suite, google drive, sso, auth, intranet, embed
 Requires at least: 4.0
 Tested up to: 4.8
-Stable tag: 4.0
+Stable tag: 4.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -342,6 +342,11 @@ Please get in touch if you would like to make suggestions for further CSS config
 
 
 == Changelog ==
+
+= 4.1 =
+
+No longer asks user for Drive permissions when they 'Login with Google'. Instead, it asks for Drive
+permissions only when they come to interact with the Drive functionality (clicking 'Add Google File' for example).
 
 = 4.0 =
 
