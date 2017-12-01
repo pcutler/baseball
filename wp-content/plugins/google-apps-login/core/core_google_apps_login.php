@@ -425,7 +425,7 @@ class core_google_apps_login {
 		return $this->_final_redirect;
 	}
 	
-	public function ga_login_redirect($redirect_to, $request_from, $user) {
+	public function ga_login_redirect($redirect_to, $request_from='', $user=null) {
 		if ($user && !is_wp_error($user)) {
 			$final_redirect = $this->getFinalRedirect();
 			if ($final_redirect !== '') {

@@ -2,8 +2,8 @@
 Contributors: danlester
 Tags: login, google, authentication, oauth, google login, google apps, g suite, sso, single-sign-on, auth, intranet
 Requires at least: 4.0
-Tested up to: 4.7
-Stable tag: 3.0
+Tested up to: 4.9
+Stable tag: 3.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -32,7 +32,7 @@ of mind that only authorized employees have access to your organizations's websi
 
 The Premium version allows everyone in your G Suite (Google Apps) domain to login to WordPress - an account will be automatically created in WordPress if one doesn't already exist.
 
-Our Enterprise version goes further, allowing you to specify granular access and role controls based on Google Group membership.
+Our Enterprise version goes further, allowing you to specify granular access and role controls based on Google Group or Organizational Unit membership.
 You can also see logs of accounts created and roles changed by the plugin.
 
 
@@ -196,6 +196,11 @@ Personalized instructions to configure the plugin by registering your site with 
 the WordPress admin panel once you have activated the plugin. For a (non-personalized) preview of these instructions please [click here](http://wp-glogin.com/installing-google-apps-login/basic-setup/).
 
 == Changelog ==
+
+= 3.2 =
+
+Added workaround for incompatibility with WPMU Defender plugin's new 2FA feature.
+Updated compatibility with the upcoming WordPress 4.9 release.
 
 = 3.0 =
 
