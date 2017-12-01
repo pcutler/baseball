@@ -1,14 +1,14 @@
-# Translation of UpdraftPlus in Hindi
+# Translation of UpdraftPlus in Bulgarian
 # This file is distributed under the same license as the UpdraftPlus package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2016-06-09 09:21:11+0000\n"
+"PO-Revision-Date: 2017-10-09 11:44:16+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: GlotPress/2.2.2\n"
-"Language: hi_IN\n"
+"Language: bg\n"
 "Project-Id-Version: UpdraftPlus\n"
 
 #: src/methods/stream-base.php:288
@@ -133,7 +133,7 @@ msgstr[1] ""
 
 #: src/central/bootstrap.php:583
 msgid "Create another key"
-msgstr ""
+msgstr "Създай друг ключ"
 
 #: src/central/bootstrap.php:512
 msgid "UpdraftCentral dashboard connection details"
@@ -141,7 +141,7 @@ msgstr ""
 
 #: src/central/bootstrap.php:506
 msgid "Next"
-msgstr ""
+msgstr "Следващ"
 
 #: src/central/bootstrap.php:492
 msgid "an account"
@@ -177,7 +177,7 @@ msgstr ""
 
 #: src/admin.php:771
 msgid "Please enter a valid URL e.g http://example.com"
-msgstr ""
+msgstr "Моля въведете валиден адрес - пример http://example.com"
 
 #: src/addons/backblaze.php:588
 msgid "your Backblaze console"
@@ -221,11 +221,11 @@ msgstr ""
 
 #: src/addons/backblaze.php:394
 msgid "Account Key"
-msgstr ""
+msgstr "Ключ за Акаунта"
 
 #: src/addons/backblaze.php:393, src/addons/backblaze.php:574
 msgid "Account ID"
-msgstr ""
+msgstr "Акаунт ID"
 
 #: src/class-updraftplus.php:4450
 msgid "As long as your web hosting allows http (i.e. non-SSL access) or will forward requests to https (which is almost always the case), this is no problem. If that is not yet set up, then you should set it up, or use %s so that the non-https links are automatically replaced."
@@ -1132,7 +1132,7 @@ msgstr ""
 
 #: src/addons/migrator.php:2323, src/central/bootstrap.php:525
 msgid "recommended"
-msgstr "की सिफारिश की"
+msgstr ""
 
 #: src/addons/migrator.php:2323, src/central/bootstrap.php:525
 msgid "%s bytes"
@@ -1174,7 +1174,7 @@ msgstr ""
 
 #: src/methods/ftp.php:380
 msgid "login"
-msgstr "लॉग इन"
+msgstr ""
 
 #: src/methods/email.php:79
 msgid "Be aware that mail servers tend to have size limits; typically around %s MB; backups larger than any limits will likely not arrive."
@@ -1194,7 +1194,7 @@ msgstr ""
 
 #: src/templates/wp-admin/settings/tab-status.php:47
 msgid "Now"
-msgstr "अब"
+msgstr ""
 
 #: src/class-updraftplus.php:4465, src/restorer.php:1045
 msgid "You should enable %s to make any pretty permalinks (e.g. %s) work"
@@ -1236,7 +1236,7 @@ msgstr ""
 
 #: src/central/bootstrap.php:514
 msgid "Description"
-msgstr "विवरण"
+msgstr ""
 
 #: src/central/bootstrap.php:447
 msgid "Delete..."
@@ -1252,7 +1252,7 @@ msgstr ""
 
 #: src/central/bootstrap.php:461
 msgid "Details"
-msgstr "विस्तृत सूचना"
+msgstr ""
 
 #: src/central/bootstrap.php:460
 msgid "Key description"
@@ -1316,7 +1316,7 @@ msgstr ""
 
 #: src/admin.php:2960
 msgid "stop"
-msgstr "रोक"
+msgstr ""
 
 #: src/admin.php:2802
 msgid "The backup has finished running"
@@ -1358,7 +1358,7 @@ msgstr ""
 
 #: src/admin.php:709
 msgid "Saving..."
-msgstr "सहेजा जा रहा... "
+msgstr ""
 
 #: src/admin.php:672
 msgid "Error: the server sent us a response which we did not understand."
@@ -1395,7 +1395,7 @@ msgstr ""
 #: src/admin.php:2593, src/templates/wp-admin/notices/horizontal-notice.php:16,
 #: src/templates/wp-admin/notices/horizontal-notice.php:18
 msgid "Dismiss"
-msgstr "ख़ारिज"
+msgstr ""
 
 #: src/admin.php:746
 msgid "Please fill in the required information."
@@ -1508,7 +1508,7 @@ msgstr ""
 
 #: src/admin.php:4372
 msgid "settings"
-msgstr "सेटिंग्स"
+msgstr ""
 
 #: src/admin.php:4372
 msgid "Backup won't be sent to any remote storage - none has been saved in the %s"
@@ -1561,7 +1561,7 @@ msgstr ""
 
 #: src/admin.php:558
 msgid "Extensions"
-msgstr "एक्सटेंशन"
+msgstr ""
 
 #: src/admin.php:550, src/templates/wp-admin/settings/tab-bar.php:8
 msgid "Advanced Tools"
@@ -1712,7 +1712,7 @@ msgstr ""
 
 #: src/templates/wp-admin/advanced/site-info.php:49
 msgid "Not installed"
-msgstr "नहीं स्थापित"
+msgstr ""
 
 #: src/addons/googlecloud.php:954, src/addons/s3-enhanced.php:63
 msgid "Storage class"
@@ -2930,18 +2930,18 @@ msgstr ""
 #: src/includes/updraftplus-notices.php:133,
 #: src/includes/updraftplus-notices.php:134
 msgid "Google+"
-msgstr "Google+"
+msgstr ""
 
 #: src/includes/updraftplus-notices.php:133,
 #: src/includes/updraftplus-notices.php:134
 msgid "Facebook"
-msgstr "Facebook"
+msgstr ""
 
 #: src/includes/updraftplus-notices.php:133,
 #: src/includes/updraftplus-notices.php:134,
 #: src/templates/wp-admin/settings/header.php:16
 msgid "Twitter"
-msgstr "ट्विटर"
+msgstr ""
 
 #: src/includes/updraftplus-notices.php:132
 msgid "UpdraftPlus is on social media - check us out!"
@@ -4548,7 +4548,7 @@ msgstr ""
 
 #: src/restorer.php:699
 msgid "file"
-msgstr "फ़ाइल"
+msgstr ""
 
 #: src/restorer.php:692
 msgid "folder"
@@ -4649,7 +4649,7 @@ msgstr ""
 #: src/templates/wp-admin/settings/tab-addons.php:19,
 #: src/templates/wp-admin/settings/tab-addons.php:103
 msgid "Support"
-msgstr "सहायता"
+msgstr ""
 
 #: src/class-updraftplus.php:4733
 msgid "UpdraftPlus was unable to find the table prefix when scanning the database backup."
@@ -5070,7 +5070,7 @@ msgstr ""
 
 #: src/admin.php:2416, src/class-updraftplus.php:4520, src/restorer.php:2117
 msgid "Warning:"
-msgstr "चेतावनी:"
+msgstr ""
 
 #: src/class-updraftplus.php:4509, src/class-updraftplus.php:4512,
 #: src/restorer.php:184
@@ -5087,7 +5087,7 @@ msgstr ""
 
 #: src/admin.php:704
 msgid "Close"
-msgstr "बंद"
+msgstr ""
 
 #: src/addons/autobackup.php:330, src/addons/autobackup.php:422,
 #: src/admin.php:660, src/methods/remotesend.php:66,
@@ -5189,7 +5189,7 @@ msgstr ""
 
 #: src/admin.php:979
 msgid "Notice"
-msgstr "सूचना:"
+msgstr ""
 
 #: src/backup.php:984
 msgid "Errors encountered:"
@@ -5322,7 +5322,7 @@ msgstr ""
 #: src/methods/openstack2.php:157, src/methods/updraftvault.php:338,
 #: src/udaddons/options.php:135
 msgid "Password"
-msgstr "पासवर्ड"
+msgstr ""
 
 #: src/addons/sftp.php:411, src/addons/webdav.php:114
 msgid "Port"
@@ -5597,7 +5597,7 @@ msgstr ""
 #: src/addons/webdav.php:94, src/methods/cloudfiles-new.php:176,
 #: src/methods/cloudfiles.php:517, src/methods/openstack2.php:151
 msgid "Username"
-msgstr "यूज़रनेम"
+msgstr ""
 
 #: src/methods/cloudfiles-new.php:171, src/methods/cloudfiles.php:512,
 #: src/methods/s3.php:1022
@@ -5761,7 +5761,7 @@ msgstr ""
 #: src/methods/googledrive.php:440, src/methods/openstack-base.php:530,
 #: src/methods/s3.php:1086, src/methods/stream-base.php:327
 msgid "Success"
-msgstr "सफलता"
+msgstr ""
 
 #: src/addons/onedrive.php:781, src/methods/dropbox.php:702,
 #: src/methods/dropbox.php:711, src/methods/googledrive.php:414
@@ -5950,7 +5950,7 @@ msgstr ""
 
 #: src/templates/wp-admin/settings/form-contents.php:379
 msgid "Save Changes"
-msgstr "बदलाव सहेजें"
+msgstr ""
 
 #: src/templates/wp-admin/settings/form-contents.php:356
 msgid "Choosing this option lowers your security by stopping UpdraftPlus from using SSL for authentication and encrypted transport at all, where possible. Note that some cloud storage providers do not allow this (e.g. Dropbox), so with those providers this setting will have no effect."
@@ -6034,11 +6034,11 @@ msgstr ""
 
 #: src/addons/morefiles.php:297, src/admin.php:699
 msgid "Cancel"
-msgstr "कैंसिल करें  \t"
+msgstr ""
 
 #: src/addons/reporting.php:244, src/admin.php:3598
 msgid "None"
-msgstr "कोई नहीं "
+msgstr ""
 
 #: src/templates/wp-admin/settings/form-contents.php:110
 msgid "Choose your remote storage"
@@ -6083,7 +6083,7 @@ msgstr ""
 
 #: src/admin.php:3280
 msgid "Monthly"
-msgstr "मासिक"
+msgstr ""
 
 #: src/admin.php:3279
 msgid "Fortnightly"
@@ -6091,11 +6091,11 @@ msgstr ""
 
 #: src/admin.php:3278
 msgid "Weekly"
-msgstr "साप्ताहिक"
+msgstr ""
 
 #: src/admin.php:3277
 msgid "Daily"
-msgstr "प्रतिदिन "
+msgstr ""
 
 #: src/admin.php:706, src/admin.php:3255
 msgid "Download log file"
@@ -6117,7 +6117,7 @@ msgstr ""
 #: src/admin.php:3053, src/admin.php:3809,
 #: src/templates/wp-admin/settings/delete-and-restore-modals.php:5
 msgid "Delete"
-msgstr "हटाएँ"
+msgstr ""
 
 #: src/admin.php:2958
 msgid "show log"
@@ -6156,7 +6156,7 @@ msgstr ""
 #: src/templates/wp-admin/settings/tab-addons.php:305,
 #: src/templates/wp-admin/settings/tab-addons.php:308
 msgid "No"
-msgstr "नहीं"
+msgstr ""
 
 #: src/templates/wp-admin/advanced/site-info.php:56,
 #: src/templates/wp-admin/advanced/site-info.php:59,
@@ -6191,7 +6191,7 @@ msgstr "नहीं"
 #: src/templates/wp-admin/settings/tab-addons.php:292,
 #: src/templates/wp-admin/settings/tab-addons.php:311
 msgid "Yes"
-msgstr "हाँ"
+msgstr ""
 
 #: src/templates/wp-admin/advanced/site-info.php:43,
 #: src/templates/wp-admin/advanced/site-info.php:44,
@@ -6222,7 +6222,7 @@ msgstr ""
 
 #: src/templates/wp-admin/settings/tab-status.php:96
 msgid "Multisite"
-msgstr "मल्टीसाइट"
+msgstr ""
 
 #: src/templates/wp-admin/settings/tab-status.php:86
 msgid "Perform a one-time backup"
@@ -6411,7 +6411,7 @@ msgstr ""
 
 #: src/templates/wp-admin/settings/header.php:26
 msgid "Version"
-msgstr "संस्करण "
+msgstr ""
 
 #: src/templates/wp-admin/settings/header.php:25
 msgid "Lead developer's homepage"
@@ -6532,7 +6532,7 @@ msgstr ""
 #: src/templates/wp-admin/settings/downloading-and-restoring.php:27,
 #: src/udaddons/updraftplus-addons.php:253
 msgid "Warning"
-msgstr "चेतावनी"
+msgstr ""
 
 #: src/admin.php:905
 msgid "Add-Ons / Pro Support"
@@ -6541,7 +6541,7 @@ msgstr ""
 #: src/admin.php:542, src/admin.php:903,
 #: src/templates/wp-admin/settings/tab-bar.php:7
 msgid "Settings"
-msgstr "सेटिंग"
+msgstr ""
 
 #: src/backup.php:261
 msgid "Could not create %s zip. Consult the log file for more information."
@@ -6628,7 +6628,7 @@ msgstr ""
 
 #: src/class-updraftplus.php:1802
 msgid "Plugins"
-msgstr "प्लगिन्स"
+msgstr ""
 
 #: src/class-updraftplus.php:578
 msgid "No log files were found."

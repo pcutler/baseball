@@ -2,10 +2,10 @@
  * Send an action over AJAX. A wrapper around jQuery.ajax. In future, all consumers can be reviewed to simplify some of the options, where there is historical cruft.
  * N.B. updraft_iframe_modal() below uses the Ajax URL for the iframe's src attribute
  *
- * @param {string} action - the action to send
- * @param * data - data to send
- * @param Callback callback - will be called with the results
- * @param {object} [options={}] - further options. Relevant properties include:
+ * @param {string}   action   - the action to send
+ * @param {*}        data     - data to send
+ * @param {Function} callback - will be called with the results
+ * @param {object}   options  -further options. Relevant properties include:
  * - [json_parse=true] - whether to JSON parse the results
  * - [alert_on_error=true] - whether to show an alert box if there was a problem (otherwise, suppress it)
  * - [action='updraft_ajax'] - what to send as the action parameter on the AJAX request (N.B. action parameter to this function goes as the 'subaction' parameter on the AJAX request)
@@ -88,8 +88,8 @@ function updraft_send_command(action, data, callback, options) {
 /**
  * Opens the dialog box for confirmation of whether to delete a backup, plus options if relevant
  *
- * @param {string} key - The UNIX timestamp of the backup
- * @param {string} nonce - The backup job ID
+ * @param {string}  key        - The UNIX timestamp of the backup
+ * @param {string}  nonce      - The backup job ID
  * @param {boolean} showremote - Whether or not to show the "also delete from remote storage?" checkbox
  */
 function updraft_delete(key, nonce, showremote) {
@@ -210,9 +210,9 @@ function updraft_remote_storage_tabs_setup() {
 /**
  * Carries out a remote storage test
  *
- * @param {string} method - The identifier for the remote storage
+ * @param {string}   method          - The identifier for the remote storage
  * @param {callback} result_callback - A callback function to be called with the result
- * @param {string} [instance_id] - The particular instance (if any) of the remote storage to be tested (for methods supporting multiple instances)
+ * @param {string}   instance_id     - The particular instance (if any) of the remote storage to be tested (for methods supporting multiple instances)
  */
 function updraft_remote_storage_test(method, result_callback, instance_id) {
 	
@@ -293,8 +293,9 @@ function backupnow_whichfiles_checked(onlythesefileentities){
 /**
  * A method to get all the selected table values from the backup now modal
  *
- * @param  {[String]} onlythesetableentities an empty string to append values to
- * @return {[String]} a string that contains the values of all selected table entities and the database the belong to
+ * @param {string} onlythesetableentities an empty string to append values to
+ *
+ * @return {string} a string that contains the values of all selected table entities and the database the belong to
  */
 function backupnow_whichtables_checked(onlythesetableentities){
 	var send_list = false;
@@ -440,7 +441,7 @@ window.onbeforeunload = function(e) {
 /**
  * N.B. This function works on both the UD settings page and elsewhere
  *
- * @param  {boolean} firstload Check if this is first load
+ * @param {boolean} firstload Check if this is first load
  */
 function updraft_check_page_visibility(firstload) {
 	if ('hidden' == document["visibilityState"]) {
@@ -476,12 +477,10 @@ var updraft_inpage_hasbegun = 0;
  * @param {Function} success_callback   callback function after backup
  * @param {String}   onlythisfileentity csv list of file entities to be backed up
  * @param {Array}    extradata          any extra data to be added
- * @param {Integer}  backupnow_nodb     Indicate whether the database should be backed up. Valid values: 0, 1
+ * @param {Integer}  backupnow_nodb      Indicate whether the database should be backed up. Valid values: 0, 1
  * @param {Integer}  backupnow_nofiles  Indicate whether any files should be backed up. Valid values: 0, 1
  * @param {Integer}  backupnow_nocloud  Indicate whether the backup should be uploaded to cloud storage. Valid values: 0, 1
  * @param {String}   label              An optional label to be added to a backup
- *
- * @return {void}
  */
 function updraft_backupnow_inpage_go(success_callback, onlythisfileentity, extradata, backupnow_nodb, backupnow_nofiles, backupnow_nocloud, label) {
 	
@@ -681,7 +680,7 @@ jQuery('#updraft_backup_started').slideUp();}, 3500);
 /**
  * Opens a dialog window showing the requested (or latest) log file, plus an option to download it
  *
- * @param String [backup_nonce] - the nonce of the log to display, or empty for the latest one
+ * @param {string} backup_nonce - the nonce of the log to display, or empty for the latest one
  */
 function updraft_popuplog(backup_nonce) {
 		
@@ -931,7 +930,7 @@ function updraftplus_diskspace_entity(key) {
  * Open a modal with content fetched from an iframe
  *
  * @param {String} getwhat - the subaction parameter to pass to UD's AJAX handler
- * @param {String} title - the title for the modal
+ * @param {String} title   - the title for the modal
  */
 function updraft_iframe_modal(getwhat, title) {
 	var width = 780;
@@ -983,8 +982,10 @@ function updraftplus_show_contents(timestamp, type, findex) {
 /**
  * Creates the jstree and makes a call to the backend to dynamically get the tree nodes
  *
- * @param {string} path - Optional path parameter if not passed in then Root of zip will be used
- * @param {bool} drop_directory - Optional parameter that if passed will remove the last directory level from the path, used for if you want to move up the directory tree from the root node
+ * @param {string} entity     Entity for the jstree
+ * @param {integer} timestamp Timestamp of the jstree
+ * @param {string} type       Type of file to display in the JS tree
+ * @param {array} findex      Index of Zip
  */
 function zip_files_jstree(entity, timestamp, type, findex) {
 
@@ -1325,13 +1326,13 @@ function updraft_downloader_status_update(base, backup_timestamp, what, findex, 
 /**
  * Function that sets up a ajax call to start a backup
  *
- * @param  {Integer} backupnow_nodb         Indicate whether the database should be backed up: valid values are 0, 1
- * @param  {Integer} backupnow_nofiles      Indicate whether any files should be backed up: valid values are 0, 1
- * @param  {Integer} backupnow_nocloud      Indicate whether the backup should be uploaded to cloud storage: valid values are 0, 1
- * @param  {String}  onlythesefileentities  A csv list of file entities to be backed up
- * @param  {String}  onlythesetableentities A csv list of table entities to be backed up
- * @param  {Array}   extradata              any extra data to be added
- * @param  {String}  label                  A optional label to be added to a backup
+ * @param {Integer} backupnow_nodb         Indicate whether the database should be backed up: valid values are 0, 1
+ * @param {Integer} backupnow_nofiles      Indicate whether any files should be backed up: valid values are 0, 1
+ * @param {Integer} backupnow_nocloud      Indicate whether the backup should be uploaded to cloud storage: valid values are 0, 1
+ * @param {String}  onlythesefileentities  A csv list of file entities to be backed up
+ * @param {String}  onlythesetableentities A csv list of table entities to be backed up
+ * @param {Array}   extradata              any extra data to be added
+ * @param {String}  label                  A optional label to be added to a backup
  */
 function updraft_backupnow_go(backupnow_nodb, backupnow_nofiles, backupnow_nocloud, onlythesefileentities, extradata, label, onlythesetableentities) {
 
@@ -1363,12 +1364,11 @@ jQuery('#updraft_backup_started').fadeOut('slow');}, 75000);
 			console.log("UpdraftPlus: ID of started job: "+updraft_backupnow_nonce);
 		}
 		setTimeout(function() {
-updraft_activejobs_update(true);}, 500);
+			updraft_activejobs_update(true);}, 500);
 	});
 }
 
 jQuery(document).ready(function($) {
-	
 	// Advanced settings new menu button listeners
 	$('.expertmode .advanced_settings_container .advanced_tools_button').click(function() {
 		advanced_tool_hide($(this).attr("id"));
@@ -1405,7 +1405,7 @@ jQuery(document).ready(function($) {
 	});
 	
 	// Update WebDAV URL as user edits
-	$(".updraft_webdav_settings").on("change keyup paste", function() {
+	$('#updraft-navtab-settings-content #remote-storage-holder').on('change keyup paste', '.updraft_webdav_settings', function() {
 		
 		var updraft_webdav_settings = [];
 		var instance_id = "";
@@ -1464,7 +1464,7 @@ jQuery(document).ready(function($) {
 		}
 	});
 	
-	jQuery('#updraft-navtab-settings-content .updraftplusmethod').on('click', 'button.updraft-test-button', function() {
+	jQuery('#updraft-navtab-settings-content #remote-storage-holder').on('click', '.updraftplusmethod button.updraft-test-button', function() {
 
 		var method = jQuery(this).data('method');
 		var instance_id = jQuery(this).data('instance_id');
@@ -1527,15 +1527,57 @@ jQuery(document).ready(function($) {
 			if (on_page_load) {
 				jQuery('#updraftcentral_keycreate_mothership_firewalled_container').show();
 			} else {
+				jQuery('.updraftcentral_wizard_self_hosted_stage2').show();
 				jQuery('#updraftcentral_keycreate_mothership_firewalled_container').slideDown();
 				jQuery('#updraftcentral_keycreate_mothership').focus();
 			}
 		} else {
 			jQuery('#updraftcentral_keycreate_mothership').prop('disabled', true);
+			if (!on_page_load) {
+				jQuery('.updraftcentral_wizard_self_hosted_stage2').hide();
+				updraftcentral_stage2_go();
+			}
 		}
 	}
 	
-	jQuery('#updraftcentral_keys').on('change', 'input[type="radio"]', function() {
+	function updraftcentral_stage2_go() {
+		// Reset the error message before we continue
+		jQuery('#updraftcentral_wizard_stage1_error').text('');
+
+		var host = '';
+
+		if (jQuery('#updraftcentral_mothership_updraftpluscom').is(':checked')) {
+			jQuery('.updraftcentral_keycreate_description').hide();
+			host = 'updraftplus.com';
+		} else if (jQuery('#updraftcentral_mothership_other').is(':checked')) {
+			jQuery('.updraftcentral_keycreate_description').show();
+			var mothership = jQuery('#updraftcentral_keycreate_mothership').val();
+			if ('' == mothership) {
+				jQuery('#updraftcentral_wizard_stage1_error').text(updraftlion.updraftcentral_wizard_empty_url);
+				return;
+			}
+			try {
+				var url = new URL(mothership);
+				host = url.hostname;
+			} catch (e) {
+				// Try and grab the host name a different way if it failed because of no URL object (e.g. IE 11).
+				if ('undefined' === typeof URL) {
+					host = jQuery('<a>').prop('href', mothership).prop('hostname');
+				}
+				if (!host || 'undefined' !== typeof URL) {
+					jQuery('#updraftcentral_wizard_stage1_error').text(updraftlion.updraftcentral_wizard_invalid_url);
+					return;
+				}
+			}
+		}
+
+		jQuery('#updraftcentral_keycreate_description').val(host);
+
+		jQuery('.updraftcentral_wizard_stage1').hide();
+		jQuery('.updraftcentral_wizard_stage2').show();
+	}
+
+	jQuery('#updraftcentral_keys').on('click', 'input[type="radio"]', function() {
 		updraftcentral_keys_setupform(false);
 	});
 	// Initial setup (for browsers, e.g. Firefox, that remember form selection state but not DOM state, which can leave an inconsistent state)
@@ -1575,38 +1617,7 @@ jQuery(document).ready(function($) {
 	jQuery('#updraftcentral_keys').on('click', '#updraftcentral_stage2_go', function(e) {
 		e.preventDefault();
 
-		// Reset the error message before we continue
-		jQuery('#updraftcentral_wizard_stage1_error').text('');
-
-		var host = '';
-
-		if (jQuery('#updraftcentral_mothership_updraftpluscom').is(':checked')) {
-			host = 'updraftplus.com';
-		} else if (jQuery('#updraftcentral_mothership_other').is(':checked')) {
-			var mothership = jQuery('#updraftcentral_keycreate_mothership').val();
-			if ('' == mothership) {
-				jQuery('#updraftcentral_wizard_stage1_error').text(updraftlion.updraftcentral_wizard_empty_url);
-				return;
-			}
-			try {
-				var url = new URL(mothership);
-				host = url.hostname;
-			} catch (e) {
-				// Try and grab the host name a different way if it failed because of no URL object (e.g. IE 11).
-				if ('undefined' === typeof URL) {
-					host = jQuery('<a>').prop('href', mothership).prop('hostname');
-				}
-				if (!host || 'undefined' !== typeof URL) {
-					jQuery('#updraftcentral_wizard_stage1_error').text(updraftlion.updraftcentral_wizard_invalid_url);
-					return;
-				}
-			}
-		}
-
-		jQuery('#updraftcentral_keycreate_description').val(host);
-
-		jQuery('.updraftcentral_wizard_stage1').hide();
-		jQuery('.updraftcentral_wizard_stage2').show();
+		updraftcentral_stage2_go();
 	});
 	
 	jQuery('#updraftcentral_keys').on('click', '#updraftcentral_keycreate_go', function(e) {
@@ -1723,8 +1734,6 @@ updraft_activejobs_update(false);}, 1250);
 	// Prevent profusion of notices
 	setTimeout(function() {
 jQuery('#setting-error-settings_updated').slideUp();}, 5000);
-	
-	jQuery('.updraftplusmethod').hide();
 	
 	jQuery('#updraft_restore_db').change(function() {
 		if (jQuery('#updraft_restore_db').is(':checked')) {
@@ -1846,9 +1855,9 @@ jQuery('#setting-error-settings_updated').slideUp();}, 5000);
 				}
 			}
 		});
-		if (anyselected == 1) {
+		if (1 == anyselected) {
 			// Work out what to download
-			if (updraft_restore_stage == 1) {
+			if (1 == updraft_restore_stage) {
 				// meta_foreign == 1 : All-in-one format: the only thing to download, always, is wpcore
 // if ('1' == meta_foreign) {
 // whichselected = [];
@@ -1899,9 +1908,9 @@ jQuery('#setting-error-settings_updated').slideUp();}, 5000);
 				}
 
 				// Make sure all are downloaded
-			} else if (updraft_restore_stage == 2) {
+			} else if (2 == updraft_restore_stage) {
 				updraft_restorer_checkstage2(1);
-			} else if (updraft_restore_stage == 3) {
+			} else if (3 == updraft_restore_stage) {
 				var continue_restore = 1;
 				jQuery('#updraft_restoreoptions_ui input.required').each(function(index) {
 					if (continue_restore == 0) return;
@@ -1923,8 +1932,10 @@ jQuery('#setting-error-settings_updated').slideUp();}, 5000);
 				console.log("Restore options: "+restore_options);
 				jQuery('#updraft_restorer_restore_options').val(restore_options);
 				// This must be done last, as it wipes out the section with #updraft_restoreoptions_ui
-				jQuery('#updraft-restore-modal-stage2a').html(updraftlion.restoreproceeding);
+				jQuery('#updraft-restore-modal-stage2a').html(updraftlion.restore_proceeding);
 				jQuery('#updraft_restore_form').submit();
+				// In progress; prevent the button being pressed again
+				updraft_restore_stage = 4;
 			}
 		} else {
 			alert(updraftlion.youdidnotselectany);
@@ -2180,31 +2191,31 @@ jQuery('#setting-error-settings_updated').slideUp();}, 5000);
 		// var hundredmb = 100 * 1024 * 1024, max = parseInt(up.settings.max_file_size, 10);
 		
 		plupload.each(files, function(file) {
-			// @codingStandardsIgnoreLine
-			if (! /^backup_([\-0-9]{15})_.*_([0-9a-f]{12})-[\-a-z]+([0-9]+?)?(\.(zip|gz|gz\.crypt))?$/i.test(file.name) && ! /^log\.([0-9a-f]{12})\.txt$/.test(file.name)) {
-				var accepted_file = false;
-				for (var i = 0; i<updraft_accept_archivename.length; i++) {
-					if (updraft_accept_archivename[i].test(file.name)) {
-						var accepted_file = true;
+				// @codingStandardsIgnoreLine
+				if (! /^backup_([\-0-9]{15})_.*_([0-9a-f]{12})-[\-a-z]+([0-9]+?)?(\.(zip|gz|gz\.crypt))?$/i.test(file.name) && ! /^log\.([0-9a-f]{12})\.txt$/.test(file.name)) {
+					var accepted_file = false;
+					for (var i = 0; i<updraft_accept_archivename.length; i++) {
+						if (updraft_accept_archivename[i].test(file.name)) {
+							var accepted_file = true;
+						}
 					}
-				}
-				if (!accepted_file) {
-					if (/\.(zip|tar|tar\.gz|tar\.bz2)$/i.test(file.name) || /\.sql(\.gz)?$/i.test(file.name)) {
-						jQuery('#updraft-message-modal-innards').html('<p><strong>'+file.name+"</strong></p> "+updraftlion.notarchive2);
-						jQuery('#updraft-message-modal').dialog('open');
-					} else {
-						alert(file.name+": "+updraftlion.notarchive);
+					if (!accepted_file) {
+						if (/\.(zip|tar|tar\.gz|tar\.bz2)$/i.test(file.name) || /\.sql(\.gz)?$/i.test(file.name)) {
+							jQuery('#updraft-message-modal-innards').html('<p><strong>'+file.name+"</strong></p> "+updraftlion.notarchive2);
+							jQuery('#updraft-message-modal').dialog('open');
+						} else {
+							alert(file.name+": "+updraftlion.notarchive);
+						}
+						uploader.removeFile(file);
+						return;
 					}
-					uploader.removeFile(file);
-					return;
-				}
-			}
+					}
 			
-			// a file was added, you may want to update your DOM here...
-			jQuery('#filelist').append(
-				'<div class="file" id="' + file.id + '"><b>' +
-				file.name + '</b> (<span>' + plupload.formatSize(0) + '</span>/' + plupload.formatSize(file.size) + ') ' +
-			'<div class="fileprogress"></div></div>');
+				// a file was added, you may want to update your DOM here...
+				jQuery('#filelist').append(
+					'<div class="file" id="' + file.id + '"><b>' +
+					file.name + '</b> (<span>' + plupload.formatSize(0) + '</span>/' + plupload.formatSize(file.size) + ') ' +
+				'<div class="fileprogress"></div></div>');
 		});
 			
 			up.refresh();
@@ -2369,6 +2380,7 @@ jQuery('#setting-error-settings_updated').slideUp();}, 5000);
 	 * Get the value of a named URL parameter - https://stackoverflow.com/questions/4548487/jquery-read-query-string
 	 *
 	 * @param {string} name - URL parameter to return the value of
+	 *
 	 * @returns {string}
 	 */
 	function get_parameter_by_name(name) {
@@ -2429,7 +2441,7 @@ jQuery(document).ready(function($) {
 	
 	var settings_css_prefix = '#updraft-navtab-settings-content ';
 	
-	$(settings_css_prefix+'#updraftvault_settings_cell').on('click', '.updraftvault_backtostart', function(e) {
+	$(settings_css_prefix+'#remote-storage-holder').on('click', '.updraftvault_backtostart', function(e) {
 		e.preventDefault();
 		$(settings_css_prefix+'#updraftvault_settings_showoptions').slideUp();
 		$(settings_css_prefix+'#updraftvault_settings_connect').slideUp();
@@ -2445,11 +2457,11 @@ jQuery(document).ready(function($) {
 		}
 	});
 	
-	$(settings_css_prefix+'#updraftvault_settings_cell').on('click', '#updraftvault_recountquota', function(e) {
+	$(settings_css_prefix+'#remote-storage-holder').on('click', '#updraftvault_recountquota', function(e) {
 		e.preventDefault();
 		$(settings_css_prefix+'#updraftvault_recountquota').html(updraftlion.counting);
 		try {
-			updraft_send_command('vault_recountquota', null, function(response) {
+			updraft_send_command('vault_recountquota', { instance_id: $('#updraftvault_settings_connect').data('instance_id') }, function(response) {
 				$(settings_css_prefix+'#updraftvault_recountquota').html(updraftlion.updatequotacount);
 				if (response.hasOwnProperty('html')) {
 					$(settings_css_prefix+'#updraftvault_settings_connected').html(response.html);
@@ -2470,11 +2482,11 @@ jQuery(document).ready(function($) {
 		}
 	});
 	
-	$(settings_css_prefix+'#updraftvault_settings_cell').on('click', '#updraftvault_disconnect', function(e) {
+	$(settings_css_prefix+'#remote-storage-holder').on('click', '#updraftvault_disconnect', function(e) {
 		e.preventDefault();
 		$(settings_css_prefix+'#updraftvault_disconnect').html(updraftlion.disconnecting);
 		try {
-			updraft_send_command('vault_disconnect', { immediate_echo: true }, function(response) {
+			updraft_send_command('vault_disconnect', { immediate_echo: true, instance_id: $('#updraftvault_settings_connect').data('instance_id') }, function(response) {
 				$(settings_css_prefix+'#updraftvault_disconnect').html(updraftlion.disconnect);
 				if (response.hasOwnProperty('html')) {
 					$(settings_css_prefix+'#updraftvault_settings_connected').html(response.html).slideUp();
@@ -2487,23 +2499,24 @@ jQuery(document).ready(function($) {
 		}
 	});
 	
-	$(settings_css_prefix+'#updraftvault_connect').click(function(e) {
+	$(settings_css_prefix+'#remote-storage-holder').on('click', '#updraftvault_connect', function(e) {
 		e.preventDefault();
 		$(settings_css_prefix+'#updraftvault_settings_default').slideUp();
 		$(settings_css_prefix+'#updraftvault_settings_connect').slideDown();
 	});
 	
-	$(settings_css_prefix+'#updraftvault_showoptions').click(function(e) {
+	$(settings_css_prefix+'#remote-storage-holder').on('click', '#updraftvault_showoptions', function(e) {
 		e.preventDefault();
 		$(settings_css_prefix+'#updraftvault_settings_default').slideUp();
 		$(settings_css_prefix+'#updraftvault_settings_showoptions').slideDown();
 	});
 	
-	$(settings_css_prefix+'#updraftvault_connect_go').click(function(e) {
+	$(settings_css_prefix+'#remote-storage-holder').on('click', '#updraftvault_connect_go', function(e) {
 		$(settings_css_prefix+'#updraftvault_connect_go').html(updraftlion.connecting);
 		updraft_send_command('vault_connect', {
 			email: $('#updraftvault_email').val(),
 			pass: $('#updraftvault_pass').val(),
+			instance_id: $('#updraftvault_settings_connect').data('instance_id'),
 		}, function(resp, status, response) {
 			$(settings_css_prefix+'#updraftvault_connect_go').html(updraftlion.connect);
 			if (resp.hasOwnProperty('e')) {
@@ -2618,7 +2631,53 @@ jQuery(document).ready(function($) {
 
 	jQuery('#updraft-hidethis').remove();
 	
-	updraft_remote_storage_tabs_setup();
+	/*
+        * A Handlebarsjs helper function that is used to compare
+        * two values if they are equal. Please refer to the example below.
+        * Assuming "comment_status" contains the value of "spam".
+        *
+        * @param {mixed} a The first value to compare
+        * @param {mixed} b The second value to compare
+        *
+        * @example
+        * // returns "<span>I am spam!</span>", otherwise "<span>I am not a spam!</span>"
+        * {{#ifeq "spam" comment_status}}
+        *      <span>I am spam!</span>
+        * {{else}}
+        *      <span>I am not a spam!</span>
+        * {{/ifeq}}
+        *
+        * @return {string}
+	*/
+
+	Handlebars.registerHelper('ifeq', function (a, b, opts) {
+		if ('string' !== typeof a && 'undefined' !== typeof a) a = a.toString();
+		if ('string' !== typeof b && 'undefined' !== typeof b) b = b.toString();
+		if (a === b) {
+			return opts.fn(this);
+		} else {
+			return opts.inverse(this);
+		}
+	});
+	// Add remote methods html using handlebarjs
+	if ($('#remote-storage-holder').length) {
+		var html = '';
+		for (var method in updraftlion.remote_storage_templates) {
+			if ('undefined' != typeof updraftlion.remote_storage_options[method]) {
+				var template = Handlebars.compile(updraftlion.remote_storage_templates[method]);
+				for (var instance_id in updraftlion.remote_storage_options[method]) {
+					var context = updraftlion.remote_storage_options[method][instance_id];
+					html += template(context);
+				}
+			} else {
+				html += updraftlion.remote_storage_templates[method];
+			}
+		}
+		$('#remote-storage-holder').append(html).ready(function () {
+			$('.updraftplusmethod').not('.none').hide();
+			updraft_remote_storage_tabs_setup();
+		});
+	}
 
 });
 
@@ -2700,7 +2759,7 @@ jQuery(document).ready(function($) {
 		
 		// Attach this data to an anchor on page
 		var link = document.body.appendChild(document.createElement('a'));
-		link.setAttribute('download', 'updraftplus-settings.json');
+		link.setAttribute('download', updraftlion.export_settings_file_name);
 		link.setAttribute('style', "display:none;");
 		link.setAttribute('href', 'data:text/json' + ';charset=UTF-8,' + encodeURIComponent(form_data));
 		link.click();
@@ -2747,7 +2806,7 @@ jQuery(document).ready(function($) {
 	/**
 	 * Retrieve the current settings from the DOM
 	 *
-	 * @param {string} [output_format='string'] - the output format; valid values are 'string' or 'object'
+	 * @param {string} output_format - the output format; valid values are 'string' or 'object'
 	 *
 	 * @returns String|Object
 	 */
@@ -2782,8 +2841,9 @@ jQuery(document).ready(function($) {
 	/**
 	 * Method to parse the response from the backend and update the page with the returned content or display error messages if failed
 	 *
-	 * @param String - the JSON-encoded response containing information to update the settings page with
-	 * @return object - the decoded response (empty if decoding was not successful)
+	 * @param {string} response - the JSON-encoded response containing information to update the settings page with
+	 *
+	 * @return {object} - the decoded response (empty if decoding was not successful)
 	 */
 	function updraft_handle_page_updates(response) {
 					
@@ -2881,4 +2941,25 @@ jQuery(document).ready(function($) {
 	}
 
 
+});
+
+// For When character set and collate both are unsupported at restoration time and if user change anyone substitution dropdown from both, Other substitution select box value should be change respectively.
+jQuery(document).ready(function($) {
+	jQuery('#updraft-restore-modal').on('change', '#updraft_restorer_charset', function(e) {
+		if ($('#updraft_restorer_charset').length && $('#updraft_restorer_collate').length && $('#collate_change_on_charset_selection_data').length) {
+			var updraft_restorer_charset = $('#updraft_restorer_charset').val();
+			// For only show collate which are related to charset
+			$('#updraft_restorer_collate option').show();
+			$('#updraft_restorer_collate option[data-charset!='+updraft_restorer_charset+']').hide();
+			updraft_send_command('collate_change_on_charset_selection', {
+				collate_change_on_charset_selection_data: $('#collate_change_on_charset_selection_data').val(),
+				updraft_restorer_charset: updraft_restorer_charset,
+				updraft_restorer_collate: $('#updraft_restorer_collate').val(),
+			}, function(response) {
+				if (response.hasOwnProperty('is_action_required') && 1 == response.is_action_required && response.hasOwnProperty('similar_type_collate')) {
+					$('#updraft_restorer_collate').val(response.similar_type_collate);
+				}
+			});
+		}
+	});
 });
